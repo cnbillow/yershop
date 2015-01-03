@@ -16,7 +16,5 @@ Function，the system support palpay ,alipay,tenpay,unionpay,yeepay,kuaiqian pay
  将user/conf下的config.php剪切到一个文件夹，安装onethink,安装完成后将剪切的config.php复制覆盖安装完的user/conf文件夹内的config.php，清空数据库，导入目录下的yxys.sql，数据库后台默认用户名为123密码为123，使用新用户名、密码登录
 ，获取版权请联系
  1010422715@qq.com
-演示
-=======
-演示地址:http://ijquery.net/
+
 
