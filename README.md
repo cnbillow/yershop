@@ -10,7 +10,7 @@ Function，the system support palpay ,alipay,tenpay,unionpay,yeepay,kuaiqian pay
  演示
 =======
 演示地址:http://ijquery.net/
-演示后台:http://ijquery.net///admin.php
+演示后台:http://ijquery.net/admin.php
 环境要求
 =======
  linux+ apache+php5.3(必须5.3以上)+mysql，windows服务器会产生登陆注册的json bug,导致登录成功后页面无跳转
