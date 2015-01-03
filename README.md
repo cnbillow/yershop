@@ -19,4 +19,4 @@ Function，the system support palpay ,alipay,tenpay,unionpay,yeepay,kuaiqian pay
 演示
 =======
 演示地址:http://ijquery.net/
-演示后台:http://ijquery.net/admin.php
+
