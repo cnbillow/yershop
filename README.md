@@ -13,7 +13,7 @@ Function，the system support palpay ,alipay,tenpay,unionpay,yeepay,kuaiqian pay
  linux+ apache+php5.3(必须5.3以上)+mysql，windows服务器会产生登陆注册的json bug,导致登录成功后页面无跳转
 安装指南 
 =======
- 将user/conf下的config.php剪切到一个文件夹，安装onethink,安装完成后将剪切的config.php复制覆盖安装完的user/conf文件夹内的config.php，清空数据库，导入目录下的yxys.sql，数据库后台默认用户名为123密码为123，使用新用户名、密码登录
-购买版权qq  1010422715
+ 将user/conf下的config.php剪切到一个文件夹，安装onethink,安装完成后将剪切的config.php复制覆盖安装完的user/conf文件夹内的config.php，清空数据库，导入目录下的yxys.sql，数据库后台默认用户名为123密码为123，使用新用户名、密码登录,
+获取版权请联系qq  1010422715
 
 
