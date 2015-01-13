@@ -11,9 +11,15 @@ Function，the system support palpay ,alipay,tenpay,unionpay,yeepay,kuaiqian pay
 环境要求
 =======
  apache+php5.3(必须5.3以上)+mysql，windows服务器会产生登陆注册的json bug,导致登录成功后页面无跳转
-指南 
+
 =======
  
-获取版权请联系qq  1010422715
+本地wamp环境安装方法
+将安装包Application/user/conf/下的config.php配置文件剪切到一个文件夹，先按流程安装onethink，安装完成后，清空mySQL数据库,导入目录下的one.sql文件，将剪切的config.php覆盖安装完成后的自动生成的config.php，登陆后台，账号123密码123，此前安装时的用户名密码已无效
+
+服务器安装方法
+安装onethink，清空L数据库,导入目录下的one.sql数据库文件
+修改安装完成后的Application/user/conf/config.php第三行加密码为
+define('UC_AUTH_KEY', '?<U[ePB.Gp*+/Vi!;,4kfL"^gXuYN8-EnJHz:$h~'); //加密KEY
 
 
