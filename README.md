@@ -11,7 +11,8 @@ Function，the system support palpay ,alipay,tenpay,unionpay,yeepay,kuaiqian pay
 环境要求
 =======
  apache+php5.3(必须5.3以上)+mysql，windows服务器会产生登陆注册的json bug,导致登录成功后页面无跳转
-
+ 
+安装方法
 =======
  
 本地wamp环境安装方法
