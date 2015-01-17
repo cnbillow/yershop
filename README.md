@@ -18,14 +18,12 @@ Function，the system support palpay ,alipay,tenpay,unionpay,yeepay,kuaiqian pay
 本地
 将安装包Application/user/conf/下的config.php配置文件剪切到一个文件夹，先按流程安装onethink，安装完成后，清空mySQL数据库,导入目录下的one.sql文件，将剪切的config.php覆盖安装完成后的自动生成的config.php，登陆后台，账号123密码123，此前安装时的用户名密码已无效
 
-服务器安装方法
+服务器
 安装onethink，清空L数据库,导入目录下的one.sql数据库文件
 修改安装完成后的Application/user/conf/config.php第三行加密码为
 define('UC_AUTH_KEY', '?<U[ePB.Gp*+/Vi!;,4kfL"^gXuYN8-EnJHz:$h~'); //加密KEY
 
-
-安装方法
-=获取最新版本，请关注http://yershop.com
+获取最新版本，请关注http://yershop.com
 
 
 
