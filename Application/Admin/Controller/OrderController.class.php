@@ -23,7 +23,7 @@ class OrderController extends AdminController {
         /* 查询条件初始化 */
 	
        $map  = array('status' => 1);
-       $list = $this->lists('order', $map,'id');
+       $list = $this->lists('order', $map,'id desc');
 
         $this->assign('list', $list);
         // 记录当前列表页的cookie
@@ -90,7 +90,9 @@ class OrderController extends AdminController {
             $info = M('order')->find($id);
 $detail= M('order')->where("id='$id'")->select();
 $list=M('shoplist')->where("orderid='$id'")->select();
-
+$addressid=M('order')->where("id='$id'")->getField("addressid");
+$address=M('transport')->where("id='$addressid'")->select();
+ $this->assign('alist', $address);
             if(false === $info){
                 $this->error('获取订单信息错误');
             }
@@ -123,20 +125,27 @@ $this->assign('list', $list);
 			$Form->update_time = NOW_TIME;
             $Form->status="2";
 			$orderid=M('order')->where("id='$id'")->getField("orderid");
-			//$confirm="<A href='http://".$_SERVER['HTTP_HOST']."/index.php?s=/Home/Order/confirm/id/".$orderid."'>确认收货</a>";
-           // $cancle="<A href='http://".$_SERVER['HTTP_HOST']."/index.php?s=/Home/Order/confirm/id/".$orderid."'>取消订单</a>";
-		    //增加查看物流
-			$wuliu="<A href='http://".$_SERVER['HTTP_HOST']."/index.php?s=/Home/Order/wuliu/id/".$orderid."'>查看物流</a>";
-		  $Form->act_getwuliu=$wuliu;
-         // $Form->act_confirm=$confirm;
-		// $Form->act_cancel=$cancle;
-            $result=$Form->where("id='$id'")->save();
+    $result=$Form->where("id='$id'")->save();
+
+//根据订单id获取购物清单
+$del=M("shoplist")->where("orderid='$orderid'")->select();
+
+foreach($del as $k=>$val)
+	{
+//获取购物清单数据表产品id，字段id
+$byid=$val["id"];
+
+$data['status']=2;
+$shop=M("shoplist");
+ $shop->where("id='$byid'")->save($data);
+}
+
                 if($result){
                     //记录行为
                     action_log('update_order', 'order', $data['id'], UID);
                     $this->success('更新成功', Cookie('__forward__'));
                 } else {
-                    $this->error('更新失败55'.$id);
+                    $this->error('更新失败'.$id);
                 }
             } else {
                 $this->error($Config->getError());

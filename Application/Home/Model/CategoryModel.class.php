@@ -51,11 +51,14 @@ class CategoryModel extends Model{
     }
 
     /**
+    * 位置，category 模型
      * 获取分类树，指定分类则返回指定分类极其子分类，不指定则返回所有分类树
-     * @param  integer $id    分类ID
-     * @param  boolean $field 查询字段
-     * @return array          分类树
-     * @author 麦当苗儿 <zuojiazi@vip.qq.com>
+     * @param  integer $id    分类ID，传入的分类主键id
+     * @param  boolean $field 查询字段,查询所有
+
+     * @return array          ，返回当前分类及其子分类数据表所有数据，分类树，多维数组
+
+     * @用途         供getChildrenId函数调用
      */
     public function getTree($id = 0, $field = true){
         /* 获取当前分类信息 */

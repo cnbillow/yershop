@@ -46,11 +46,12 @@
 						
                         <td>{$order.total}</td>
                         <td>{$order.status}</td>
-                         <td>{$order.update_time|date='Y-m-d H:i:s',###}</td>
+                         <td>{$order.create_time|date='Y-m-d H:i:s',###}</td>
 					<td> 
-                            <a title="编辑" href="{:U('edit?id='.$order['id'])}">查看</a>
+                            <a title="编辑" href="{:U('edit?id='.$order['id'])}">编辑</a>
 <a title="同意" href="{:U('agree?id='.$order['id'])}">同意</a>
-                            <a class="confirm ajax-get" title="删除" href="{:U('del?id='.$order['id'])}">删除</a>
+                         <a title="拒绝" href="{:U('refuse?id='.$order['id'])}">拒绝</a>  
+							<a class="confirm ajax-get" title="删除" href="{:U('del?id='.$order['id'])}">删除</a>
                         </td>
 					</tr>
 				</volist>

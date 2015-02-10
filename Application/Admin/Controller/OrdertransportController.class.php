@@ -137,31 +137,21 @@ $this->assign('list', $list);
      if($_POST["id"]){ 
 				$id=$_POST["id"];
 				
-               $Form->create();
+             $Form->create();
 			$Form->assistant = $uid;
 			$Form->update_time = NOW_TIME;
             $Form->status="3";
-			$Form->act_cancel="";
-			$Form->backinfo=$_POST["backinfo"];
-			$service="<A href='http://".$_SERVER['HTTP_HOST']."/index.php?s=/Home/Order/service/id/".$id."'>申请售后</a>";
-			$Form->act_service=$service;
             $result=$Form->where("id='$id'")->save();
-
-		
-//根据订单id获取购物清单
+	
+//根据订单id获取购物清单,设置商品状态为已完成.，status=3
 $del=M("shoplist")->where("orderid='$id'")->select();
 
 foreach($del as $k=>$val)
 	{
 //获取购物清单数据表产品id，字段id
 $byid=$val["id"];
-//为每一件商品添加售后服务
-	$back="<A href='http://".$_SERVER['HTTP_HOST']."/index.php?s=/Home/Order/back/id/".$byid."'>退货</a>";
-            $change="<A href='http://".$_SERVER['HTTP_HOST']."/index.php?s=/Home/Order/change/id/".$byid."'>换货</a>";
-		    $backmoney="<A href='http://".$_SERVER['HTTP_HOST']."/index.php?s=/Home/Order/backmoney/id/".$byid."'>退款</a>";
-$data['back']=$back;
-$data['change']=$change;
-$data['backmoney']='';
+
+$data['status']=3;
 $shop=M("shoplist");
  $shop->where("id='$byid'")->save($data);
 }

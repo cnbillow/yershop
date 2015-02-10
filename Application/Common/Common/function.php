@@ -431,7 +431,7 @@ function get_username($uid = 0){
 }
 
 function get_address($uid){
-    $row = M('transport')->where("status='1'")->order("id desc")->limit(1)->getbyUid($uid);
+    $row = M('transport')->where("status='1'")->order("id desc")->limit(1)->getbyUid($uid);;
     return $row['address'];
 }
 function get_addressid($uid){
@@ -439,14 +439,14 @@ function get_addressid($uid){
     return $row['id'];
 }
 function get_realname($uid){
-    $row = M('transport')->getbyUid($uid);
+    $row = M('transport')->order("id desc")->limit(1)->getbyUid($uid);
     return $row['realname'];
 }function get_score($uid){
     $row = M('member')->getbyUid($uid);
     return $row['score'];
 }
 function get_cellphone($uid){
-    $row = M('transport')->getbyUid($uid);
+    $row = M('transport')->order("id desc")->limit(1)->getbyUid($uid);
     return $row['cellphone'];
 }
 function get_lever($uid){
@@ -518,39 +518,56 @@ function get_nickname($uid = 0){
     }
 	if (is_null($field))
 	{return  $list[$id];
+	
 	}
-	else{
+	else{ $a=$list[$id][$field];//文章的category_id分类
+		 $NameOne=$list[$id]['name'];
+		 $UrlOne="index.php?s=/Home/Article/index/category/".$NameOne;
+		 $LeverOne='<a href="'.$UrlOne.'">'.$a.'</a>';
+		 
 		if(0!==$cate['pid']){//2级分类，第2级
 
 	     $pid=$list[$id]['pid'];
 		 $cat= M('Category');
 		 if(0!==$pid){
-		 $ptitle2=$cat->where("id='$pid'")->getField('title');
-		 $pname2=$cat->where("id='$pid'")->getField('name');
-		 $p2="index.php?s=/Home/Article/index/category/".$pname2;
-         $pid3=$cat->where("id='$pid'")->getField('pid');
-		 $l2='<a href="'.$p2.'">'.$ptitle2.'</a>';
-    if(0!==$pid3){//3级分类，第一级
-      $ptitle3=$cat->where("id='$pid3'")->getField('title');
-		 $pname3=$cat->where("id='$pid3'")->getField('name');
-		  $p3="index.php?s=/Home/Article/index/category/".$pname3;
-		  $l3='<a href="'.$p3.'">'.$ptitle3.'</a>'.">";
+			 //根据pid获取上一级category的标题和标识
+		 $TitleTWO=$cat->where("id='$pid'")->getField('title');
+		 $NameTWO=$cat->where("id='$pid'")->getField('name');
+		 //设置链接
+		 $UrlTwo="index.php?s=/Home/Article/index/category/".$NameTWO;
+         
+		 $LeverTWO='<a href="'.$UrlTwo.'">'.$TitleTWO.'</a>';
+		// 获取当前分类的上级分类主键id
+		 $Id=$cat->where("id='$pid'")->getField('pid');
+      if(!empty($Id)){//判断是否是一级分类,获取标题和标识
+        $TitleThree=$cat->where("id='$pid3'")->getField('title');
+		 $NameThree=$cat->where("id='$pid3'")->getField('name');
+		 //设置链接
+		  $UrlThree="index.php?s=/Home/Article/index/category/".$NameThree;
+		  $LeverThree='<a href="'.$UrlThree.'">'.$TitleThree.'</a>';
+	
+		
+		 return $LeverThree.">".$LeverTWO.">".$LeverOne;
+		  
 		  }
-		 $parent=$l3.$l2;
+		else{
+			
+			//只有2级的分类
+			 return $LeverTWO.">".$LeverOne;
+			
+			}
+		 
+		 
+		 
 		 }
-		 $a=$list[$id][$field];//3级分类，第3级
-		 $cname=$list[$id]['name'];
-		 $c="index.php?s=/Home/Article/index/category/".$cname;
-		 $child='<a href="'.$c.'">'.$a.'</a>';
-		 return $parent.">".$child;}
 	 else{
-		 //一级分类
-		  $a=$list[$id][$field];
-		  $cname=$list[$id]['name'];
-		 $c="index.php?s=/Home/Article/index/category/".$cname;
-		 $child='<a href="'.$c.'">'.$a.'</a>';
-		 return $child;
-		 }
+		 	//只有1级的分类
+		 
+		 return $LeverOne;
+		 }	 
+		 
+	}
+	
 	
 	}
 }
@@ -595,6 +612,10 @@ function get_category($id, $field = null){
 function get_category_name($id){
     return get_category($id, 'title');
 }
+function get_category_icon($id){
+    $row = M('category')->getbyId($id);
+    return $row['icon'];
+}
 /* 封面id调用 */
 function get_cover_id($id){
     $row = M('document')->getbyId($id);
@@ -630,10 +651,18 @@ function get_good_name($id){
     $row = M('document')->getbyId($id);
     return $row['title'];
 }
+function get_good_view($id){
+    $row = M('document')->getbyId($id);
+    return $row['view'];
+}
 /* 商品内容调用 */
 function get_docoment_content($id){
     $row = M('document_article')->getbyId($id);
     return $row['content'];
+}
+function get_sales($id){
+    $row = M('document_product')->getbyId($id);
+    return $row['totalsales'];
 }
 /* 商品内容调用 */
 function get_good_content($id){

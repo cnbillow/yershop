@@ -36,9 +36,10 @@ class IndexController extends HomeController {
  $user=M('category');
      $id=$user->where('display=1 and pid=0')->getField('id',true);
     $this->assign('arrr',$id);//文章列表
-	/**
- * 限时抢购调用
- */
+	/** 幻灯片调用* */
+     $slide=get_slide();
+   $this->assign('slide',$slide);//文章列表
+	/** 限时抢购调用* */
 
 	$timelist=$this->timelist();
    $this->assign('timelist',$timelist);
@@ -68,6 +69,11 @@ class IndexController extends HomeController {
         $this->assign('usercart',$usercart);
    
    }
+  $adlist=$this->goodlist() ;
+  
+   $this->assign('articlelist',$adlist);
+   
+   
     $this->display();
 	}
 	/**
@@ -128,6 +134,18 @@ public function unlimitedForLevel($cate,$name = 'child',$pid = 0){
     }
     return $arr;
 }
+
+/**
+ *分类商品
+ */
+public function goodlist(){
+  
+    $str=M('brand')->where('status="1"')->order('ypid')->select();
+	return $str;
+   
+}
+
+
 /**
  *热词
  */

@@ -19,7 +19,7 @@
 	<form action="{:U()}" method="post" class="form-horizontal">
 	
 		<div class="form-item" style="color:red">
-			<label class="item-label">发货的订单号<span class="check-tips">（不可更改）</span></label>
+			<label class="item-label">发货的订单号<span class="check-tips">（订单主键id,不可更改）</span></label>
 			<div class="controls">
 				<input type="text" class="text input-large" name="id" value="{$info.id|default=''}" disabled="disabled">
 			</div>
@@ -40,27 +40,22 @@
 <div class="form-item">
 			<label class="item-label">发货人<span class="check-tips"></span></label>
 			<div class="controls">
-				<input type="text" class="text input-large" name="send_name" value="{$info.send_name}">
+				<input type="text" class="text input-large" name="send_name" value="{:C('SHOPNAME')}">
 			</div>
 </div>
 <div class="form-item">
 			<label class="item-label">发货人联系方式<span class="check-tips"></span></label>
 			<div class="controls">
-				<input type="text" class="text input-large" name="send_contact" value="{$info.send_contact}">
+				<input type="text" class="text input-large" name="send_contact" value="{:C('CONTACT')}">
 			</div>
 </div>
 <div class="form-item">
 			<label class="item-label">发货人地址<span class="check-tips"></span></label>
 			<div class="controls">
-				<input type="text" class="text input-large" name="send_address" value="{$info.send_address}">
+				<input type="text" class="text input-large" name="send_address" value="{:C('ADDRESS')}">
 			</div>
 </div>
-<div class="form-item">
-			<label class="item-label">状态<span class="check-tips">（会员页通知）</span></label>
-			<div class="controls">
-				<input type="text" class="text input-large" name="backinfo" value="已发货">
-			</div>
-</div>
+
 
 		<div class="form-item">
 			<input type="hidden" name="id" value="{$info.id|default=''}">
@@ -95,7 +90,7 @@
 		   <p style="text-align:right;color:red;width:100%">运费：{$vo.shipprice}元</p> 
 		  
 		  <p style="text-align:right;color:red;width:100%">总金额： {$vo.pricetotal}元 </p>
-		   <p style="text-align:right;color:red;width:100%">时间：{$vo.ptime}</p>  </volist> </div>
+		   <p style="text-align:right;color:red;width:100%">时间：{$vo.ptime||date='Y-m-d H:i:s',###}</p>  </volist> </div>
 		  </div>
 	</div>
 </block>

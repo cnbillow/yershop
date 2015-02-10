@@ -96,7 +96,16 @@ return array(
         'callback' => false, //检测文件是否存在回调函数，如果存在返回文件信息数组
     ), //附件上传配置（文件上传类配置）
  
-
+// 配置邮件发送服务器,演示用
+   // 'MAIL_HOST' =>'smtp.exmail.qq.com',//smtp服务器的名称
+   // 'MAIL_SMTPAUTH' =>TRUE, //启用smtp认证
+    //'MAIL_USERNAME' =>'jufengjituan@gsjfjt.com',//你的邮箱名
+    //'MAIL_FROM' =>'jufengjituan@gsjfjt.com',//发件人地址
+    //'MAIL_FROMNAME'=>'聚丰集团',//发件人姓名
+   // 'MAIL_PASSWORD' =>'******',//邮箱密码
+   // 'MAIL_CHARSET' =>'utf-8',//设置邮件编码
+    //'MAIL_ISHTML' =>TRUE, // 是否HTML格式邮件
+	
     /* 支付设置 */
     'payment' => array(
         'tenpay' => array(

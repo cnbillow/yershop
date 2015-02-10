@@ -58,6 +58,8 @@ class OrderController extends HomeController {
 	 $this->assign('detaillist',$detail); 
 		$this->display();
 	}
+
+ /* 取消订单 */
 public function cancel(){
      /* 左侧菜单 */
 	 $menu=R('index/menulist');
@@ -104,9 +106,9 @@ public function cancel(){
 	$cancel->info="自助取消";
    $cancel ->add();
    //设置订单为订单已取消
-$act="<A href='http://".$_SERVER['HTTP_HOST']."/index.php?s=/Home/Order/canceldetail/id/".$id."'>订单已取消</a>";
 
-   $data = array('status'=>'6','backinfo'=>'订单已关闭','act_cancel'=>$act);
+
+   $data = array('status'=>'6','backinfo'=>'订单已关闭');
 	  //更新订单列表订单状态为已取消，清空取消订单操作
 	  if($order->where("orderid='$id'")->setField($data)) {
                $this->success('申请成功，订单已取消',U("center/allorder"));
@@ -125,8 +127,8 @@ $act="<A href='http://".$_SERVER['HTTP_HOST']."/index.php?s=/Home/Order/cancelde
     $cancel->cash=$cash;//取消的金额
 	$cancel->num=$num;//取消的数量
 	$cancel->count=$count;//取消的种类
-   $cancel ->add();$act="<A href='http://".$_SERVER['HTTP_HOST']."/index.php?s=/Home/Order/canceldetail/id/".$id."'>订单取消审核中</a>";
-   $data = array('status'=>'4','act_cancel'=>$act);//设置订单状态为已提交，发货等状态不变
+   $cancel ->add();
+   $data = array('status'=>'4');//设置订单状态为已提交，发货等状态不变
 	  if($order->where("orderid='$id'")->setField($data)) {
                $this->success('申请成功，订单取消审核中',U("center/allorder"));
             }
@@ -145,6 +147,7 @@ $detail=$order->where("orderid='$id'")->select();
 $num=$order->where("orderid='$id'")->getField("status");
 if($num=="1"){ 
 	$paynum=$order->where("orderid='$id'")->getField("ispay");
+
   if($paynum=="1"){
    $info="当前订单状态为未完成支付";
   
@@ -217,14 +220,13 @@ public function backdetail(){
     $this->assign('hotsearch',$hotsearch);
  $id= I('get.id');//获取orderid
   $back=M("backlist");
-$list= $back->where("shopid='$id'")->select();
+$list= $back->where("shopid='$id'")->find();
 $info= M("backlist")->where("shopid='$id'")->getField("backinfo");
-  $this->assign('list',$list); 
+  $this->assign('info',$list); 
   $this->assign('backinfo',$info); 
-$this->assign('id',$id); 
-$msg="退货:"; 
+$msg="退货单"; 
 $this->assign('msg',$msg); 
-$this->display('canceldetail'); 
+$this->display(); 
 
 }
 
@@ -243,20 +245,20 @@ public function changedetail(){
     /* 热词调用*/
     $hotsearch=R("Index/getHotsearch");
     $this->assign('hotsearch',$hotsearch);
- $id= I('get.id');//获取orderid
+ $id= I('get.id');//获取id
   $change=M("change");
-$list= $change->where("shopid='$id'")->select();
+$list= $change->where("shopid='$id'")->find();
 $info= M("change")->where("shopid='$id'")->getField("backinfo");
-  $this->assign('list',$list); 
+  $this->assign('info',$list);
   $this->assign('backinfo',$info); 
 $this->assign('id',$id); 
-$msg="退货:"; 
+$msg="换货:"; 
 $this->assign('msg',$msg); 
-$this->display('canceldetail'); 
+$this->display(); 
 
 }
 public function wuliu(){
- $id= I('get.id');//获取id
+ $id= I('get.orderid');//获取id
 	$typeCom=M("order")->where("orderid='$id'")->getField("tool"); 
 	$typeNu=M("order")->where("orderid='$id'")->getField("toolid"); 
     if(isset($typeCom)&&$typeNu){ 
@@ -279,44 +281,51 @@ public function wuliu(){
     /* 热词调用*/
     $hotsearch=R("Index/getHotsearch");
     $this->assign('hotsearch',$hotsearch);
-$this->display(); 
+    $this->display(); 
 
 }
 
 public function back(){
 	 if(IS_POST){
 	 $id= I('post.id');//获取id
+	 $num= I('post.num');//获取num
+	 $goodid= I('post.goodid');//获取goodid
+ $datanum=M("shoplist")->where("id='$id'")->getField("num"); 
+ if($datanum<$num)
+		 {
+	 $this->error('超出购买数量');
+ } 
+ else
+ 
+ {
 	 //保存信息到退货表
-     $back=D("backlist");
-	 $back->create();
-     $back->goodid=get_shop_goodid($id);
-	 $back->time=NOW_TIME;
-     $back->status=1;
-	 $back->backinfo="申请退货中";
+     $back= D("backlist");
+	
+	 $back->create();//Create方法创建的数据对象是保存在内存,并没有实际写入到数据库，直到使用add或者save方法才会真正写入数据库
+	 $back->create_time=NOW_TIME;
+ $back->status=1;
+	 $back->total=$num*get_good_price($goodid); 
 	 $result=$back->add();
-	 //更改商品的售后信息
-$shopback="<A href='http://".$_SERVER['HTTP_HOST']."/index.php?s=/Home/Order/backdetail/id/".$id."'>退货中</a>";
-           // $change="<A href='http://".$_SERVER['HTTP_HOST']."/index.php?s=/Home/Order/change/id/".$byid."'>换货</a>";
-		   // $backmoney="<A href='http://".$_SERVER['HTTP_HOST']."/index.php?s=/Home/Order/backmoney/id/".$byid."'>退款</a>";
-$data['back']=$shopback;
-$data['change']='';
-$data['backmoney']='';
+	 //更改商品的售后信息   
+$data['status']=4;
 $shop=M("shoplist");
- $shop->where("id='$id'")->save($data);
-	  if($result)
+$add=$shop->where("id='$id'")->save($data);
+	  if($add)
 		  {
-                $this->success('申请成功');
+                $this->success('提交成功');
             }
 			else{
-                $this->error('申请失败，或重复操作');
+                $this->error('申请失败');
             }
+ }
+
 }
 else{
   $id= I('get.id');//获取id
-  $msg="申请退货:";
-  $detail=M("shoplist")->where("id='$id'")->select();
+  $msg="Tips，提交退货单";
+  $detail=M("shoplist")->find($id);
   //获取购物清单
-  $this->assign('detaillist',$detail); 
+  $this->assign('info',$detail); 
 //获取物品id
   $this->assign('id',$id); 
   $this->assign('msg',$msg); 
@@ -324,24 +333,59 @@ else{
 
 }
 
+
+}
+public function backkuaidi(){
+	 if(IS_POST){
+	 $id= I('post.backid');//获取退货主键id
+ $back=D("backlist");
+ $shopid=$back->where("id='$id'")->getField("shopid"); 
+	 //保存信息到退货表
+  
+	 $back->create();//Create方法创建的数据对象是保存在内存,并没有实际写入到数据库，直到使用add或者save方法才会真正写入数据库
+$back->status=4;
+	 $result=$back->where("id='$id'")->save();
+	 //更改商品的售后信息   
+$data['status']=6;
+$shop=M("shoplist");
+$add=$shop->where("id='$shopid'")->save($data);
+	  if($add)
+		  {
+                $this->success('提交成功');
+            }
+			else{
+                $this->error('申请失败');
+            }
+}
+else{
+  $id= I('get.id');//获取id
+  $msg="Tips，提交退货单";
+  $detail=M("shoplist")->find($id);
+  //获取购物清单
+  $this->assign('info',$detail); 
+//获取物品id
+  $this->assign('id',$id); 
+  $this->assign('msg',$msg); 
+  $this->display();
+
+}
+
+
 }
 public function change(){
-    
+
 	 if(IS_POST){
 	 $id= I('post.id');//获取id
-     $change=D("change");
-	  $change->create();
-	  $change->goodid=get_shop_goodid($id);
-	 $change->time=NOW_TIME;
+     $num= I('post.num');//获取num
+	 $change=D("change");
+	  $change->create(); 
+	$change->create_time=NOW_TIME;
+	 $change->total=$num*get_good_price(I('post.goodid'));
      $change->status=1;
 	 $change->add();
 //更改商品的售后信息
-  $shopchange="<A href='http://".$_SERVER['HTTP_HOST']."/index.php?s=/Home/Order/changedetail/id/".$id."'>换货中</a>";
-$data['back']='';
-$data['change']=$shopchange;
-$data['backmoney']='';
+ $data['status']=-4;
 $shop=M("shoplist");
-
 	  if($shop->where("id='$id'")->save($data)) {
                 $this->success('申请成功');
             }
@@ -351,17 +395,54 @@ $shop=M("shoplist");
 }
 else{
   $id= I('get.id');//获取id
-  $msg="申请换货:";
-  $detail=M("shoplist")->where("id='$id'")->select();
+   $msg="Tips，提交换货单";
+  $detail=M("shoplist")->find($id);
   //获取购物清单
-  $this->assign('detaillist',$detail); 
-//获取物品id
-  $this->assign('id',$id); 
+$this->assign('info',$detail); 
+
   $this->assign('msg',$msg); 
-  $this->display(); 
+
   $this->display();
 
 }
+
+}
+
+public function changekuaidi(){
+	 if(IS_POST){
+	 $id= I('post.backid');//获取退货主键id
+ $back=D("change");
+ $shopid=$back->where("id='$id'")->getField("shopid"); 
+	 //保存信息到退货表
+  
+	 $back->create();//Create方法创建的数据对象是保存在内存,并没有实际写入到数据库，直到使用add或者save方法才会真正写入数据库
+$back->status=4;
+	 $result=$back->where("id='$id'")->save();
+	 //更改商品的售后信息   
+$data['status']=-6;
+$shop=M("shoplist");
+$add=$shop->where("id='$shopid'")->save($data);
+	  if($add)
+		  {
+                $this->success('提交成功');
+            }
+			else{
+                $this->error('申请失败');
+            }
+}
+else{
+  $id= I('get.id');//获取id
+  $msg="Tips，提交退货单";
+  $detail=M("shoplist")->find($id);
+  //获取购物清单
+  $this->assign('info',$detail); 
+//获取物品id
+  $this->assign('id',$id); 
+  $this->assign('msg',$msg); 
+  $this->display();
+
+}
+
 
 }
 public function getkuaidi($typeCom,$typeNu ){

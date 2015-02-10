@@ -2,7 +2,7 @@
 
 <block name="body">
 	<div class="main-title">
-		<h2>退货管理 [ <present name="Think.get.group">
+		<h2>换货管理 [ <present name="Think.get.group">
          <a href="{:U('index')}">全部</a><else/><strong>全部</strong></present>&nbsp;<foreach name="group" item="vo">
 		<neq name="group_id" value="$key">
          <a href="{:U('index?group='.$key)}">{$vo}</a><else/><strong>{$vo}</strong></neq>&nbsp;     
@@ -48,9 +48,8 @@
                         <td>{$order.status}</td>
                          <td>{$order.update_time|date='Y-m-d H:i:s',###}</td>
 					<td> 
-                            <a title="编辑" href="{:U('edit?id='.$order['id'])}">查看</a>
-
-                            <a class="confirm ajax-get" title="删除" href="{:U('del?id='.$order['id'])}">删除</a>
+                            <a title="编辑" href="{:U('edit?id='.$order['id'])}">编辑</a>
+						<a class="confirm ajax-get" title="删除" href="{:U('del?id='.$order['id'])}">删除</a>
                         </td>
 					</tr>
 				</volist>

@@ -1,41 +1,48 @@
-﻿
+-- -----------------------------
+-- Think MySQL Data Transfer
+-- Date : 2013-12-17 15:14:46
+-- -----------------------------
+
+SET FOREIGN_KEY_CHECKS = 0;
+
+
+-- -----------------------------
+-- Table structure for `onethink_action`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_action`;
 CREATE TABLE `onethink_action` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
   `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
   `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
-  `rule` text NOT NULL DEFAULT '' COMMENT '行为规则',
-  `log` text NOT NULL DEFAULT '' COMMENT '日志规则',
+  `rule` text NULL  COMMENT '行为规则',
+  `log` text NULL  COMMENT '日志规则',
   `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
   `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表';
 
---
--- 转存表中的数据 `onethink_action`
---
+-- -----------------------------
+-- Records of `onethink_action`
+-- -----------------------------
+INSERT INTO `onethink_action` VALUES ('1', 'user_login', '用户登录', '积分+10，每天一次', 'table:member|field:score|condition:uid={$self} AND status>-1|rule:score+10|cycle:24|max:1;', '[user|get_nickname]在[time|time_format]登录了后台', '1', '1', '1387181220');
+INSERT INTO `onethink_action` VALUES ('2', 'add_article', '发布文章', '积分+5，每天上限5次', 'table:member|field:score|condition:uid={$self}|rule:score+5|cycle:24|max:5', '', '2', '0', '1380173180');
+INSERT INTO `onethink_action` VALUES ('3', 'review', '评论', '评论积分+1，无限制', 'table:member|field:score|condition:uid={$self}|rule:score+1', '', '2', '1', '1383285646');
+INSERT INTO `onethink_action` VALUES ('4', 'add_document', '发表文档', '积分+10，每天上限5次', 'table:member|field:score|condition:uid={$self}|rule:score+10|cycle:24|max:5', '[user|get_nickname]在[time|time_format]发表了一篇文章。\r\n表[model]，记录编号[record]。', '2', '0', '1386139726');
+INSERT INTO `onethink_action` VALUES ('5', 'add_document_topic', '发表讨论', '积分+5，每天上限10次', 'table:member|field:score|condition:uid={$self}|rule:score+5|cycle:24|max:10', '', '2', '0', '1383285551');
+INSERT INTO `onethink_action` VALUES ('6', 'update_config', '更新配置', '新增或修改或删除配置', '', '', '1', '1', '1383294988');
+INSERT INTO `onethink_action` VALUES ('7', 'update_model', '更新模型', '新增或修改模型', '', '', '1', '1', '1383295057');
+INSERT INTO `onethink_action` VALUES ('8', 'update_attribute', '更新属性', '新增或更新或删除属性', '', '', '1', '1', '1383295963');
+INSERT INTO `onethink_action` VALUES ('9', 'update_channel', '更新导航', '新增或修改或删除导航', '', '', '1', '1', '1383296301');
+INSERT INTO `onethink_action` VALUES ('10', 'update_menu', '更新菜单', '新增或修改或删除菜单', '', '', '1', '1', '1383296392');
+INSERT INTO `onethink_action` VALUES ('11', 'update_category', '更新分类', '新增或修改或删除分类', '', '', '1', '1', '1383296765');
 
-INSERT INTO `onethink_action` (`id`, `name`, `title`, `remark`, `rule`, `log`, `type`, `status`, `update_time`) VALUES
-(1, 'user_login', '用户登录', '积分+10，每天一次', 'table:member|field:score|condition:uid={$self} AND status>-1|rule:score+10|cycle:24|max:1;', '[user|get_nickname]在[time|time_format]登录了后台', 1, 1, 1387181220),
-(2, 'add_article', '发布文章', '积分+5，每天上限5次', 'table:member|field:score|condition:uid={$self}|rule:score+5|cycle:24|max:5', '', 2, 0, 1380173180),
-(3, 'review', '评论', '评论积分+1，无限制', 'table:member|field:score|condition:uid={$self}|rule:score+1', '', 2, 1, 1383285646),
-(4, 'add_document', '发表文档', '积分+10，每天上限5次', 'table:member|field:score|condition:uid={$self}|rule:score+10|cycle:24|max:5', '[user|get_nickname]在[time|time_format]发表了一篇文章。\r\n表[model]，记录编号[record]。', 2, 0, 1386139726),
-(5, 'add_document_topic', '发表讨论', '积分+5，每天上限10次', 'table:member|field:score|condition:uid={$self}|rule:score+5|cycle:24|max:10', '', 2, 0, 1383285551),
-(6, 'update_config', '更新配置', '新增或修改或删除配置', '', '', 1, 1, 1383294988),
-(7, 'update_model', '更新模型', '新增或修改模型', '', '', 1, 1, 1383295057),
-(8, 'update_attribute', '更新属性', '新增或更新或删除属性', '', '', 1, 1, 1383295963),
-(9, 'update_channel', '更新导航', '新增或修改或删除导航', '', '', 1, 1, 1383296301),
-(10, 'update_menu', '更新菜单', '新增或修改或删除菜单', '', '', 1, 1, 1383296392),
-(11, 'update_category', '更新分类', '新增或修改或删除分类', '', '', 1, 1, 1383296765);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_action_log`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_action_log` (
+-- -----------------------------
+-- Table structure for `onethink_action_log`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_action_log`;
+CREATE TABLE `onethink_action_log` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `action_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '行为id',
   `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '执行用户id',
@@ -49,22 +56,727 @@ CREATE TABLE IF NOT EXISTS `onethink_action_log` (
   KEY `action_ip_ix` (`action_ip`),
   KEY `action_id_ix` (`action_id`),
   KEY `user_id_ix` (`user_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='行为日志表' AUTO_INCREMENT=479 ;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='行为日志表';
 
---
--- 转存表中的数据 `onethink_action_log`
---
 
-INSERT INTO `onethink_action_log` (`id`, `action_id`, `user_id`, `action_ip`, `model`, `record_id`, `remark`, `status`, `create_time`) VALUES
-(478, 1, 1, 2130706433, 'member', 1, '123在2014-10-26 03:11登录了后台', 1, 1414264315);
+-- -----------------------------
+-- Table structure for `onethink_ad`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_ad`;
+CREATE TABLE `onethink_ad` (
+   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '分类ID',
+  `name` varchar(30) DEFAULT NULL COMMENT '标志',
+  `title` varchar(50) DEFAULT NULL COMMENT '标题',
+  `url` varchar(50) DEFAULT NULL COMMENT '金额',
+  `partner` varchar(255) DEFAULT NULL COMMENT '关联商品',
+  `description` varchar(255) DEFAULT NULL COMMENT '描述',
+  `meta_title` varchar(100) DEFAULT NULL,
+  `place` varchar(30) DEFAULT NULL COMMENT '位置',
+  `display` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '可见性',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `status` int(4) DEFAULT NULL COMMENT '数据状态',
+  `icon` int(10) unsigned DEFAULT NULL COMMENT '分类图标',
+  `ypid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  UNIQUE KEY `uk_name` (`name`) USING BTREE
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COMMENT='广告表';
 
--- --------------------------------------------------------
 
---
--- 表的结构 `onethink_addons`
---
+-- -----------------------------
+-- Table structure for `onethink_backlist`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_backlist`;
+CREATE TABLE `onethink_backlist` (
+  `ID` int(10) NOT NULL AUTO_INCREMENT,
+  `goodid` int(225) DEFAULT NULL,
+  `num` int(50) DEFAULT '0',
+  `tool` varchar(225) DEFAULT NULL COMMENT '订单号',
+  `toolid` varchar(225) DEFAULT NULL COMMENT '订单号',
+  `status` int(10) DEFAULT NULL,
+  `create_time` int(10) DEFAULT NULL,
+  `info` varchar(225) DEFAULT NULL,
+  `total` decimal(50,2) DEFAULT NULL,
+  `backinfo` varchar(225) DEFAULT NULL,
+  `address` varchar(225) DEFAULT NULL,
+  `update_time` int(10) DEFAULT NULL,
+  `assistant` int(100) DEFAULT NULL,
+  `shopid` int(225) DEFAULT NULL,
+  `title` varchar(225) DEFAULT NULL,
+  `reason` varchar(225) DEFAULT NULL,
+  `contact` varchar(225) DEFAULT NULL,
+  `backname` varchar(225) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='退货表';
 
-CREATE TABLE IF NOT EXISTS `onethink_addons` (
+
+-- -----------------------------
+-- Table structure for `onethink_brand`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_brand`;
+CREATE TABLE `onethink_brand` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '分类ID',
+  `name` varchar(30) DEFAULT NULL COMMENT '标志',
+  `title` varchar(50) DEFAULT NULL COMMENT '标题',
+  `price` varchar(50) DEFAULT NULL COMMENT '金额',
+  `code` varchar(255) NOT NULL COMMENT '关键字',
+  `description` varchar(255) DEFAULT NULL COMMENT '描述',
+  `meta_title` varchar(100) DEFAULT NULL,
+  `allow_publish` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '是否允许发布内容',
+  `display` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '可见性',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `status` int(4) DEFAULT NULL COMMENT '数据状态',
+  `icon` int(10) unsigned DEFAULT NULL COMMENT '分类图标',
+  `ypid` int(11) DEFAULT NULL,
+  `goodid` varchar(225) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  UNIQUE KEY `uk_name` (`name`) USING BTREE
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='表';
+
+
+-- -----------------------------
+-- Records of `onethink_brand`
+-- -----------------------------
+INSERT INTO `onethink_brand` VALUES (28, NULL, NULL, NULL, '', '', '', 0, 1, 1421408789, 1421505679, 1, NULL, 107, '5,8,9,14,15,17,43,44,32,33');
+INSERT INTO `onethink_brand` VALUES (26, NULL, NULL, NULL, '', '', '', 0, 1, 1421406836, 1421505704, 1, NULL, 90, '5,8,9,14,15,17,43,44,32,33');
+INSERT INTO `onethink_brand` VALUES (19, NULL, NULL, NULL, '', '', '', 0, 1, 1421404619, 1421505727, 1, NULL, 76, '5,8,9,14,15,17,43,44,32,33');
+INSERT INTO `onethink_brand` VALUES (20, NULL, NULL, NULL, '', '', '', 0, 1, 1421404632, 1421505621, 1, NULL, 52, '5,8,9,14,15,17,43,44,32,33');
+INSERT INTO `onethink_brand` VALUES (24, NULL, NULL, NULL, '', '', '', 0, 1, 1421405696, 1421505714, 1, NULL, 75, '5,8,9,14,15,17,43,44,32,33');
+INSERT INTO `onethink_brand` VALUES (27, NULL, NULL, NULL, '', '', '', 0, 1, 1421408608, 1421505691, 1, NULL, 73, '5,8,9,14,15,17,43,44,32,33');
+INSERT INTO `onethink_brand` VALUES (29, NULL, NULL, NULL, '', '', '', 0, 1, 1421408951, 1421505666, 1, NULL, 72, '5,8,9,14,15,17,43,44,32,33');
+
+
+-- -----------------------------
+-- Table structure for `onethink_brandid`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_brandid`;
+CREATE TABLE `onethink_brandid` (
+   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '分类ID',
+  `goodid` int(30) DEFAULT NULL COMMENT '标志',
+  `brandid` int(10) unsigned DEFAULT NULL COMMENT '外链',
+  `display` tinyint(3) unsigned DEFAULT NULL COMMENT '可见性',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `status` int(4) DEFAULT NULL COMMENT '数据状态',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='表';
+
+
+-- -----------------------------
+-- Records of `onethink_brandid`
+-- -----------------------------
+INSERT INTO `onethink_brandid` VALUES (417, 33, 75, NULL, 1421505714, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (416, 32, 75, NULL, 1421505714, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (415, 44, 75, NULL, 1421505714, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (232, 11, 71, NULL, 1421408508, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (407, 33, 90, NULL, 1421505704, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (406, 32, 90, NULL, 1421505704, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (377, 33, 72, NULL, 1421505666, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (376, 32, 72, NULL, 1421505666, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (367, 33, 52, NULL, 1421505622, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (414, 43, 75, NULL, 1421505714, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (387, 33, 107, NULL, 1421505679, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (386, 32, 107, NULL, 1421505679, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (385, 44, 107, NULL, 1421505679, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (397, 33, 73, NULL, 1421505691, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (396, 32, 73, NULL, 1421505691, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (395, 44, 73, NULL, 1421505691, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (394, 43, 73, NULL, 1421505691, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (393, 17, 73, NULL, 1421505691, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (392, 15, 73, NULL, 1421505691, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (384, 43, 107, NULL, 1421505679, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (383, 17, 107, NULL, 1421505679, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (382, 15, 107, NULL, 1421505679, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (381, 14, 107, NULL, 1421505679, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (380, 9, 107, NULL, 1421505679, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (379, 8, 107, NULL, 1421505679, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (378, 5, 107, NULL, 1421505679, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (427, 33, 76, NULL, 1421505727, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (426, 32, 76, NULL, 1421505727, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (425, 44, 76, NULL, 1421505727, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (424, 43, 76, NULL, 1421505727, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (423, 17, 76, NULL, 1421505727, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (422, 15, 76, NULL, 1421505727, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (421, 14, 76, NULL, 1421505727, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (420, 9, 76, NULL, 1421505727, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (419, 8, 76, NULL, 1421505727, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (418, 5, 76, NULL, 1421505727, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (235, 19, 71, NULL, 1421408508, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (234, 18, 71, NULL, 1421408508, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (233, 17, 71, NULL, 1421408508, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (405, 44, 90, NULL, 1421505704, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (404, 43, 90, NULL, 1421505704, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (413, 17, 75, NULL, 1421505714, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (412, 15, 75, NULL, 1421505714, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (411, 14, 75, NULL, 1421505714, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (366, 32, 52, NULL, 1421505622, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (365, 44, 52, NULL, 1421505622, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (375, 44, 72, NULL, 1421505666, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (374, 43, 72, NULL, 1421505666, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (373, 17, 72, NULL, 1421505666, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (372, 15, 72, NULL, 1421505666, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (371, 14, 72, NULL, 1421505666, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (370, 9, 72, NULL, 1421505666, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (369, 8, 72, NULL, 1421505666, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (368, 5, 72, NULL, 1421505666, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (391, 14, 73, NULL, 1421505691, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (390, 9, 73, NULL, 1421505691, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (389, 8, 73, NULL, 1421505691, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (388, 5, 73, NULL, 1421505691, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (403, 17, 90, NULL, 1421505704, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (402, 15, 90, NULL, 1421505704, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (401, 14, 90, NULL, 1421505704, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (400, 9, 90, NULL, 1421505704, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (399, 8, 90, NULL, 1421505704, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (398, 5, 90, NULL, 1421505704, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (410, 9, 75, NULL, 1421505714, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (409, 8, 75, NULL, 1421505714, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (408, 5, 75, NULL, 1421505714, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (364, 43, 52, NULL, 1421505622, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (363, 17, 52, NULL, 1421505622, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (362, 15, 52, NULL, 1421505622, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (361, 14, 52, NULL, 1421505622, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (360, 9, 52, NULL, 1421505622, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (359, 8, 52, NULL, 1421505621, 0, NULL);
+INSERT INTO `onethink_brandid` VALUES (358, 5, 52, NULL, 1421505621, 0, NULL);
+
+
+-- -----------------------------
+-- Table structure for `onethink_cancel`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_cancel`;
+CREATE TABLE `onethink_cancel` (
+   `ID` int(10) NOT NULL AUTO_INCREMENT,
+  `goodid` int(225) DEFAULT NULL,
+  `num` int(50) DEFAULT NULL,
+  `orderid` varchar(225) DEFAULT NULL COMMENT '订单号',
+  `time` int(10) DEFAULT NULL,
+  `title` varchar(225) DEFAULT NULL,
+  `reason` varchar(225) DEFAULT NULL,
+  `update_time` int(10) DEFAULT NULL,
+  `assistant` int(100) DEFAULT NULL,
+  `shopid` int(11) DEFAULT NULL,
+  `refuse_info` varchar(225) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `info` varchar(225) DEFAULT NULL,
+  `cash` decimal(50,2) DEFAULT NULL,
+  `count` int(50) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='表';
+
+
+-- -----------------------------
+-- Table structure for `onethink_change`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_change`;
+CREATE TABLE `onethink_change` (
+  `ID` int(10) NOT NULL AUTO_INCREMENT,
+  `goodid` int(225) DEFAULT NULL,
+  `num` int(50) DEFAULT NULL,
+  `tool` varchar(225) DEFAULT NULL COMMENT '订单号',
+  `toolid` varchar(225) DEFAULT NULL COMMENT '订单号',
+  `uid` int(225) DEFAULT NULL,
+  `status` int(10) DEFAULT NULL,
+  `create_time` int(10) DEFAULT NULL,
+  `info` varchar(225) DEFAULT NULL,
+  `total` decimal(50,2) DEFAULT NULL,
+  `backinfo` varchar(225) DEFAULT NULL,
+  `shopid` int(225) DEFAULT NULL,
+  `update_time` int(10) DEFAULT NULL,
+  `assistant` int(100) DEFAULT NULL,
+  `title` varchar(225) DEFAULT NULL,
+  `reason` varchar(225) DEFAULT NULL,
+  `changetool` varchar(225) DEFAULT NULL,
+  `changetoolid` varchar(225) DEFAULT NULL,
+  `address` varchar(225) DEFAULT NULL,
+  `contact` varchar(225) DEFAULT NULL,
+  `backname` varchar(225) DEFAULT NULL,
+  `acceptname` varchar(255) DEFAULT NULL,
+  `acceptphone` varchar(225) DEFAULT NULL,
+  `acceptaddress` varchar(225) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='表';
+
+
+-- -----------------------------
+-- Table structure for `onethink_document_product`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_document_product`;
+CREATE TABLE `onethink_document_product` (
+ `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `price` varchar(255) NOT NULL DEFAULT '1.00' COMMENT '价格',
+  `content` text NOT NULL COMMENT '内容详细描述',
+  `weight` varchar(255) NOT NULL DEFAULT '500' COMMENT '净重',
+  `totalsales` int(10) unsigned NOT NULL COMMENT '总销量',
+  `area` varchar(255) NOT NULL DEFAULT '中国大陆' COMMENT '产地',
+  `yprice` varchar(255) NOT NULL COMMENT '原价',
+  `mark` varchar(255) NOT NULL COMMENT '附加标签',
+  `unionid` varchar(255) NOT NULL COMMENT '关联商品',
+  `stock` int(10) unsigned NOT NULL DEFAULT '10' COMMENT '库存',
+  `shorttitle` varchar(255) NOT NULL COMMENT '商品简称',
+  `pics` varchar(255) NOT NULL COMMENT '图集',
+  `ads_pic_id` int(10) unsigned NOT NULL COMMENT '广告图片',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='表';
+
+-- -----------------------------
+-- Records of `onethink_document_product`
+-- -----------------------------
+INSERT INTO `onethink_document_product` VALUES (5, '20.98', '<p style="background:white;text-align:left;" align="left">\r\n	<br />\r\n</p>\r\n<span><span style="font-size:14.0pt;font-family:宋体;"></span></span> \r\n<p style="font-family:宋体, ''Arial Narrow'', HELVETICA;color:#333333;">\r\n	<img width="760" height="42" src="http://image1.benlailife.com/Content/images/detailsp/detailsp_tit02.gif?v=8.2.47" /> \r\n</p>\r\n<div class="detl_pic" style="text-align:center;margin:10px 0px;color:#333333;font-family:宋体, ''Arial Narrow'', HELVETICA;">\r\n	<img src="http://image3.benlailife.com/ProductNewDetailImage/0102021623C/025.jpg" style="width:700px;" /> \r\n	<div class="tal" style="text-align:left;">\r\n		&nbsp;\r\n	</div>\r\n<img src="http://image3.benlailife.com/ProductNewDetailImage/0102021623C/01p.jpg" style="width:700px;" /> \r\n	<div class="tal" style="text-align:left;">\r\n		&nbsp;\r\n	</div>\r\n<img src="http://image3.benlailife.com/ProductNewDetailImage/0102021623C/93p.jpg" style="width:700px;" /> \r\n</div>\r\n<br />', '500', 15, '中国大陆', '', '2', '8、9、42、43、44', 1, '', '', 0);
+INSERT INTO `onethink_document_product` VALUES (14, '1.00', '<div class="box990" id="layoutContent" style="margin:0px auto;padding:0px;border:none;color:#333333;font-family:宋体, ''Arial Narrow'', HELVETICA;">\r\n	<div class="zt_gz" id="container" style="margin:0px;padding:0px;border:none;background-color:#FFFFFF;">\r\n		<div class="gz_banner carousel" id="fader_container" style="margin:0px;padding:0px;border:none;">\r\n			<ul class="main contents" id="fader" style="vertical-align:bottom;">\r\n				<li class="list content" id="toLegend" style="vertical-align:bottom;">\r\n					<a><img src="http://image.benlailife.com/images/gz/special/chucheng/lunbo03.jpg" /></a> \r\n				</li>\r\n			</ul>\r\n			<ul class="fader_nav" style="vertical-align:bottom;">\r\n				<li class="list" id="prev" style="vertical-align:bottom;">\r\n				</li>\r\n				<li class="list" id="next" style="vertical-align:bottom;">\r\n				</li>\r\n			</ul>\r\n			<ul class="main cc_nav" id="nav" style="vertical-align:bottom;">\r\n				<li class="list" style="vertical-align:bottom;">\r\n					<a><img src="http://image.benlailife.com/images/bj/special/2014chucheng/nav/cc_nav_01_on.jpg" /></a> \r\n				</li>\r\n				<li class="list" style="vertical-align:bottom;">\r\n					<img src="http://image.benlailife.com/images/bj/special/2014chucheng/nav/cc_nav_02.jpg" /> \r\n				</li>\r\n				<li class="list" style="vertical-align:bottom;">\r\n					<a><img src="http://image.benlailife.com/images/bj/special/2014chucheng/nav/cc_nav_03.jpg" /></a> \r\n				</li>\r\n			</ul>\r\n		</div>\r\n		<div style="margin:0px;padding:0px;border:none;">\r\n			<div class="sku" style="margin:0px;padding:0px;border:none;">\r\n				<ul class="main" id="sale" style="vertical-align:bottom;">\r\n					<li class="zcode list relative" style="vertical-align:bottom;">\r\n						<a href="http://www.benlai.com/item-39458.html" target="_blank"><img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/images/cc_shop_02.jpg" /></a><img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/images/cc_shop_03.jpg" /> \r\n						<div class="cc_buy button right" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_shop.gif" id="39458_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list relative" style="vertical-align:bottom;">\r\n						<a href="http://www.benlai.com/item-39459.html" target="_blank"><img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/images/cc_shop_04.jpg" /></a><img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/images/cc_shop_05.jpg" /> \r\n						<div class="cc_buy button left" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_shop.gif" id="39459_addCart" /> \r\n						</div>\r\n					</li>\r\n				</ul>\r\n			</div>\r\n			<div class="cc_des" style="margin:0px;padding:0px;border:none;">\r\n				<img src="http://image.benlailife.com/images/bj/special/2014chucheng/shps.jpg" width="990" height="450" /><img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/images/cc_shop_06.jpg" /><img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/images/cc_shop_07.jpg" /><img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/images/cc_shop_08.jpg" /><img class="cc_section" src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/images/cc_shop_10.jpg" /> \r\n			</div>\r\n			<div class="sku cc_sp_shop" style="margin:0px;padding:0px;border:none;background-color:#F49626;">\r\n				<p class="title">\r\n					<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/images/spt_12.jpg" /> \r\n				</p>\r\n				<div class="cframe" style="margin:0px 20px 20px;padding:0px;border:none;">\r\n					<ul class="sp_nav" style="vertical-align:bottom;">\r\n						<li class="list" style="vertical-align:bottom;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/nav/ytl_on.jpg" /> \r\n						</li>\r\n						<li class="list" style="vertical-align:bottom;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/nav/zxg.jpg" /> \r\n						</li>\r\n						<li class="list" style="vertical-align:bottom;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/nav/sml.jpg" /> \r\n						</li>\r\n						<li class="list" style="vertical-align:bottom;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/nav/sn.jpg" /> \r\n						</li>\r\n					</ul>\r\n					<ul class="contents" style="vertical-align:bottom;background-color:#FFFFFF;">\r\n						<li class="list content relative page" style="vertical-align:bottom;">\r\n							<a href="http://www.benlai.com/item-37672.html" target="_blank"><img src="http://image.benlailife.com/images/bj/special/2014chucheng/p1.jpg" /></a> \r\n							<div class="ft_buy" style="margin:0px;padding:0px;border:none;">\r\n								<ul class="select_box" style="vertical-align:bottom;">\r\n									<li class="list button" style="vertical-align:bottom;">\r\n										<img src="http://image.benlailife.com/images/bj/special/2014chucheng/2p_on.jpg" /> \r\n									</li>\r\n									<li class="list button" style="vertical-align:bottom;">\r\n										<img src="http://image.benlailife.com/images/bj/special/2014chucheng/4p.jpg" /> \r\n									</li>\r\n								</ul>\r\n								<ul class="shop_box" style="vertical-align:bottom;">\r\n									<li class="list" style="vertical-align:bottom;">\r\n										<p class="price p_rose" style="font-family:''Microsoft YaHei'';font-size:24px;color:#F83A5E;">\r\n											￥11.80<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;">￥20.00</span> \r\n										</p>\r\n										<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n											<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_shop.gif" id="37672_addCart" /> \r\n										</div>\r\n									</li>\r\n									<li class="list" style="vertical-align:bottom;">\r\n										<p class="price p_rose" style="font-family:''Microsoft YaHei'';font-size:24px;color:#F83A5E;">\r\n											￥18.80<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;">￥40.00</span> \r\n										</p>\r\n										<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n											<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_shop.gif" id="36937_addCart" /> \r\n										</div>\r\n									</li>\r\n								</ul>\r\n							</div>\r\n						</li>\r\n					</ul>\r\n				</div>\r\n			</div>\r\n			<div class="sku" style="margin:0px 0px 60px;padding:0px;border:none;">\r\n				<ul class="main" style="vertical-align:bottom;">\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-39442.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							新疆姬娜果4粒装（单果重90-100g）\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥5.00<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥10.00</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="39442_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-27683.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							进口牛油果 4粒\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥35.00<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥78.00</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="27683_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-10432.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							台湾红宝石葡萄柚\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥28.00<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥38.00</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="10432_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-15307.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							浙江涌泉蜜桔 1.7-1.9kg\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥38.00<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥55.00</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="15307_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-38262.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							四川红阳红心猕猴桃（小果） 8粒装\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥28.00<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥36.00</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="38262_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-6536.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							爽口源兰州百合150g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥18.80<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥19.80</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="6536_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-6682.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							本来精选——云南鲜毛豆 400g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥10.80<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥14.80</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="6682_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-8533.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							陈集山药（鸡皮糙）500g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥15.80<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥16.80</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="8533_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-27.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							斋堂鲜蘑菇拼盘\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥17.80<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;"></span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="27_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-3153.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							本来精选——绿芦笋300g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥20.80<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥23.80</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="3153_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-15656.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							OMEGA 新西兰青口贝 1000g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥49.00<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥78.00</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="15656_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-19587.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							原装进口厄瓜多尔白虾50/60 2000g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥168.00<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥268.00</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="19587_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-19889.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							本来专供 速冻阿拉斯加真鳕切身 （生制）500g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥39.00<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥62.80</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="19889_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-25845.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							【独家销售】南极磷虾 500g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥18.00<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥25.80</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="25845_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-4758.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							九洋无公害生态深海养殖 三去大黄鱼 450g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥36.00<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥49.00</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="4758_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-6246.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							林地散养柴鸡蛋24枚\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥35.60<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥42.80</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="6246_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-9209.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							Kerchin科尔沁肉筋 500g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥29.80<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥35.90</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="9209_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-32393.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							华北小笋鸡250g-350g*2\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥15.80<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥43.60</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="32393_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-25437.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							荷美尔出口备案冻前尖500g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥19.90<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥26.00</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="25437_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-7926.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							Kerchin科尔沁肥牛 400克\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥36.80<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥51.80</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="7926_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-38159.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							【特别推荐】云南艾爱全脂巴氏水牛乳500ml\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥9.90<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥22.00</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="38159_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-37167.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							贝儿榴莲飘香蛋糕330g-家庭装\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥49.90<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;"></span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="37167_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-7444.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							百吉福棒棒奶酪（原味）500g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥48.60<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥59.80</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="7444_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-15775.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							红炉磨坊葡萄干核桃面包（粗粮） 300g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥23.60<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥27.60</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="15775_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-793.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							万得妙含糖酸牛奶500ml\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥11.60<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥15.80</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="793_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-719.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							伯爵特级初榨橄榄油500ml\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥69.50<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;"></span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="719_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-6690.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							本来生活有机红小豆（红豆）360g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥9.90<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥12.00</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_back.gif" id="6690_back" class="defbutton" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-24389.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							响中王响水村自产大米2500g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥82.50<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;"></span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="24389_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-4048.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							竹里馆临安特产天目山野生石笋干250g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥25.80<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;"></span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="4048_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-33796.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							长白山黑木耳125g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥21.50<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥28.50</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="33796_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-4159.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							广东温氏好味鸡咸香盐焗鸡600g-800g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥33.00<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥52.80</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="4159_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-28102.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							百饺园家常猪肉三鲜水饺300g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥13.80<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥17.20</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="28102_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-23882.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							荷美尔Hormel 超值鲜嫩火腿片135g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥14.80<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;"></span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="23882_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-21778.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							乐世小厨培根抓饼精装5片600g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥10.90<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥17.90</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="21778_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-25866.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							天福号 蛋卷300g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥12.80<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥19.00</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="25866_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-16606.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							德国迈森蜂蜜小栈纯蜂蜜—洋槐花蜂蜜500g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥63.00<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥126.00</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="16606_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-19891.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							阿鲁司滇红茶15g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥8.00<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥23.00</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="19891_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-10542.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							法国（巴黎）含气柠檬味饮料330ml*4\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥32.00<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥48.00</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="10542_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-6883.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							澳洲奔富酒园洛神山庄梅洛红葡萄酒750ml\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥49.00<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥98.00</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_back.gif" id="6883_back" class="defbutton" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-22336.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							KEO凯莉欧100%橙汁1L(塞浦路斯进口) 真正纯橙汁\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥11.40<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥22.80</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_back.gif" id="22336_back" class="defbutton" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-35043.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							7Best大象芒果干100g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥12.80<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;"></span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="35043_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-24780.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							吃货榴莲干90g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							<img src="http://image1.benlailife.com/Content/images/no2.gif?v=8.2.47" /><span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;"></span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_back.gif" id="24780_back" class="defbutton" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-6739.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							昆仑山和田玉枣六星 500g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥64.30<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;"></span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="6739_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-21306.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							阿胶金丝枣180g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥12.80<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;"></span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="21306_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<a href="http://www.benlai.com/item-21304.html" target="_blank"></a> \r\n						<p class="name" style="font-family:''Microsoft YaHei'';font-size:16px;">\r\n							桃花姬阿胶糕300g\r\n						</p>\r\n						<p class="price normal-price-text p_orange" style="font-family:''Microsoft YaHei'';font-size:20px;color:#FF9472;font-weight:bold;">\r\n							￥119.00<span class="Concrete-grey" style="color:#A1A1A1;text-decoration:line-through;font-size:14px;font-weight:300;">￥158.00</span> \r\n						</p>\r\n						<div class="button" style="margin:5px auto;padding:0px;border:none;">\r\n							<img src="http://image.benlailife.com/images/gz/special/2014chuchengyushou_syhd/bt_add.jpg" id="21304_addCart" /> \r\n						</div>\r\n					</li>\r\n					<li class="zcode list col5 htyanimate" style="vertical-align:bottom;text-align:center;">\r\n						<div>\r\n							<br />\r\n						</div>\r\n					</li>\r\n				</ul>\r\n			</div>\r\n		</div>\r\n	</div>\r\n</div>', '500', 0, '中国大陆', '', '', '', 1, '褚橙', '', 0);
+INSERT INTO `onethink_document_product` VALUES (8, '10.00', '<div id="J_DcTopRightWrap" style="margin:0px;padding:0px;color:#404040;font-family:tahoma, arial, 微软雅黑, sans-serif;background-color:#FFFFFF;">\r\n	<div id="J_DcTopRight" class="J_DcAsyn tb-shop" style="margin:0px;padding:0px;">\r\n		<div class="J_TModule" id="shop8751140001" style="margin:0px;padding:0px;">\r\n			<div class="skin-box tb-module tshop-pbsm tshop-pbsm-shop-self-defined" style="margin:0px;padding:0px;">\r\n				<div class="skin-box-bd clear-fix" style="margin:0px;padding:0px;border:0px solid #FFFFFF;color:#828282;background:none;">\r\n					<span> \r\n					<p>\r\n						<img src="http://img03.taobaocdn.com/imgextra/i3/738580955/TB2oT.ZapXXXXaxXXXXXXXXXXXX-738580955.jpg_.webp" /> \r\n					</p>\r\n</span> \r\n				</div>\r\n<s class="skin-box-bt"><b></b></s> \r\n			</div>\r\n		</div>\r\n		<div class="J_TModule" id="shop8825085575" style="margin:0px;padding:0px;">\r\n			<div class="skin-box tb-module tshop-pbsm tshop-pbsm-shop-self-defined" style="margin:0px;padding:0px;">\r\n				<s class="skin-box-tp"><b></b></s> \r\n				<div class="skin-box-bd clear-fix" style="margin:0px;padding:0px;border:0px solid #FFFFFF;color:#828282;background:none;">\r\n					<span> \r\n					<p>\r\n						<a href="http://detail.tmall.com/item.htm?spm=a220z.1000880.0.0.UoC3cM&id=35904185523&scene=taobao_shop" target="_blank"><img src="http://img03.taobaocdn.com/imgextra/i3/738580955/TB2AEVlaFXXXXbOXXXXXXXXXXXX-738580955.jpg_.webp" /></a> \r\n					</p>\r\n</span> \r\n				</div>\r\n<s class="skin-box-bt"><b></b></s> \r\n			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<div id="description" class="J_DetailSection tshop-psm tshop-psm-bdetaildes" style="margin:0px;padding:0px;color:#404040;font-family:tahoma, arial, 微软雅黑, sans-serif;background-color:#FFFFFF;">\r\n	<div class="content ke-post" style="margin:10px 0px 0px;padding:0px;font-size:14px;font-family:tahoma, arial, 宋体, sans-serif;">\r\n		<div style="margin:0px;padding:0px;">\r\n			<span><span style="font-weight:700;"><span style="font-size:18px;">智利青苹果</span></span><br />\r\n</span> \r\n		</div>\r\n		<div style="margin:0px;padding:0px;">\r\n			<p>\r\n				<span><span style="font-weight:700;"><img class="ke_anchor" id="ids-tag-m-35171" src="http://a.tbcdn.cn/kissy/1.0.0/build/imglazyload/spaceball.gif" style="height:1px;" />产品简介</span><br />\r\n智利苹果色泽艳丽，颜色从青绿到浅绿都有，也可能会略带粉红色。口感上则相当酸，是喜欢酸味朋友们的大爱，爽脆多汁，口味鲜美，吃法较多。&nbsp;</span> \r\n			</p>\r\n		</div>\r\n		<div style="margin:0px;padding:0px;">\r\n			<span><span style="font-weight:700;">温馨提示</span><br />\r\n</span> \r\n		</div>\r\n		<div style="margin:0px;padding:0px;">\r\n			<span>此款产地为智利。</span> \r\n		</div>\r\n		<div style="margin:0px;padding:0px;">\r\n			<span>冰箱冷藏保存时间会更久，保存时表皮不要沾水。苹果皮中含有丰富营养素，建议连皮一起吃。</span> \r\n			<p>\r\n				<img align="absmiddle" src="http://img02.taobaocdn.com/imgextra/i2/738580955/T2zOhCXfdOXXXXXXXX-738580955.jpg" /><img align="absmiddle" src="http://img04.taobaocdn.com/imgextra/i4/738580955/T2Zz1aXXtdXXXXXXXX-738580955.jpg" /><img align="absmiddle" src="http://img01.taobaocdn.com/imgextra/i1/738580955/T2VPCuXc4cXXXXXXXX-738580955.jpg" /><img align="absmiddle" src="http://img04.taobaocdn.com/imgextra/i4/738580955/T2ZwXBXl8NXXXXXXXX-738580955.jpg" /> \r\n			</p>\r\n			<p>\r\n				<img align="absmiddle" src="http://img04.taobaocdn.com/imgextra/i4/738580955/T2MmJyXi0OXXXXXXXX-738580955.jpg_.webp" /><img class="ke_anchor" id="ids-tag-m-35173" src="http://a.tbcdn.cn/kissy/1.0.0/build/imglazyload/spaceball.gif" style="height:1px;" /><img align="absmiddle" src="http://img01.taobaocdn.com/imgextra/i1/738580955/T2yn4DXj8OXXXXXXXX-738580955.jpg_.webp" /> \r\n			</p>\r\n		</div>\r\n		<p>\r\n			<img class="ke_anchor" id="ids-tag-m-35176" src="http://a.tbcdn.cn/kissy/1.0.0/build/imglazyload/spaceball.gif" style="height:1px;" /><img align="absmiddle" src="http://img03.taobaocdn.com/imgextra/i3/738580955/T28tdGXd0OXXXXXXXX-738580955.jpg_.webp" /> \r\n		</p>\r\n	</div>\r\n</div>', '500', 11, '中国大陆', '', '', '', 1, '智利青苹果12个', '', 0);
+INSERT INTO `onethink_document_product` VALUES (9, '5.00', '<h2 align="center" style="font-family:tahoma, arial, 宋体, sans-serif;background-color:#FFFFFF;">\r\n	配送范围：目前江浙沪（其他城市或者偏远乡镇村目前不配送，谢谢）\r\n</h2>\r\n<p align="center" style="font-family:tahoma, arial, 宋体, sans-serif;font-size:14px;background-color:#FFFFFF;">\r\n	<img src="http://gd1.alicdn.com/imgextra/i1/595478579/T2gtbxXINaXXXXXXXX_!!595478579.jpg" /> \r\n</p>\r\n<p align="center" style="font-family:tahoma, arial, 宋体, sans-serif;font-size:14px;background-color:#FFFFFF;">\r\n	<img src="http://gd2.alicdn.com/imgextra/i2/595478579/T2yOPCXKFaXXXXXXXX_!!595478579.jpg" /><img src="http://gd3.alicdn.com/imgextra/i3/595478579/T2S52CXMlaXXXXXXXX_!!595478579.jpg" /><img src="http://gd3.alicdn.com/imgextra/i3/595478579/T2XmrCXLNaXXXXXXXX_!!595478579.jpg" /> \r\n</p>\r\n<p align="center" style="font-family:tahoma, arial, 宋体, sans-serif;font-size:14px;background-color:#FFFFFF;">\r\n	<img src="http://gd3.alicdn.com/imgextra/i3/595478579/T2poTvXMpaXXXXXXXX_!!595478579.jpg" /> \r\n</p>', '500', 0, '中国大陆', '', '', '', 1, '菲律宾进口香蕉', '', 0);
+INSERT INTO `onethink_document_product` VALUES (15, '1.00', '<div class="detl_property" style="margin:20px 0px;">\r\n	<p style="font-family:宋体, ''Arial Narrow'', HELVETICA;color:#333333;">\r\n		<img width="760" height="42" src="http://image1.benlailife.com/Content/images/detailsp/detailsp_tit01.gif?v=8.2.47" /> \r\n	</p>\r\n	<div class="detl_com">\r\n		<div class="detl_form">\r\n			品名：河南河阴软籽石榴 4粒装（单果重250-300g）规格：250-300g\r\n		</div>\r\n		<div class="detl_pic">\r\n			<img src="http://image4.benlailife.com/ProductImage/0102022270C.jpg" style="width:340px;" /> \r\n		</div>\r\n	</div>\r\n</div>\r\n<div class="detl_feature" style="margin:20px 0px 0px;">\r\n	<a name="sublist01"></a> \r\n	<p style="font-family:宋体, ''Arial Narrow'', HELVETICA;color:#333333;">\r\n		<img width="760" height="42" src="http://image1.benlailife.com/Content/images/detailsp/detailsp_tit02.gif?v=8.2.47" /> \r\n	</p>\r\n	<div class="detl_pic" style="text-align:center;margin:10px 0px;">\r\n		<img src="http://image6.benlailife.com/ProductNewDetailImage/0102022270C/22p.jpg" style="width:700px;" /><span style="color:#333333;font-family:宋体, ''Arial Narrow'', HELVETICA;line-height:normal;"></span> \r\n		<div class="tal" style="text-align:left;color:#333333;font-family:宋体, ''Arial Narrow'', HELVETICA;">\r\n			<br />\r\n		</div>\r\n<img src="http://image6.benlailife.com/ProductNewDetailImage/0102022270C/56p.jpg" style="width:700px;" /><span style="color:#333333;font-family:宋体, ''Arial Narrow'', HELVETICA;line-height:normal;"></span> \r\n		<div class="tal" style="text-align:left;color:#333333;font-family:宋体, ''Arial Narrow'', HELVETICA;">\r\n			<br />\r\n		</div>\r\n<img src="http://image6.benlailife.com/ProductNewDetailImage/0102022270C/18p.jpg" style="width:700px;" /><span style="color:#333333;font-family:宋体, ''Arial Narrow'', HELVETICA;line-height:normal;"></span> \r\n	</div>\r\n	<div>\r\n		<br />\r\n	</div>\r\n</div>', '500', 0, '中国大陆', '', '', '', 1, '河南河阴软籽石榴', '', 0);
+INSERT INTO `onethink_document_product` VALUES (16, '100.00', '<div class="detail_n" style="color:#333333;font-family:宋体, ''Arial Narrow'', HELVETICA;">\r\n	<div class="detail_tab">\r\n		<h2 class="tith2" id="navList" style="font-family:''Microsoft YaHei'';font-size:14px;">\r\n			<br />\r\n		</h2>\r\n		<div class="dtl_btn" style="text-align:right;">\r\n			<a class="buy_btn" id="nav_buy_btn"><span><span>￥</span>28.00</span></a> \r\n		</div>\r\n	</div>\r\n	<div class="detl_content">\r\n		<div class="detl_property" style="margin:20px 0px;">\r\n			<p>\r\n				<img width="760" height="42" src="http://image1.benlailife.com/Content/images/detailsp/detailsp_tit01.gif?v=8.2.47" /> \r\n			</p>\r\n			<div class="detl_com">\r\n				<div class="detl_form">\r\n					品名：佳沃智利进口蓝莓一级果125g规格：125g温馨提示：蓝莓果实为浆果型，耐贮性较强，最佳保存温度为1 ~ 3°C。要吃新鲜蓝莓不可置入0°C以下的冷藏库。 不建议水洗入冰箱，因为水份很容易使蓝莓腐烂。\r\n				</div>\r\n				<div class="detl_pic">\r\n					<img src="http://image3.benlailife.com/ProductImage/0102022311C.jpg" style="width:340px;" /> \r\n				</div>\r\n			</div>\r\n		</div>\r\n		<div class="detl_feature" style="margin:20px 0px 0px;">\r\n			<a name="sublist01"></a> \r\n			<p>\r\n				<img width="760" height="42" src="http://image1.benlailife.com/Content/images/detailsp/detailsp_tit02.gif?v=8.2.47" /> \r\n			</p>\r\n			<div class="detl_pic" style="text-align:center;margin:10px 0px;">\r\n				<img src="http://image6.benlailife.com/ProductNewDetailImage/0102020474C/001.jpg" style="width:700px;" /> \r\n				<div class="tal" style="text-align:left;">\r\n					&nbsp;\r\n				</div>\r\n<img src="http://image6.benlailife.com/ProductNewDetailImage/0102020474C/002.jpg" style="width:700px;" /> \r\n				<div class="tal" style="text-align:left;">\r\n					&nbsp;\r\n				</div>\r\n<img src="http://image6.benlailife.com/ProductNewDetailImage/0102020474C/003.jpg" style="width:700px;" /> \r\n				<div class="tal" style="text-align:left;">\r\n					&nbsp;\r\n				</div>\r\n<img src="http://image6.benlailife.com/ProductNewDetailImage/0102020474C/004.jpg" style="width:700px;" /> \r\n				<div class="tal" style="text-align:left;">\r\n					&nbsp;\r\n				</div>\r\n<img src="http://image6.benlailife.com/ProductNewDetailImage/0102020474C/005.jpg" style="width:700px;" /> \r\n				<div class="tal" style="text-align:left;">\r\n					&nbsp;\r\n				</div>\r\n<img src="http://image6.benlailife.com/ProductNewDetailImage/0102020474C/006.jpg" style="width:700px;" /> \r\n				<div class="tal" style="text-align:left;">\r\n					&nbsp;\r\n				</div>\r\n<img src="http://image6.benlailife.com/ProductNewDetailImage/0102020474C/006.jpg" style="width:700px;" /> \r\n				<div class="tal" style="text-align:left;">\r\n					&nbsp;\r\n				</div>\r\n<img src="http://image6.benlailife.com/ProductNewDetailImage/0102020474C/008.jpg" style="width:700px;" /> \r\n				<div class="tal" style="text-align:left;">\r\n					&nbsp;\r\n				</div>\r\n			</div>\r\n		</div>\r\n		<div class="detl_feature" style="margin:20px 0px 0px;">\r\n			<a name="sublist04"></a> \r\n			<p>\r\n				<img width="760" height="42" src="http://image1.benlailife.com/Content/images/detailsp/detailsp_tit05.gif?v=8.2.47" /> \r\n			</p>\r\n			<div class="detl_pic" style="text-align:center;margin:10px 0px;">\r\n				<img src="http://image6.benlailife.com/ProductNewDetailImage/0102020474C/009.jpg" style="width:700px;" /> \r\n				<div class="tal" style="text-align:left;">\r\n					&nbsp;\r\n				</div>\r\n			</div>\r\n		</div>\r\n		<div class="detl_service" style="margin:20px 0px 0px;">\r\n			<a name="sublist05"></a> \r\n			<p>\r\n				<img width="760" height="42" src="http://image1.benlailife.com/Content/images/detailsp/detailsp_tit06.gif?v=8.2.47" /> \r\n			</p>\r\n			<div class="detl_tab">\r\n				<a class="detl_tab01on">&nbsp;</a><a class="detl_tab02">&nbsp;</a><a class="detl_tab03">&nbsp;</a><a class="detl_tab04">&nbsp;</a><a class="detl_tab05 m0">&nbsp;</a> \r\n			</div>\r\n			<div class="detl_com" style="padding:19px;margin-left:20px;">\r\n				<p>\r\n					<img width="680" height="200" src="http://image1.benlailife.com/Content/images/detailsp/detailsp_service0101.jpg?v=8.2.47" /><img width="680" height="228" src="http://image1.benlailife.com/Content/images/detailsp/detailsp_service0102.jpg?v=8.2.47" /><img width="680" height="450" src="http://image1.benlailife.com/Content/images/detailsp/detailsp_service0103.jpg?v=8.2.47" /> \r\n				</p>\r\n				<div>\r\n					<br />\r\n				</div>\r\n			</div>\r\n		</div>\r\n	</div>\r\n</div>', '500', 0, '中国大陆', '', '', '', 1, '佳沃智利进口蓝莓', '', 0);
+INSERT INTO `onethink_document_product` VALUES (17, '100.00', '<div class="gdtit" style="font-size:16px;color:#333333;font-weight:bold;font-family:Arial;margin-left:15px;">\r\n	<h1 id="Product_ProductDetailsName" style="font-family:宋体, ''Arial Narrow'', HELVETICA;font-size:16px;">\r\n		新疆红提950-1000g\r\n	</h1>\r\n</div>\r\n<p class="goods_gdmis2 pdl15" style="font-family:宋体, ''Arial Narrow'', HELVETICA;color:#F08B0C;">\r\n	新疆特受欢迎的葡萄品种。\r\n</p>', '500', 0, '中国大陆', '', '', '', 1, '新疆红提950-1000g', '', 0);
+INSERT INTO `onethink_document_product` VALUES (18, '19.00', '<div class="dtl_commodity" style="color:#333333;font-family:宋体, ''Arial Narrow'', HELVETICA;">\r\n	<span style="font-size:30px;color:#669934;line-height:55px;">皮薄、肉脆、汁多、酥香的新疆香梨</span> \r\n	<p style="color:#666666;background-color:#F8F8F8;">\r\n		产自新疆天山南麓“梨乡”库尔勒，香气浓郁，皮薄肉细，酥脆爽口。这样的梨吃起来，不仅是味觉上的享受，也是帮助身体滋润的一剂良药。\r\n	</p>\r\n</div>\r\n<div class="dtl718" style="color:#333333;font-family:宋体, ''Arial Narrow'', HELVETICA;">\r\n	<div class="dtl_title" style="font-size:18px;color:#669934;">\r\n		商品介绍\r\n	</div>\r\n	<div class="dtl_infortu">\r\n		<img alt="" src="http://image1.benlailife.com/ProductDetailImage/0102020673C/001.jpg" style="width:700px;" /> \r\n	</div>\r\n	<div class="dtl_infor_top" style="margin:0px;">\r\n		<p style="color:#666666;">\r\n			<strong><span style="font-size:14px;">来自新疆梨乡的“奶西姆提”</span></strong><br />\r\n新疆巴音郭楞蒙古自治州北部的天山南麓，有一个肥沃的绿州名字叫库尔勒。这里出产的香梨远近闻名，素有“梨乡”之美称。库尔勒香梨在维吾尔语中叫做“奶西姆提”，因为营养价值丰富，印度人称它是“中国的王子”。\r\n		</p>\r\n	</div>\r\n	<div class="dtl_infortu">\r\n		<img alt="" src="http://image2.benlailife.com/ProductDetailImage/0102020673C/002.jpg" style="width:700px;" /> \r\n	</div>\r\n	<div class="dtl_infor_top" style="margin:0px;">\r\n		<p style="color:#666666;">\r\n			<strong><span style="font-size:14px;">香而清甜，虽小却极好吃</span></strong><br />\r\n库尔勒香梨个头不算大，但香气浓郁，皮薄肉细，酥脆爽口，汁多渣少。假如你以前不识此梨，尝下去的第一口，它一定能给你“竟这样好吃”的惊喜感。\r\n		</p>\r\n	</div>\r\n	<div class="dtl_infortu">\r\n		<img alt="" src="http://image.benlailife.com/ProductDetailImage/0102020673C/003.jpg" style="width:700px;" /> \r\n	</div>\r\n</div>', '500', 0, '中国大陆', '', '', '', 1, '新疆库尔勒香梨 ', '', 0);
+INSERT INTO `onethink_document_product` VALUES (32, '1.00', '<div class="detl_com">\r\n	<div class="detl_form">\r\n		品名：延安宜川红富士 12粒装（75mm）温馨提示：由于产地下大雪，影响了苹果的到货速度并增加了破损率，若缺货，请您耐心等待，我们一定会尽快解决缺货问题，由此带来的不便，请您谅解。\r\n	</div>\r\n	<div class="detl_pic">\r\n		<img src="http://image1.benlailife.com/ProductImages/000/000/015/633/medium/2b972bf7-1741-4498-b30e-f945ec14f0db.jpg" /> \r\n	</div>\r\n</div>\r\n<div class="detl_feature">\r\n	<a name="sublist01"></a> \r\n	<p>\r\n		<img src="http://image1.benlailife.com/Content/images/detailsp/detailsp_tit02.gif?v=8.2.68" height="42" width="760" /> \r\n	</p>\r\n	<div class="detl_pic">\r\n		<img src="http://image1.benlailife.com/ProductNewDetailImage/0102020964C/001.jpg" /> \r\n		<div class="tal">\r\n			&nbsp;\r\n		</div>\r\n<img src="http://image1.benlailife.com/ProductNewDetailImage/0102020964C/002.jpg" /> \r\n		<div class="tal">\r\n			&nbsp;\r\n		</div>\r\n<img src="http://image1.benlailife.com/ProductNewDetailImage/0102020964C/003.jpg" /> \r\n		<div class="tal">\r\n			&nbsp;\r\n		</div>\r\n<img src="http://image1.benlailife.com/ProductNewDetailImage/0102020964C/004.jpg" /> \r\n		<div class="tal">\r\n			&nbsp;\r\n		</div>\r\n	</div>\r\n</div>\r\n<a name="sublist02"></a> \r\n<p>\r\n	<img src="http://image1.benlailife.com/Content/images/detailsp/detailsp_tit03.gif?v=8.2.68" height="42" width="760" /> \r\n</p>\r\n<img src="http://image1.benlailife.com/ProductNewDetailImage/0102020964C/005.jpg" /> \r\n<div class="tal">\r\n	&nbsp;\r\n</div>\r\n<img src="http://image1.benlailife.com/ProductNewDetailImage/0102020964C/006.jpg" /> \r\n<div class="tal">\r\n	&nbsp;\r\n</div>\r\n<img src="http://image1.benlailife.com/ProductNewDetailImage/0102020964C/007.jpg" /><br />', '500', 0, '中国大陆', '', '', '', 10, '延安宜川红富士 12粒装（70-75mm）', '', 0);
+INSERT INTO `onethink_document_product` VALUES (33, '1.00', '<div class="detl_com">\r\n	<div class="detl_form">\r\n		品名：阿克苏红富士苹果 3粒装规格：3粒\r\n	</div>\r\n	<div class="detl_pic">\r\n		<img src="http://image1.benlailife.com/ProductImages/000/000/040/455/medium/c7f74bee-ac98-4b53-aa74-9c275fbce133.jpg" /> \r\n	</div>\r\n</div>\r\n<a name="sublist01"></a> \r\n<p>\r\n	<img src="http://image1.benlailife.com/Content/images/detailsp/detailsp_tit02.gif?v=8.2.68" height="42" width="760" /> \r\n</p>\r\n<img src="http://image1.benlailife.com/ProductNewDetailImage/0102021258C/001.jpg" /> \r\n<div class="tal">\r\n	<p class="detl_com01">\r\n		<span>只有阿克苏地区才能产出的冰糖心</span>\r\n	</p>\r\n	<p class="detl_com02">\r\n		<span>阿克苏“冰糖心”，产于新疆南部天山南麓塔里木盆地北缘的阿\r\n克苏红旗坡农场，这里具有干旱少雨，昼夜温差大，全年无霜期长，光照时间长的气候特点，而水源则依托于天山山脉托木尔峰冰川，远离污染的地域条件，使这里\r\n成为绿色无公害农产品的理想家园，成就了享誉疆内外的阿克苏“冰糖心”苹果。</span>\r\n	</p>\r\n</div>\r\n<br />', '500', 0, '中国大陆', '', '', '', 10, '新疆阿克苏冰糖心苹果 3粒装', '', 0);
+INSERT INTO `onethink_document_product` VALUES (31, '1.00', 'http://localhost/1111/admin.php?s=/Category/index.html', '500', 0, '中国大陆', '', '', '', 10, '', '', 0);
+INSERT INTO `onethink_document_product` VALUES (30, '1.00', 'http://localhost/phpmyadmin/', '500', 0, '中国大陆', '', '', '', 10, '', '', 0);
+INSERT INTO `onethink_document_product` VALUES (29, '1.00', '646565', '500', 0, '中国大陆', '', '', '', 10, '', '', 0);
+INSERT INTO `onethink_document_product` VALUES (34, '1.00', '<div class="detl_com">\r\n	<div class="detl_form">\r\n		品名：阿克苏红富士苹果 3粒装规格：3粒\r\n	</div>\r\n	<div class="detl_pic">\r\n		<img src="http://image1.benlailife.com/ProductImages/000/000/040/455/medium/c7f74bee-ac98-4b53-aa74-9c275fbce133.jpg" /> \r\n	</div>\r\n</div>\r\n<a name="sublist01"></a> \r\n<p>\r\n	<img src="http://image1.benlailife.com/Content/images/detailsp/detailsp_tit02.gif?v=8.2.68" height="42" width="760" /> \r\n</p>\r\n<img src="http://image1.benlailife.com/ProductNewDetailImage/0102021258C/001.jpg" /> \r\n<div class="tal">\r\n	<p class="detl_com01">\r\n		<span>只有阿克苏地区才能产出的冰糖心</span>\r\n	</p>\r\n	<p class="detl_com02">\r\n		<span>阿克苏“冰糖心”，产于新疆南部天山南麓塔里木盆地北缘的阿\r\n克苏红旗坡农场，这里具有干旱少雨，昼夜温差大，全年无霜期长，光照时间长的气候特点，而水源则依托于天山山脉托木尔峰冰川，远离污染的地域条件，使这里\r\n成为绿色无公害农产品的理想家园，成就了享誉疆内外的阿克苏“冰糖心”苹果。</span>\r\n	</p>\r\n</div>\r\n<br />', '500', 0, '中国大陆', '', '', '', 10, '新疆阿克苏冰糖心苹果 3粒装', '', 0);
+INSERT INTO `onethink_document_product` VALUES (35, '1.00', '<div class="detl_com">\r\n	<div class="detl_form">\r\n		品名：延安宜川红富士 12粒优品装（80mm）温馨提示：由于气温升高，个别苹果可能会发面，脆爽不足，但香甜有余。\r\n	</div>\r\n	<div class="detl_pic">\r\n		<img src="http://image1.benlailife.com/ProductImages/000/000/015/665/medium/ae5e03e1-49a5-44b9-8d37-823dac082c77.jpg" /> \r\n	</div>\r\n</div>', '500', 0, '中国大陆', '', '', '', 10, '延安宜川红富士 12粒优品装（80mm）', '', 0);
+INSERT INTO `onethink_document_product` VALUES (42, '1.00', '<div class="dtl_tjc fl">\r\n	<div class="dtl_tjt fl">\r\n		<div class="dtl_bb">\r\n			<div class="dtl_tjh1">\r\n				栖霞富士，产自中国苹果之乡\r\n			</div>\r\n		</div>\r\n		<div class="fl dtl_pt10 dtl_pb10">\r\n			<div class="fl dtl439">\r\n				　　栖霞富士以个大形正，色泽鲜艳，光洁度好，酸甜适中，香脆可口而著称。<br />\r\n&nbsp;&nbsp;&nbsp;&nbsp;栖霞苹果产自"苹果之乡"山东栖霞，栖霞地处胶东半岛，主要地形为丘陵山地，四季分明，气候宜人，秋季昼夜温差大，自然环境非常适合苹果生长；栖霞苹果的种植历史长达百余年，果实个大形正，内纯外美，营养均衡，极耐贮藏。<br />\r\n<br />\r\n<strong>储存方式：</strong>苹果的储存要保持干燥、低温，买回的苹果洗净擦干后，装进保鲜袋，放入冰箱冷藏室即可。\r\n			</div>\r\n			<div class="fr dtl_img">\r\n				<img alt="" src="http://image3.benlailife.com/ProductDetailImage/0102020049C/001.jpg" height="230" width="230" />\r\n			</div>\r\n		</div>\r\n	</div>\r\n	<div>\r\n		<img alt="" src="http://image3.benlailife.com/ProductDetailImage/bg/bg_tj_b.gif" height="7" width="760" />\r\n	</div>\r\n	<div class="dtl_zjc fl">\r\n		<div class="dtl_zjt fl">\r\n			<div class="fl dtl_pb10">\r\n				<div class="dtl_lh22">\r\n					<span>“</span>栖霞富士苹果因其漂亮的外表和美妙的口感而获得很多人的\r\n喜爱。不过，它的营养价值也是不可小觑的：含量丰富的果胶，能刺激胃肠蠕动，食用后，有助于排便；从美容的角度来说，栖霞富士中丰富的镁、铁、硒等矿物元\r\n素，可以使皮肤细腻、红润、有光泽，胜过无数价格昂贵的化妆品了。 <span>”</span><br />\r\n<br />\r\n<span>杨俊琴<br />\r\n国家二级公共营养师、北京营养师俱乐部会员<br />\r\n新浪微博：@杨俊琴营养师</span>\r\n				</div>\r\n			</div>\r\n			<div>\r\n				<img alt="" src="http://image3.benlailife.com/ProductDetailImage/Dongxi/zhuanjia/yangjunqin.gif" height="90" width="90" />\r\n			</div>\r\n		</div>\r\n		<div>\r\n			<img alt="" src="http://image5.benlailife.com/ProductDetailImage/bg/bg_zj_b.gif" height="7" width="760" />\r\n		</div>\r\n	</div>\r\n</div>\r\n<div class="dtl_bb">\r\n	<div class="dtl_zi">\r\n		一天一苹果，医生远离我\r\n	</div>\r\n</div>\r\n<div class="dtl_lh22 dtl_pb10">\r\n	　　苹果味甘，性凉；具有生津止渴、润肺除烦、健脾益胃、养心益气、润肠、止泻酒等功效。<br />\r\n&nbsp;&nbsp;&nbsp;&nbsp;苹果的营养价值和医疗价值都很高，西方有谚语"一天一苹果，医生远离我"，因此苹果被很多人称为"大夫第一药"；多吃苹果可以有效降低胆固醇；改善呼吸系统和肺功能，保护肺部免受污染和烟尘的影响；同时对于促进消化，防止便秘，提神醒脑也有帮助作用。\r\n</div>\r\n<br />', '500', 0, '中国大陆', '', '', '', 10, '山东栖霞富士 2粒/470-500g', '', 0);
+INSERT INTO `onethink_document_product` VALUES (43, '1.00', '<img src="http://image1.benlailife.com/ProductNewDetailImage/0102020944C/021.jpg" /> \r\n<div class="tal">\r\n	&nbsp;\r\n</div>\r\n<img src="http://image1.benlailife.com/ProductNewDetailImage/0102020944C/022.jpg" /><br />', '500', 0, '中国大陆', '45646', '', '', 10, '浙江涌泉蜜桔 1.7-1.9kg', '', 0);
+INSERT INTO `onethink_document_product` VALUES (44, '1.00', '<div class="dtl_tjt fl">\r\n	<div class="dtl_bb">\r\n		<div class="dtl_tjh1">\r\n			金玉其内外，皮薄肉嫩，汁多香甜\r\n		</div>\r\n	</div>\r\n	<div class="fl dtl_pt10 dtl_pb10">\r\n		<div class="fl dtl439">\r\n			　　金橘是柑橘类水果之一，皮色金黄、皮薄肉嫩、汁多香甜。它皮肉难分，洗净后可连皮带肉一起吃下。金橘含有特殊的挥发油、金橘甙等特殊物质，具有令人愉悦的香气，是颇具特色的水果，有生津利咽醒酒的作用。<br />\r\n<br />\r\n<strong>别&nbsp;&nbsp;</strong>&nbsp;&nbsp;<strong>名：</strong>金柑、夏橘、给客橙、金蛋、罗浮<br />\r\n<strong>成</strong>&nbsp;<strong>熟</strong>&nbsp;<strong>期：</strong>9-11月<br />\r\n<strong>食用方法：</strong>金桔洗净后可以带皮一起吃下。<br />\r\n<strong>挑选方法：</strong>品质好的金橘呈色泽闪亮的橘色或深黄色。<br />\r\n<strong>储存方式：</strong>最好的存放地方自然是肚子里，实在吃不完，放在阴凉干燥通风处即可。\r\n		</div>\r\n		<div class="fr dtl_img">\r\n			<img alt="" src="http://image1.benlailife.com/ProductDetailImage/0102020036C/001.jpg" height="230" width="230" /> \r\n		</div>\r\n	</div>\r\n</div>\r\n<div>\r\n	<img alt="" src="http://image1.benlailife.com/ProductDetailImage/bg/bg_tj_b.gif" height="7" width="760" /> \r\n</div>\r\n<div class="fl dtl_pb10">\r\n	<div class="dtl_lh22">\r\n		<span>“</span><strong>小小金桔，营养多多</strong><br />\r\n金桔色美、个大、皮薄、肉厚、气香、酸甜可口，皮肉不易分离，可连皮带肉鲜食也可以当茶泡水喝。它含有人体所需的糖、酸、维生素C \r\n等多种营养物质，其中含有柠檬萜，橙皮甙，金桔甙等成分，不仅有助于消化，还对维护心血管功能，防止血管硬化、高血压等疾病有一定的作用。 <span>”</span><br />\r\n<br />\r\n<span>刘晓庆<br />\r\n国家高级食品检测员、公共营养师<br />\r\n新浪微博：@晓庆食尚之窗</span> \r\n	</div>\r\n</div>\r\n<br />', '500', 0, '中国大陆', '', '', '', 10, '广西金桔 500-550g', '', 0);
+INSERT INTO `onethink_document_product` VALUES (46, '1.00', '645654<br />', '500', 0, '中国大陆', '', '', '', 10, '65456', '75,73,76', 0);
+INSERT INTO `onethink_document_product` VALUES (47, '1.00', '6656545654', '500', 0, '中国大陆', '', '', '', 10, '56654654', '78,79', 0);
+
+
+-- -----------------------------
+-- Table structure for `onethink_favortable`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_favortable`;
+CREATE TABLE `onethink_favortable` (
+  `ID` int(10) NOT NULL AUTO_INCREMENT,
+  `uid` int(5) DEFAULT NULL,
+  `goodid` int(100) DEFAULT NULL,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `num` int(11) DEFAULT '1',
+  PRIMARY KEY (`ID`)
+  ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='收藏表';
+
+
+-- -----------------------------
+-- Table structure for `onethink_iswork`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_iswork`;
+CREATE TABLE `onethink_iswork` (
+  `ID` int(10) NOT NULL AUTO_INCREMENT,
+  `uid` varchar(225) CHARACTER SET utf8 DEFAULT NULL,
+  `time` varchar(225) DEFAULT NULL,
+  `status` int(10) DEFAULT NULL COMMENT '1-未使用 2-已使用',
+  PRIMARY KEY (`ID`)
+  ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='签到表';
+
+
+-- -----------------------------
+-- Table structure for `onethink_usercoupon`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_usercoupon`;
+CREATE TABLE `onethink_usercoupon` (
+ `ID` int(10) NOT NULL AUTO_INCREMENT,
+  `uid` varchar(225) CHARACTER SET utf8 DEFAULT NULL,
+  `couponid` varchar(225) CHARACTER SET utf8 DEFAULT NULL,
+  `time` int(100) DEFAULT NULL,
+  `status` int(10) DEFAULT NULL COMMENT '1-未使用 2-已使用',
+  `cover_id` int(225) DEFAULT NULL COMMENT '图片',
+  `info` varchar(225) CHARACTER SET utf8 DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+  ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='用户个人优惠券表';
+
+
+-- -----------------------------
+-- Table structure for `onethink_turnover`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_turnover`;
+CREATE TABLE `onethink_turnover` (
+  `ID` int(10) NOT NULL AUTO_INCREMENT,
+  `uid` int(225) DEFAULT NULL,
+  `sales` decimal(50,2) DEFAULT NULL,
+  `back` decimal(50,2) DEFAULT NULL,
+  `change` decimal(50,2) DEFAULT NULL,
+  `profits` decimal(50,2) DEFAULT NULL,
+  `time` int(10) DEFAULT NULL,
+  `update_time` int(10) DEFAULT NULL,
+  `status` int(225) DEFAULT NULL COMMENT '年月日的标示',
+  `info` varchar(225) DEFAULT NULL,
+  `cancel` decimal(50,2) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+  ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='利润计算总表';
+
+
+-- -----------------------------
+-- Table structure for `onethink_tuan`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_tuan`;
+CREATE TABLE `onethink_tuan` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '分类ID',
+  `name` varchar(30) DEFAULT NULL COMMENT '标志',
+  `title` varchar(50) DEFAULT NULL COMMENT '标题',
+  `goodid` varchar(50) DEFAULT NULL COMMENT '金额',
+  `code` varchar(255) NOT NULL COMMENT '关键字',
+  `description` varchar(255) DEFAULT NULL COMMENT '描述',
+  `link_id` int(10) unsigned DEFAULT NULL COMMENT '外链',
+  `place` tinyint(30) unsigned NOT NULL DEFAULT '0' COMMENT '是否允许发布内容',
+  `display` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '可见性',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `status` int(4) DEFAULT NULL COMMENT '数据状态',
+  `icon` int(10) unsigned DEFAULT NULL COMMENT '分类图标',
+  `pid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  UNIQUE KEY `uk_name` (`name`) USING BTREE
+  ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='团购分类表';
+
+
+-- -----------------------------
+-- Records of `onethink_tuan`
+-- -----------------------------
+
+INSERT INTO `onethink_tuan` VALUES (1, 'fuzxm', '服装鞋帽', '5,8,9,33,34', '', '', 0, 0, 1, 1421570108, 1421573352, 1, NULL, 0);
+INSERT INTO `onethink_tuan` VALUES (2, 'xxsg', '新鲜水果', '5,8,9,14,15,16,17,21,33,34,35,39,40', '', '', 0, 0, 1, 1421570200, 1421570550, 1, NULL, 0);
+INSERT INTO `onethink_tuan` VALUES (3, 'tsyx', '图书音像', '5,8,9,14,15,16,17,21,33,34,35,39', '', '', 0, 0, 1, 1421570883, 1421571562, 1, NULL, 0);
+
+
+
+-- -----------------------------
+-- Table structure for `onethink_tuanid`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_tuanid`;
+CREATE TABLE `onethink_tuanid` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '分类ID',
+  `goodid` int(30) DEFAULT NULL COMMENT '标志',
+  `Tuanpid` int(10) unsigned DEFAULT NULL COMMENT '外链',
+  `display` tinyint(3) unsigned DEFAULT NULL COMMENT '可见性',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `status` int(4) DEFAULT NULL COMMENT '数据状态',
+  `price` varchar(225) CHARACTER SET utf8 DEFAULT NULL,
+  `view` int(20) DEFAULT NULL,
+  `salenumber` int(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+  ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='签到表';
+
+
+-- -----------------------------
+-- Records of `onethink_tuanid`
+-- -----------------------------
+INSERT INTO `onethink_tuanid` VALUES (1, 5, 2, NULL, 1421570550, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `onethink_tuanid` VALUES (2, 8, 2, NULL, 1421570551, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `onethink_tuanid` VALUES (3, 9, 2, NULL, 1421570551, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `onethink_tuanid` VALUES (4, 14, 2, NULL, 1421570551, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `onethink_tuanid` VALUES (5, 15, 2, NULL, 1421570551, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `onethink_tuanid` VALUES (6, 16, 2, NULL, 1421570551, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `onethink_tuanid` VALUES (7, 17, 2, NULL, 1421570551, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `onethink_tuanid` VALUES (8, 21, 2, NULL, 1421570551, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `onethink_tuanid` VALUES (9, 33, 2, NULL, 1421570551, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `onethink_tuanid` VALUES (10, 34, 2, NULL, 1421570551, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `onethink_tuanid` VALUES (11, 35, 2, NULL, 1421570551, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `onethink_tuanid` VALUES (12, 39, 2, NULL, 1421570551, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `onethink_tuanid` VALUES (13, 40, 2, NULL, 1421570551, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `onethink_tuanid` VALUES (30, 5, 3, NULL, 1421571562, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `onethink_tuanid` VALUES (31, 8, 3, NULL, 1421571562, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `onethink_tuanid` VALUES (32, 9, 3, NULL, 1421571562, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `onethink_tuanid` VALUES (33, 14, 3, NULL, 1421571562, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `onethink_tuanid` VALUES (34, 15, 3, NULL, 1421571562, 0, NULL, NULL, 10, NULL);
+INSERT INTO `onethink_tuanid` VALUES (35, 16, 3, NULL, 1421571562, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `onethink_tuanid` VALUES (36, 17, 3, NULL, 1421571562, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `onethink_tuanid` VALUES (37, 21, 3, NULL, 1421571562, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `onethink_tuanid` VALUES (38, 33, 3, NULL, 1421571562, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `onethink_tuanid` VALUES (39, 34, 3, NULL, 1421571562, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `onethink_tuanid` VALUES (40, 35, 3, NULL, 1421571562, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `onethink_tuanid` VALUES (41, 39, 3, NULL, 1421571562, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `onethink_tuanid` VALUES (42, 5, 1, NULL, 1421573353, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `onethink_tuanid` VALUES (43, 8, 1, NULL, 1421573353, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `onethink_tuanid` VALUES (44, 9, 1, NULL, 1421573353, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `onethink_tuanid` VALUES (45, 33, 1, NULL, 1421573353, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `onethink_tuanid` VALUES (46, 34, 1, NULL, 1421573353, 0, NULL, NULL, NULL, NULL);
+
+
+-- -----------------------------
+-- Table structure for `onethink_transport`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_transport`;
+CREATE TABLE `onethink_transport` (
+  `ID` int(10) NOT NULL AUTO_INCREMENT,
+  `orderid` int(5) DEFAULT NULL,
+  `cellphone` varchar(225) CHARACTER SET utf8 DEFAULT NULL,
+  `address` varchar(225) CHARACTER SET utf8 DEFAULT NULL,
+  `realname` varchar(225) CHARACTER SET utf8 DEFAULT NULL,
+  `time` int(10) DEFAULT NULL,
+  `status` int(10) DEFAULT NULL,
+  `uid` int(10) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+  ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='收件人地址表';
+
+
+-- -----------------------------
+-- Table structure for `onethink_slide`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_slide`;
+CREATE TABLE `onethink_slide` (
+ `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '分类ID',
+  `name` varchar(30) DEFAULT NULL COMMENT '标志',
+  `title` varchar(50) DEFAULT NULL COMMENT '标题',
+  `goodid` varchar(50) DEFAULT NULL COMMENT '金额',
+  `code` varchar(255) NOT NULL COMMENT '关键字',
+  `description` varchar(255) DEFAULT NULL COMMENT '描述',
+  `link_id` int(10) unsigned DEFAULT NULL COMMENT '外链',
+  `place` tinyint(30) unsigned NOT NULL DEFAULT '0' COMMENT '是否允许发布内容',
+  `display` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '可见性',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `status` int(4) DEFAULT NULL COMMENT '数据状态',
+  `icon` int(10) unsigned DEFAULT NULL COMMENT '分类图标',
+  `pid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  UNIQUE KEY `uk_name` (`name`) USING BTREE
+  ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='幻灯片图片储存表';
+
+
+-- -----------------------------
+-- Records of `onethink_slide`
+-- -----------------------------
+
+INSERT INTO `onethink_slide` VALUES(12, NULL, '双11,5折封顶', '5,8,9,14,15,16,17,21,33,34,35,39,40,41,42,43,44', '', '', 0, 1, 1, 1421158112, 1421571586, 1, 50, 0);
+INSERT INTO `onethink_slide` VALUES(11, NULL, '电脑数码办公快“京”光', '5,8,9,14,15,16,17,21,33,34,35,39,40,41,42', '', '', 0, 1, 1, 1421158031, 1421510618, 1, 49, 0);
+INSERT INTO `onethink_slide` VALUES(9, NULL, '5656', '5,8,9,14,15,16,17,18,21', '', '', 0, 1, 1, 1421132459, 1421511163, 1, 34, 0);
+INSERT INTO `onethink_slide` VALUES(10, NULL, '66', '5,8,9,14,15,16,17,21,33,34,35,39,40,41,42,43,44', '', '', 0, 1, 1, 1421157871, 1421506519, 1, 48, 0);
+INSERT INTO `onethink_slide` VALUES(8, NULL, '56656', '5,8,9,14,15,16,17,21,33,34,35,39,40,41,42,43,44', '', '', 0, 1, 1, 0, 1421506530, 1, 33, 0);
+
+
+-- -----------------------------
+-- Table structure for `onethink_slideid`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_slideid`;
+CREATE TABLE `onethink_slideid` (
+`id` int(10) NOT NULL AUTO_INCREMENT COMMENT '分类ID',
+  `goodid` int(30) DEFAULT NULL COMMENT '标志',
+  `slidepid` int(10) unsigned DEFAULT NULL COMMENT '外链',
+  `display` tinyint(3) unsigned DEFAULT NULL COMMENT '可见性',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `status` int(4) DEFAULT NULL COMMENT '数据状态',
+  PRIMARY KEY (`id`)
+  ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='幻灯片对应商品清单表';
+
+
+-- -----------------------------
+-- Records of `onethink_slideid`
+-- -----------------------------
+INSERT INTO `onethink_slideid` VALUES(188, 5, 10, NULL, 1421505808, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(189, 8, 10, NULL, 1421505808, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(190, 9, 10, NULL, 1421505808, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(191, 13, 10, NULL, 1421505808, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(192, 14, 10, NULL, 1421505808, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(193, 15, 10, NULL, 1421505808, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(194, 16, 10, NULL, 1421505808, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(195, 17, 10, NULL, 1421505808, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(196, 18, 10, NULL, 1421505809, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(197, 21, 10, NULL, 1421505809, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(239, 5, 11, NULL, 1421510618, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(240, 8, 11, NULL, 1421510618, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(241, 9, 11, NULL, 1421510618, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(242, 14, 11, NULL, 1421510619, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(243, 15, 11, NULL, 1421510619, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(244, 16, 11, NULL, 1421510619, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(245, 17, 11, NULL, 1421510619, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(246, 21, 11, NULL, 1421510619, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(247, 33, 11, NULL, 1421510619, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(248, 34, 11, NULL, 1421510619, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(249, 35, 11, NULL, 1421510620, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(250, 39, 11, NULL, 1421510620, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(251, 40, 11, NULL, 1421510620, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(252, 41, 11, NULL, 1421510620, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(253, 42, 11, NULL, 1421510620, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(254, 5, 9, NULL, 1421511164, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(255, 8, 9, NULL, 1421511165, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(256, 9, 9, NULL, 1421511165, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(257, 14, 9, NULL, 1421511165, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(258, 15, 9, NULL, 1421511165, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(259, 16, 9, NULL, 1421511165, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(260, 17, 9, NULL, 1421511165, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(261, 18, 9, NULL, 1421511165, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(262, 21, 9, NULL, 1421511165, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(263, 5, 12, NULL, 1421571587, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(264, 8, 12, NULL, 1421571587, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(265, 9, 12, NULL, 1421571587, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(266, 14, 12, NULL, 1421571587, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(267, 15, 12, NULL, 1421571587, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(268, 16, 12, NULL, 1421571587, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(269, 17, 12, NULL, 1421571587, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(270, 21, 12, NULL, 1421571587, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(271, 33, 12, NULL, 1421571587, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(272, 34, 12, NULL, 1421571587, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(273, 35, 12, NULL, 1421571587, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(274, 39, 12, NULL, 1421571587, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(275, 40, 12, NULL, 1421571587, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(276, 41, 12, NULL, 1421571587, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(277, 42, 12, NULL, 1421571587, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(278, 43, 12, NULL, 1421571587, 0, NULL);
+INSERT INTO `onethink_slideid` VALUES(279, 44, 12, NULL, 1421571587, 0, NULL);
+
+
+-- -----------------------------
+-- Table structure for `onethink_shopcart`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_shopcart`;
+CREATE TABLE `onethink_shopcart` (
+ `ID` int(10) NOT NULL AUTO_INCREMENT,
+  `goodid` int(5) DEFAULT NULL,
+  `uid` int(5) DEFAULT NULL,
+  `num` int(50) DEFAULT NULL,
+  `ptime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ID`)
+  ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='登录用户购物车表';
+
+
+-- -----------------------------
+-- Table structure for `onethink_service`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_service`;
+CREATE TABLE `onethink_service` (
+  `ID` int(10) NOT NULL AUTO_INCREMENT,
+  `goodid` int(225) DEFAULT NULL,
+  `num` int(50) DEFAULT NULL,
+  `orderid` varchar(225) DEFAULT NULL COMMENT '订单号',
+  `time` int(10) DEFAULT NULL,
+  `title` varchar(225) DEFAULT NULL,
+  `reason` varchar(225) DEFAULT NULL,
+  `update_time` int(10) DEFAULT NULL,
+  `assistant` int(100) DEFAULT NULL,
+  `backinfo` varchar(225) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+  ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='售后服务表';
+
+
+-- -----------------------------
+-- Table structure for `onethink_pay`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_pay`;
+CREATE TABLE `onethink_pay` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `out_trade_no` varchar(100) DEFAULT NULL,
+  `money` decimal(10,2) DEFAULT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  `callback` varchar(255) DEFAULT NULL,
+  `url` varchar(255) DEFAULT NULL,
+  `param` text DEFAULT NULL,
+  `create_time` int(11) DEFAULT NULL,
+  `update_time` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+  ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='在线支付表';
+
+
+-- -----------------------------
+-- Table structure for `onethink_records`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_records`;
+CREATE TABLE `onethink_records` (
+ `ID` int(10) NOT NULL AUTO_INCREMENT,
+  `ip` varchar(225) DEFAULT NULL,
+  `url` varchar(225) DEFAULT NULL,
+  `country` varchar(225) DEFAULT NULL COMMENT '订单号',
+  `time` int(10) DEFAULT NULL,
+  `uid` int(10) DEFAULT NULL,
+  `info` varchar(225) DEFAULT NULL,
+  `province` varchar(225) DEFAULT NULL,
+  `city` varchar(225) DEFAULT NULL,
+  `referer` varchar(225) DEFAULT NULL COMMENT '访问来源',
+  `tag` int(11) DEFAULT NULL,
+  `page` varchar(225) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+  ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='ip访问记录表';
+
+
+-- -----------------------------
+-- Table structure for `onethink_order`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_order`;
+CREATE TABLE `onethink_order` (
+ `ID` int(10) NOT NULL AUTO_INCREMENT,
+  `orderid` varchar(225) DEFAULT NULL,
+  `pricetotal` decimal(50,2) NOT NULL DEFAULT '0.00',
+  `ptime` int(225) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL COMMENT '0-系统生成完成1-用户已提交订单2-3系统处理进入物流配送',
+  `assistant` varchar(225) DEFAULT '无' COMMENT '操作人',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `uid` int(225) DEFAULT NULL,
+  `shipprice` decimal(50,2) DEFAULT NULL,
+  `display` int(12) DEFAULT '1',
+  `isover` varchar(225) DEFAULT NULL,
+  `ispay` int(11) DEFAULT NULL COMMENT '1在线支付未完成2在线支付完成3-货到付款',
+  `total` decimal(50,2) DEFAULT NULL,
+  `tool` varchar(225) DEFAULT NULL COMMENT '是否默认地址',
+  `addressid` int(225) DEFAULT NULL,
+  `toolid` varchar(225) DEFAULT NULL,
+  `isdefault` int(11) DEFAULT NULL,
+  `info` varchar(225) DEFAULT NULL,
+  `backinfo` varchar(225) DEFAULT NULL,
+  `score` int(225) DEFAULT NULL,
+  `codeid` int(11) DEFAULT NULL,
+  `act_service` varchar(225) DEFAULT NULL COMMENT '退货',
+  `act_change` varchar(225) DEFAULT NULL COMMENT '售后',
+  `act_backmoney` varchar(225) DEFAULT NULL COMMENT '退款',
+  `act_confirm` varchar(225) DEFAULT NULL COMMENT '确认收货',
+  `act_getwuliu` varchar(225) DEFAULT NULL COMMENT '查看物流',
+  `act_tousu` varchar(225) DEFAULT NULL,
+  `send_name` varchar(225) DEFAULT NULL,
+  `send_contact` varchar(225) DEFAULT NULL,
+  `send_address` varchar(225) DEFAULT NULL,
+  `act_cancel` varchar(225) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+  ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='订单表';
+
+
+-- -----------------------------
+-- Table structure for `onethink_fcoupon`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_fcoupon`;
+CREATE TABLE `onethink_fcoupon` (
+`id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '分类ID',
+  `name` varchar(30) DEFAULT NULL COMMENT '标志',
+  `title` varchar(50) DEFAULT NULL COMMENT '标题',
+  `price` varchar(50) DEFAULT NULL COMMENT '金额',
+  `code` varchar(255) NOT NULL COMMENT '关键字',
+  `description` varchar(255) DEFAULT NULL COMMENT '描述',
+  `link_id` int(10) unsigned DEFAULT NULL COMMENT '外链',
+  `allow_publish` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '是否允许发布内容',
+  `display` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '可见性',
+  `reply` tinyint(3) unsigned DEFAULT NULL COMMENT '是否允许回复',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `status` int(4) DEFAULT NULL COMMENT '数据状态',
+  `icon` int(10) unsigned DEFAULT NULL COMMENT '分类图标',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  UNIQUE KEY `uk_name` (`name`) USING BTREE
+  
+  ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='优惠券表';
+
+
+-- -----------------------------
+-- Records of `onethink_fcoupon`
+-- -----------------------------
+INSERT INTO `onethink_fcoupon` VALUES(1, '645645', '肯德基', '30', '78ou16bl', '', 0, 1, 1, 0, 1414012468, 1415716837, 1, 5);
+INSERT INTO `onethink_fcoupon` VALUES(2, '645465', '麦当劳', '6644', '453ljnq7', '', 0, 1, 1, 0, 1414012758, 1414174944, 1, 11);
+INSERT INTO `onethink_fcoupon` VALUES(3, '64645', '麦考林', '656', '4nm34itt', '', 0, 1, 1, 0, 1414012817, 1414175369, 1, 14);
+INSERT INTO `onethink_fcoupon` VALUES(4, '564456', '小肥羊', '65445', 'chmvc29z', '', 0, 1, 1, 0, 1414012977, 1414174856, 1, 12);
+INSERT INTO `onethink_fcoupon` VALUES(5, '65656', '必胜客', '50', '2xs1rdw0', '', 0, 0, 1, 0, 1414174826, 1414174826, 1, 13);
+
+
+-- -----------------------------
+-- Table structure for `onethink_addons`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_addons`;
+CREATE TABLE `onethink_addons` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `name` varchar(40) NOT NULL COMMENT '插件名或标识',
   `title` varchar(20) NOT NULL DEFAULT '' COMMENT '中文名',
@@ -76,34 +788,26 @@ CREATE TABLE IF NOT EXISTS `onethink_addons` (
   `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '安装时间',
   `has_adminlist` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否有后台列表',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='插件表' AUTO_INCREMENT=26 ;
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COMMENT='插件表';
 
---
--- 转存表中的数据 `onethink_addons`
---
+-- -----------------------------
+-- Records of `onethink_addons`
+-- -----------------------------
+INSERT INTO `onethink_addons` VALUES ('15', 'EditorForAdmin', '后台编辑器', '用于增强整站长文本的输入和显示', '1', '{\"editor_type\":\"2\",\"editor_wysiwyg\":\"1\",\"editor_height\":\"500px\",\"editor_resize_type\":\"1\"}', 'thinkphp', '0.1', '1383126253', '0');
+INSERT INTO `onethink_addons` VALUES ('2', 'SiteStat', '站点统计信息', '统计站点的基础信息', '1', '{\"title\":\"\\u7cfb\\u7edf\\u4fe1\\u606f\",\"width\":\"1\",\"display\":\"1\",\"status\":\"0\"}', 'thinkphp', '0.1', '1379512015', '0');
+INSERT INTO `onethink_addons` VALUES ('3', 'DevTeam', '开发团队信息', '开发团队成员信息', '1', '{\"title\":\"OneThink\\u5f00\\u53d1\\u56e2\\u961f\",\"width\":\"2\",\"display\":\"1\"}', 'thinkphp', '0.1', '1379512022', '0');
+INSERT INTO `onethink_addons` VALUES ('4', 'SystemInfo', '系统环境信息', '用于显示一些服务器的信息', '1', '{\"title\":\"\\u7cfb\\u7edf\\u4fe1\\u606f\",\"width\":\"2\",\"display\":\"1\"}', 'thinkphp', '0.1', '1379512036', '0');
+INSERT INTO `onethink_addons` VALUES ('5', 'Editor', '前台编辑器', '用于增强整站长文本的输入和显示', '1', '{\"editor_type\":\"2\",\"editor_wysiwyg\":\"1\",\"editor_height\":\"300px\",\"editor_resize_type\":\"1\"}', 'thinkphp', '0.1', '1379830910', '0');
+INSERT INTO `onethink_addons` VALUES ('6', 'Attachment', '附件', '用于文档模型上传附件', '1', 'null', 'thinkphp', '0.1', '1379842319', '1');
+INSERT INTO `onethink_addons` VALUES ('9', 'SocialComment', '通用社交化评论', '集成了各种社交化评论插件，轻松集成到系统中。', '1', '{\"comment_type\":\"1\",\"comment_uid_youyan\":\"\",\"comment_short_name_duoshuo\":\"\",\"comment_data_list_duoshuo\":\"\"}', 'thinkphp', '0.1', '1380273962', '0');
+INSERT INTO `onethink_addons` VALUES(23, 'SyncLogin', '第三方账号同步登陆', '第三方账号同步登陆', 1, '{"type":["Qq","Sina"],"meta":"<meta property=\\\\\\\\\\\\\\"qc:admins\\\\\\\\\\\\\\" content=\\\\\\\\\\\\\\"1450655062615230706375\\\\\\\\\\\\\\" \\/>","QqKEY":"","QqSecret":"","SinaKEY":"","SinaSecret":""}', 'yidian', '0.1', 1412762818, 0);
 
-INSERT INTO `onethink_addons` (`id`, `name`, `title`, `description`, `status`, `config`, `author`, `version`, `create_time`, `has_adminlist`) VALUES
-(15, 'EditorForAdmin', '后台编辑器', '用于增强整站长文本的输入和显示', 1, '{"editor_type":"2","editor_wysiwyg":"1","editor_height":"500px","editor_resize_type":"1"}', 'thinkphp', '0.1', 1383126253, 0),
-(2, 'SiteStat', '站点统计信息', '统计站点的基础信息', 1, '{"title":"\\u7cfb\\u7edf\\u4fe1\\u606f","width":"1","display":"1","status":"0"}', 'thinkphp', '0.1', 1379512015, 0),
-(3, 'DevTeam', '开发团队信息', '开发团队成员信息', 0, '{"title":"OneThink\\u5f00\\u53d1\\u56e2\\u961f","width":"2","display":"1"}', 'thinkphp', '0.1', 1379512022, 0),
-(4, 'SystemInfo', '系统环境信息', '用于显示一些服务器的信息', 1, '{"title":"\\u7cfb\\u7edf\\u4fe1\\u606f","width":"2","display":"1"}', 'thinkphp', '0.1', 1379512036, 0),
-(5, 'Editor', '前台编辑器', '用于增强整站长文本的输入和显示', 1, '{"editor_type":"2","editor_wysiwyg":"1","editor_height":"300px","editor_resize_type":"1"}', 'thinkphp', '0.1', 1379830910, 0),
-(6, 'Attachment', '附件', '用于文档模型上传附件', 1, 'null', 'thinkphp', '0.1', 1379842319, 1),
-(9, 'SocialComment', '通用社交化评论', '集成了各种社交化评论插件，轻松集成到系统中。', 1, '{"comment_type":"1","comment_uid_youyan":"","comment_short_name_duoshuo":"","comment_data_list_duoshuo":""}', 'thinkphp', '0.1', 1380273962, 0),
-(16, 'OTcaiji', 'OT采集', 'OT采集插件', 1, '{"codelogin":1,"KEYWORDS":"","URL":"","LIST":"","TITLE":"","CONTENT":""}', 'Marvin(柳英伟)', '0.2', 1411634246, 1),
-(17, 'ReturnTop', '返回顶部', '回到顶部美化，随机或指定显示，100款样式，每天一种换，天天都用新样式', 0, '{"random":"0","current":"79"}', 'thinkphp', '0.1', 1411634594, 0),
-(22, 'AliPlay', '支付宝', '支付宝插件,后台配置支持变量。如：价格：$GOODS["price"].但是配置的变量要和数据库商品信息一致。', 1, '{"pay_type":"1","codelogin":"1","PARTNER":"5456464","KEY":"546","SELLER_EMAIL":"54645464","NOTIFY_URL":"","RETURN_URL":"","out_trade_no":"132564546564","subject":"132564546564","price":"{$goodprice}","logistics_fee":"10","logistics_type":"EXPRESS","logistics_payment":"SELLER_PAY","body":"","show_url":"132564546564","receive_name":"","receive_address":"","receive_zip":"","receive_mobile":"13312341234","receive_phone":"13312341234"}', 'Marvin(柳英伟)', '2.0', 1412762558, 0),
-(19, 'Iyo9Table', '点击成可编辑插件', '向着要编辑的位置点击一下，访位置会变成一个可编辑的input标签，编辑好后，鼠标再点击空白地方，即可保存', 1, 'null', 'i友街', '0.1', 1411636824, 0),
-(21, 'Template', '模版管理', '模版在线编辑插件', 1, 'null', 'Marvin(柳英伟)', '1.0', 1411637366, 1),
-(23, 'SyncLogin', '第三方账号同步登陆', '第三方账号同步登陆', 1, '{"type":["Qq","Sina"],"meta":"","QqKEY":"","QqSecret":"","SinaKEY":"","SinaSecret":""}', 'yidian', '0.1', 1412762818, 0);
 
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_attachment`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_attachment` (
+-- -----------------------------
+-- Table structure for `onethink_attachment`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_attachment`;
+CREATE TABLE `onethink_attachment` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `uid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
   `title` char(30) NOT NULL DEFAULT '' COMMENT '附件显示名',
@@ -119,20 +823,14 @@ CREATE TABLE IF NOT EXISTS `onethink_attachment` (
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态',
   PRIMARY KEY (`id`),
   KEY `idx_record_status` (`record_id`,`status`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='附件表' AUTO_INCREMENT=1 ;
-
---
--- 转存表中的数据 `onethink_attachment`
---
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='附件表';
 
 
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_attribute`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_attribute` (
+-- -----------------------------
+-- Table structure for `onethink_attribute`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_attribute`;
+CREATE TABLE `onethink_attribute` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(30) NOT NULL DEFAULT '' COMMENT '字段名',
   `title` varchar(100) NOT NULL DEFAULT '' COMMENT '字段注释',
@@ -147,74 +845,70 @@ CREATE TABLE IF NOT EXISTS `onethink_attribute` (
   `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `validate_rule` varchar(255) NOT NULL,
-  `validate_time` tinyint(1) unsigned NOT NULL,
-  `error_info` varchar(100) NOT NULL,
-  `validate_type` varchar(25) NOT NULL,
-  `auto_rule` varchar(100) NOT NULL,
-  `auto_time` tinyint(1) unsigned NOT NULL,
-  `auto_type` varchar(25) NOT NULL,
+  `validate_rule` varchar(255) NOT NULL DEFAULT '',
+  `validate_time` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `error_info` varchar(100) NOT NULL DEFAULT '',
+  `validate_type` varchar(25) NOT NULL DEFAULT '',
+  `auto_rule` varchar(100) NOT NULL DEFAULT '',
+  `auto_time` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `auto_type` varchar(25) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
-  KEY `model_id` (`model_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='模型属性表' AUTO_INCREMENT=47 ;
+    KEY `model_id` (`model_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=33 DEFAULT CHARSET=utf8 COMMENT='模型属性表';
 
---
--- 转存表中的数据 `onethink_attribute`
---
+-- -----------------------------
+-- Records of `onethink_attribute`
+-- -----------------------------
+INSERT INTO `onethink_attribute` VALUES ('1', 'uid', '用户ID', 'int(10) unsigned NOT NULL ', 'num', '0', '', '0', '', '1', '0', '1', '1384508362', '1383891233', '', '0', '', '', '', '0', '');
+INSERT INTO `onethink_attribute` VALUES ('2', 'name', '标识', 'char(40) NOT NULL ', 'string', '', '同一根节点下标识不重复', '1', '', '1', '0', '1', '1383894743', '1383891233', '', '0', '', '', '', '0', '');
+INSERT INTO `onethink_attribute` VALUES ('3', 'title', '标题', 'char(80) NOT NULL ', 'string', '', '文档标题', '1', '', '1', '0', '1', '1383894778', '1383891233', '', '0', '', '', '', '0', '');
+INSERT INTO `onethink_attribute` VALUES ('4', 'category_id', '所属分类', 'int(10) unsigned NOT NULL ', 'string', '', '', '0', '', '1', '0', '1', '1384508336', '1383891233', '', '0', '', '', '', '0', '');
+INSERT INTO `onethink_attribute` VALUES ('5', 'description', '描述', 'char(140) NOT NULL ', 'textarea', '', '', '1', '', '1', '0', '1', '1383894927', '1383891233', '', '0', '', '', '', '0', '');
+INSERT INTO `onethink_attribute` VALUES ('6', 'root', '根节点', 'int(10) unsigned NOT NULL ', 'num', '0', '该文档的顶级文档编号', '0', '', '1', '0', '1', '1384508323', '1383891233', '', '0', '', '', '', '0', '');
+INSERT INTO `onethink_attribute` VALUES ('7', 'pid', '所属ID', 'int(10) unsigned NOT NULL ', 'num', '0', '父文档编号', '0', '', '1', '0', '1', '1384508543', '1383891233', '', '0', '', '', '', '0', '');
+INSERT INTO `onethink_attribute` VALUES ('8', 'model_id', '内容模型ID', 'tinyint(3) unsigned NOT NULL ', 'num', '0', '该文档所对应的模型', '0', '', '1', '0', '1', '1384508350', '1383891233', '', '0', '', '', '', '0', '');
+INSERT INTO `onethink_attribute` VALUES ('9', 'type', '内容类型', 'tinyint(3) unsigned NOT NULL ', 'select', '2', '', '1', '1:目录\r\n2:主题\r\n3:段落', '1', '0', '1', '1384511157', '1383891233', '', '0', '', '', '', '0', '');
+INSERT INTO `onethink_attribute` VALUES ('10', 'position', '推荐位', 'smallint(5) unsigned NOT NULL ', 'checkbox', '0', '多个推荐则将其推荐值相加', '1', '[DOCUMENT_POSITION]', '1', '0', '1', '1383895640', '1383891233', '', '0', '', '', '', '0', '');
+INSERT INTO `onethink_attribute` VALUES ('11', 'link_id', '外链', 'int(10) unsigned NOT NULL ', 'num', '0', '0-非外链，大于0-外链ID,需要函数进行链接与编号的转换', '1', '', '1', '0', '1', '1383895757', '1383891233', '', '0', '', '', '', '0', '');
+INSERT INTO `onethink_attribute` VALUES ('12', 'cover_id', '封面', 'int(10) unsigned NOT NULL ', 'picture', '0', '0-无封面，大于0-封面图片ID，需要函数处理', '1', '', '1', '0', '1', '1384147827', '1383891233', '', '0', '', '', '', '0', '');
+INSERT INTO `onethink_attribute` VALUES ('13', 'display', '可见性', 'tinyint(3) unsigned NOT NULL ', 'radio', '1', '', '1', '0:不可见\r\n1:所有人可见', '1', '0', '1', '1386662271', '1383891233', '', '0', '', 'regex', '', '0', 'function');
+INSERT INTO `onethink_attribute` VALUES ('14', 'deadline', '截至时间', 'int(10) unsigned NOT NULL ', 'datetime', '0', '0-永久有效', '1', '', '1', '0', '1', '1387163248', '1383891233', '', '0', '', 'regex', '', '0', 'function');
+INSERT INTO `onethink_attribute` VALUES ('15', 'attach', '附件数量', 'tinyint(3) unsigned NOT NULL ', 'num', '0', '', '0', '', '1', '0', '1', '1387260355', '1383891233', '', '0', '', 'regex', '', '0', 'function');
+INSERT INTO `onethink_attribute` VALUES ('16', 'view', '浏览量', 'int(10) unsigned NOT NULL ', 'num', '0', '', '1', '', '1', '0', '1', '1383895835', '1383891233', '', '0', '', '', '', '0', '');
+INSERT INTO `onethink_attribute` VALUES ('17', 'comment', '评论数', 'int(10) unsigned NOT NULL ', 'num', '0', '', '1', '', '1', '0', '1', '1383895846', '1383891233', '', '0', '', '', '', '0', '');
+INSERT INTO `onethink_attribute` VALUES ('18', 'extend', '扩展统计字段', 'int(10) unsigned NOT NULL ', 'num', '0', '根据需求自行使用', '0', '', '1', '0', '1', '1384508264', '1383891233', '', '0', '', '', '', '0', '');
+INSERT INTO `onethink_attribute` VALUES ('19', 'level', '优先级', 'int(10) unsigned NOT NULL ', 'num', '0', '越高排序越靠前', '1', '', '1', '0', '1', '1383895894', '1383891233', '', '0', '', '', '', '0', '');
+INSERT INTO `onethink_attribute` VALUES ('20', 'create_time', '创建时间', 'int(10) unsigned NOT NULL ', 'datetime', '0', '', '1', '', '1', '0', '1', '1383895903', '1383891233', '', '0', '', '', '', '0', '');
+INSERT INTO `onethink_attribute` VALUES ('21', 'update_time', '更新时间', 'int(10) unsigned NOT NULL ', 'datetime', '0', '', '0', '', '1', '0', '1', '1384508277', '1383891233', '', '0', '', '', '', '0', '');
+INSERT INTO `onethink_attribute` VALUES ('22', 'status', '数据状态', 'tinyint(4) NOT NULL ', 'radio', '0', '', '0', '-1:删除\r\n0:禁用\r\n1:正常\r\n2:待审核\r\n3:草稿', '1', '0', '1', '1384508496', '1383891233', '', '0', '', '', '', '0', '');
+INSERT INTO `onethink_attribute` VALUES ('23', 'parse', '内容解析类型', 'tinyint(3) unsigned NOT NULL ', 'select', '0', '', '0', '0:html\r\n1:ubb\r\n2:markdown', '2', '0', '1', '1384511049', '1383891243', '', '0', '', '', '', '0', '');
+INSERT INTO `onethink_attribute` VALUES ('24', 'content', '文章内容', 'text NOT NULL ', 'editor', '', '', '1', '', '2', '0', '1', '1383896225', '1383891243', '', '0', '', '', '', '0', '');
+INSERT INTO `onethink_attribute` VALUES ('25', 'template', '详情页显示模板', 'varchar(100) NOT NULL ', 'string', '', '参照display方法参数的定义', '1', '', '2', '0', '1', '1383896190', '1383891243', '', '0', '', '', '', '0', '');
+INSERT INTO `onethink_attribute` VALUES ('26', 'bookmark', '收藏数', 'int(10) unsigned NOT NULL ', 'num', '0', '', '1', '', '2', '0', '1', '1383896103', '1383891243', '', '0', '', '', '', '0', '');
+INSERT INTO `onethink_attribute` VALUES ('27', 'parse', '内容解析类型', 'tinyint(3) unsigned NOT NULL ', 'select', '0', '', '0', '0:html\r\n1:ubb\r\n2:markdown', '3', '0', '1', '1387260461', '1383891252', '', '0', '', 'regex', '', '0', 'function');
+INSERT INTO `onethink_attribute` VALUES ('28', 'content', '下载详细描述', 'text NOT NULL ', 'editor', '', '', '1', '', '3', '0', '1', '1383896438', '1383891252', '', '0', '', '', '', '0', '');
+INSERT INTO `onethink_attribute` VALUES ('29', 'template', '详情页显示模板', 'varchar(100) NOT NULL ', 'string', '', '', '1', '', '3', '0', '1', '1383896429', '1383891252', '', '0', '', '', '', '0', '');
+INSERT INTO `onethink_attribute` VALUES ('30', 'file_id', '文件ID', 'int(10) unsigned NOT NULL ', 'file', '0', '需要函数处理', '1', '', '3', '0', '1', '1383896415', '1383891252', '', '0', '', '', '', '0', '');
+INSERT INTO `onethink_attribute` VALUES ('31', 'download', '下载次数', 'int(10) unsigned NOT NULL ', 'num', '0', '', '1', '', '3', '0', '1', '1383896380', '1383891252', '', '0', '', '', '', '0', '');
+INSERT INTO `onethink_attribute` VALUES ('32', 'size', '文件大小', 'bigint(20) unsigned NOT NULL ', 'num', '0', '单位bit', '1', '', '3', '0', '1', '1383896371', '1383891252', '', '0', '', '', '', '0', '');
+INSERT INTO `onethink_attribute` VALUES (36, 'content', '内容详细描述', 'text NOT NULL', 'editor', '', '', 1, '', 5, 0, 1, 1416804356, 1411376156, '', 3, '', 'regex', '', 3, 'function');
+INSERT INTO `onethink_attribute` VALUES (35, 'price', '价格', 'varchar(255) NOT NULL', 'string', '1.00', '', 1, '', 5, 0, 1, 1411430769, 1411375944, '', 3, '', 'regex', '', 3, 'function');
+INSERT INTO `onethink_attribute` VALUES (37, 'weight', '净重', 'varchar(255) NOT NULL', 'string', '500', 'g', 1, '', 5, 0, 1, 1411927788, 1411379961, '', 3, '', 'regex', '', 3, 'function');
+INSERT INTO `onethink_attribute` VALUES (38, 'totalsales', '总销量', 'int(10) UNSIGNED NOT NULL', 'num', '', '', 1, '', 5, 0, 1, 1411380076, 1411380076, '', 3, '', 'regex', '', 3, 'function');
+INSERT INTO `onethink_attribute` VALUES (39, 'area', '产地', 'varchar(255) NOT NULL', 'string', '中国大陆', '', 1, '', 5, 0, 1, 1411380147, 1411380147, '', 3, '', 'regex', '', 3, 'function');
+INSERT INTO `onethink_attribute` VALUES (50, 'ads_pic_id', '广告图片', 'int(10) UNSIGNED NOT NULL', 'picture', '', '', 1, '', 5, 0, 1, 1422886159, 1422886070, '', 3, '', 'regex', '', 3, 'function');
+INSERT INTO `onethink_attribute` VALUES (42, 'yprice', '原价', 'varchar(255) NOT NULL', 'string', '', '产品原价', 1, '', 5, 0, 1, 1411919829, 1411919829, '', 3, '', 'regex', '', 3, 'function');
+INSERT INTO `onethink_attribute` VALUES (43, 'mark', '附加标签', 'varchar(255) NOT NULL', 'string', '', '1-最新上架，2-限时抢购，3-热卖商品，4-限时折扣', 1, '', 5, 0, 1, 1412016261, 1412016196, '', 3, '', 'regex', '', 3, 'function');
+INSERT INTO `onethink_attribute` VALUES (44, 'unionid', '关联商品', 'varchar(255) NOT NULL', 'string', '', '关联商品id,如3、9、10，顿号号隔开', 1, '', 5, 0, 1, 1422019254, 1413845084, '', 3, '', 'regex', '', 3, 'function');
+INSERT INTO `onethink_attribute` VALUES (47, 'shorttitle', '商品简称', 'varchar(255) NOT NULL', 'string', '', '商品简称', 1, '', 5, 0, 1, 1414329390, 1414329390, '', 3, '', 'regex', '', 3, 'function');
+INSERT INTO `onethink_attribute` VALUES (46, 'stock', '库存', 'int(10) UNSIGNED NOT NULL', 'num', '10', '商品库存数量', 1, '', 5, 0, 1, 1414669588, 1414177236, '', 3, '', 'regex', '', 3, 'function');
+INSERT INTO `onethink_attribute` VALUES (49, 'pics', '图集', 'varchar(255) NOT NULL', 'pictures', '', '', 1, '', 5, 0, 1, 1421992389, 1415713073, '', 3, '', 'regex', '', 3, 'function');
 
-INSERT INTO `onethink_attribute` (`id`, `name`, `title`, `field`, `type`, `value`, `remark`, `is_show`, `extra`, `model_id`, `is_must`, `status`, `update_time`, `create_time`, `validate_rule`, `validate_time`, `error_info`, `validate_type`, `auto_rule`, `auto_time`, `auto_type`) VALUES
-(1, 'uid', '用户ID', 'int(10) unsigned NOT NULL ', 'num', '0', '', 0, '', 1, 0, 1, 1384508362, 1383891233, '', 0, '', '', '', 0, ''),
-(2, 'name', '标识', 'char(40) NOT NULL ', 'string', '', '同一根节点下标识不重复', 1, '', 1, 0, 1, 1383894743, 1383891233, '', 0, '', '', '', 0, ''),
-(3, 'title', '标题', 'char(80) NOT NULL ', 'string', '', '文档标题', 1, '', 1, 0, 1, 1383894778, 1383891233, '', 0, '', '', '', 0, ''),
-(4, 'category_id', '所属分类', 'int(10) unsigned NOT NULL ', 'string', '', '', 0, '', 1, 0, 1, 1384508336, 1383891233, '', 0, '', '', '', 0, ''),
-(5, 'description', '描述', 'char(140) NOT NULL ', 'textarea', '', '', 1, '', 1, 0, 1, 1383894927, 1383891233, '', 0, '', '', '', 0, ''),
-(6, 'root', '根节点', 'int(10) unsigned NOT NULL ', 'num', '0', '该文档的顶级文档编号', 0, '', 1, 0, 1, 1384508323, 1383891233, '', 0, '', '', '', 0, ''),
-(7, 'pid', '所属ID', 'int(10) unsigned NOT NULL ', 'num', '0', '父文档编号', 0, '', 1, 0, 1, 1384508543, 1383891233, '', 0, '', '', '', 0, ''),
-(8, 'model_id', '内容模型ID', 'tinyint(3) unsigned NOT NULL ', 'num', '0', '该文档所对应的模型', 0, '', 1, 0, 1, 1384508350, 1383891233, '', 0, '', '', '', 0, ''),
-(9, 'type', '内容类型', 'tinyint(3) unsigned NOT NULL ', 'select', '2', '', 1, '1:目录\r\n2:主题\r\n3:段落', 1, 0, 1, 1384511157, 1383891233, '', 0, '', '', '', 0, ''),
-(10, 'position', '推荐位', 'smallint(5) unsigned NOT NULL ', 'checkbox', '0', '多个推荐则将其推荐值相加', 1, '[DOCUMENT_POSITION]', 1, 0, 1, 1383895640, 1383891233, '', 0, '', '', '', 0, ''),
-(11, 'link_id', '外链', 'int(10) unsigned NOT NULL ', 'num', '0', '0-非外链，大于0-外链ID,需要函数进行链接与编号的转换', 1, '', 1, 0, 1, 1383895757, 1383891233, '', 0, '', '', '', 0, ''),
-(12, 'cover_id', '封面', 'int(10) unsigned NOT NULL ', 'picture', '0', '0-无封面，大于0-封面图片ID，需要函数处理', 1, '', 1, 0, 1, 1384147827, 1383891233, '', 0, '', '', '', 0, ''),
-(13, 'display', '可见性', 'tinyint(3) unsigned NOT NULL ', 'radio', '1', '', 1, '0:不可见\r\n1:所有人可见', 1, 0, 1, 1386662271, 1383891233, '', 0, '', 'regex', '', 0, 'function'),
-(14, 'deadline', '截至时间', 'int(10) unsigned NOT NULL ', 'datetime', '0', '0-永久有效', 1, '', 1, 0, 1, 1387163248, 1383891233, '', 0, '', 'regex', '', 0, 'function'),
-(15, 'attach', '附件数量', 'tinyint(3) unsigned NOT NULL ', 'num', '0', '', 0, '', 1, 0, 1, 1387260355, 1383891233, '', 0, '', 'regex', '', 0, 'function'),
-(16, 'view', '浏览量', 'int(10) unsigned NOT NULL ', 'num', '0', '', 1, '', 1, 0, 1, 1383895835, 1383891233, '', 0, '', '', '', 0, ''),
-(17, 'comment', '评论数', 'int(10) unsigned NOT NULL ', 'num', '0', '', 1, '', 1, 0, 1, 1383895846, 1383891233, '', 0, '', '', '', 0, ''),
-(18, 'extend', '扩展统计字段', 'int(10) unsigned NOT NULL ', 'num', '0', '根据需求自行使用', 0, '', 1, 0, 1, 1384508264, 1383891233, '', 0, '', '', '', 0, ''),
-(19, 'level', '优先级', 'int(10) unsigned NOT NULL ', 'num', '0', '越高排序越靠前', 1, '', 1, 0, 1, 1383895894, 1383891233, '', 0, '', '', '', 0, ''),
-(20, 'create_time', '创建时间', 'int(10) unsigned NOT NULL ', 'datetime', '0', '', 1, '', 1, 0, 1, 1383895903, 1383891233, '', 0, '', '', '', 0, ''),
-(21, 'update_time', '更新时间', 'int(10) unsigned NOT NULL ', 'datetime', '0', '', 0, '', 1, 0, 1, 1384508277, 1383891233, '', 0, '', '', '', 0, ''),
-(22, 'status', '数据状态', 'tinyint(4) NOT NULL ', 'radio', '0', '', 0, '-1:删除\r\n0:禁用\r\n1:正常\r\n2:待审核\r\n3:草稿', 1, 0, 1, 1384508496, 1383891233, '', 0, '', '', '', 0, ''),
-(23, 'parse', '内容解析类型', 'tinyint(3) unsigned NOT NULL ', 'select', '0', '', 0, '0:html\r\n1:ubb\r\n2:markdown', 2, 0, 1, 1384511049, 1383891243, '', 0, '', '', '', 0, ''),
-(24, 'content', '文章内容', 'text NOT NULL ', 'editor', '', '', 1, '', 2, 0, 1, 1383896225, 1383891243, '', 0, '', '', '', 0, ''),
-(25, 'template', '详情页显示模板', 'varchar(100) NOT NULL ', 'string', '', '参照display方法参数的定义', 1, '', 2, 0, 1, 1383896190, 1383891243, '', 0, '', '', '', 0, ''),
-(26, 'bookmark', '收藏数', 'int(10) unsigned NOT NULL ', 'num', '0', '', 1, '', 2, 0, 1, 1383896103, 1383891243, '', 0, '', '', '', 0, ''),
-(27, 'parse', '内容解析类型', 'tinyint(3) unsigned NOT NULL ', 'select', '0', '', 0, '0:html\r\n1:ubb\r\n2:markdown', 3, 0, 1, 1387260461, 1383891252, '', 0, '', 'regex', '', 0, 'function'),
-(28, 'content', '下载详细描述', 'text NOT NULL ', 'editor', '', '', 1, '', 3, 0, 1, 1383896438, 1383891252, '', 0, '', '', '', 0, ''),
-(29, 'template', '详情页显示模板', 'varchar(100) NOT NULL ', 'string', '', '', 1, '', 3, 0, 1, 1383896429, 1383891252, '', 0, '', '', '', 0, ''),
-(30, 'file_id', '文件ID', 'int(10) unsigned NOT NULL ', 'file', '0', '需要函数处理', 1, '', 3, 0, 1, 1383896415, 1383891252, '', 0, '', '', '', 0, ''),
-(31, 'download', '下载次数', 'int(10) unsigned NOT NULL ', 'num', '0', '', 1, '', 3, 0, 1, 1383896380, 1383891252, '', 0, '', '', '', 0, ''),
-(32, 'size', '文件大小', 'bigint(20) unsigned NOT NULL ', 'num', '0', '单位bit', 1, '', 3, 0, 1, 1383896371, 1383891252, '', 0, '', '', '', 0, ''),
-(36, 'content', '内容详细描述', 'text NOT NULL', 'editor', '', '', 1, '', 5, 0, 1, 1411376156, 1411376156, '', 3, '', 'regex', '', 3, 'function'),
-(35, 'price', '价格', 'varchar(255) NOT NULL', 'string', '1.00', '', 1, '', 5, 0, 1, 1411430769, 1411375944, '', 3, '', 'regex', '', 3, 'function'),
-(37, 'weight', '净重', 'varchar(255) NOT NULL', 'string', '500', 'g', 1, '', 5, 0, 1, 1411927788, 1411379961, '', 3, '', 'regex', '', 3, 'function'),
-(38, 'totalsales', '总销量', 'int(10) UNSIGNED NOT NULL', 'num', '', '', 1, '', 5, 0, 1, 1411380076, 1411380076, '', 3, '', 'regex', '', 3, 'function'),
-(39, 'area', '产地', 'varchar(255) NOT NULL', 'string', '中国大陆', '', 1, '', 5, 0, 1, 1411380147, 1411380147, '', 3, '', 'regex', '', 3, 'function'),
-(40, 'ads_pic_id', '首页幻灯大图', 'int(10) UNSIGNED NOT NULL', 'picture', '', '首页幻灯大图', 1, '', 5, 0, 1, 1411815168, 1411815168, '', 3, '', 'regex', '', 3, 'function'),
-(41, 'adtitle', '广告宣传标题', 'varchar(255) NOT NULL', 'string', '', '副标题', 1, '', 5, 0, 1, 1411815491, 1411815491, '', 3, '', 'regex', '', 3, 'function'),
-(42, 'yprice', '原价', 'varchar(255) NOT NULL', 'string', '', '产品原价', 1, '', 5, 0, 1, 1411919829, 1411919829, '', 3, '', 'regex', '', 3, 'function'),
-(43, 'mark', '附加标签', 'varchar(255) NOT NULL', 'string', '', '1-最新上架，2-限时抢购，3-热卖商品，4-限时折扣', 1, '', 5, 0, 1, 1412016261, 1412016196, '', 3, '', 'regex', '', 3, 'function'),
-(44, 'unionid', '关联商品', 'varchar(255) NOT NULL', 'string', '', '关联商品id,如3,9,10，逗号隔开', 1, '', 5, 0, 1, 1413845084, 1413845084, '', 3, '', 'regex', '', 3, 'function'),
-(45, 'price', '优惠券价值', '优惠券价值', '', '', '', 1, '', 7, 0, 1, 1414003061, 1414003061, '', 3, '', 'regex', '', 3, 'function'),
-(46, 'num', '库存', 'int(10) UNSIGNED NOT NULL', 'num', '1', '商品库存数量', 1, '', 5, 0, 1, 1414177236, 1414177236, '', 3, '', 'regex', '', 3, 'function');
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_auth_extend`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_auth_extend` (
+-- -----------------------------
+-- Table structure for `onethink_auth_extend`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_auth_extend`;
+CREATE TABLE `onethink_auth_extend` (
   `group_id` mediumint(10) unsigned NOT NULL COMMENT '用户id',
   `extend_id` mediumint(8) unsigned NOT NULL COMMENT '扩展表中数据的id',
   `type` tinyint(1) unsigned NOT NULL COMMENT '扩展类型标识 1:栏目分类权限;2:模型权限',
@@ -223,52 +917,44 @@ CREATE TABLE IF NOT EXISTS `onethink_auth_extend` (
   KEY `group_id` (`extend_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户组与分类的对应关系表';
 
---
--- 转存表中的数据 `onethink_auth_extend`
---
+-- -----------------------------
+-- Records of `onethink_auth_extend`
+-- -----------------------------
+INSERT INTO `onethink_auth_extend` VALUES ('1', '1', '1');
+INSERT INTO `onethink_auth_extend` VALUES ('1', '1', '2');
+INSERT INTO `onethink_auth_extend` VALUES ('1', '2', '1');
+INSERT INTO `onethink_auth_extend` VALUES ('1', '2', '2');
+INSERT INTO `onethink_auth_extend` VALUES ('1', '3', '1');
+INSERT INTO `onethink_auth_extend` VALUES ('1', '3', '2');
+INSERT INTO `onethink_auth_extend` VALUES ('1', '4', '1');
+INSERT INTO `onethink_auth_extend` VALUES ('1', '37', '1');
 
-INSERT INTO `onethink_auth_extend` (`group_id`, `extend_id`, `type`) VALUES
-(1, 1, 1),
-(1, 1, 2),
-(1, 2, 1),
-(1, 2, 2),
-(1, 3, 1),
-(1, 3, 2),
-(1, 4, 1),
-(1, 37, 1);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_auth_group`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_auth_group` (
+-- -----------------------------
+-- Table structure for `onethink_auth_group`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_auth_group`;
+CREATE TABLE `onethink_auth_group` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户组id,自增主键',
-  `module` varchar(20) NOT NULL COMMENT '用户组所属模块',
-  `type` tinyint(4) NOT NULL COMMENT '组类型',
+  `module` varchar(20) NOT NULL DEFAULT '' COMMENT '用户组所属模块',
+  `type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '组类型',
   `title` char(20) NOT NULL DEFAULT '' COMMENT '用户组中文名称',
   `description` varchar(80) NOT NULL DEFAULT '' COMMENT '描述信息',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '用户组状态：为1正常，为0禁用,-1为删除',
   `rules` varchar(500) NOT NULL DEFAULT '' COMMENT '用户组拥有的规则id，多个规则 , 隔开',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
---
--- 转存表中的数据 `onethink_auth_group`
---
+-- -----------------------------
+-- Records of `onethink_auth_group`
+-- -----------------------------
+INSERT INTO `onethink_auth_group` VALUES ('1', 'admin', '1', '默认用户组', '', '1', '1,2,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,79,80,81,82,83,84,86,87,88,89,90,91,92,93,94,95,96,97,100,102,103,105,106');
+INSERT INTO `onethink_auth_group` VALUES ('2', 'admin', '1', '测试用户', '测试用户', '1', '1,2,5,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,79,80,82,83,84,88,89,90,91,92,93,96,97,100,102,103,195');
 
-INSERT INTO `onethink_auth_group` (`id`, `module`, `type`, `title`, `description`, `status`, `rules`) VALUES
-(1, 'admin', 1, '默认用户组', '', 1, '1,2,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,79,80,81,82,83,84,86,87,88,89,90,91,92,93,94,95,96,97,100,102,103,105,106'),
-(2, 'admin', 1, '测试用户', '测试用户', 1, '1,2,5,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,79,80,82,83,84,88,89,90,91,92,93,96,97,100,102,103,195');
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_auth_group_access`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_auth_group_access` (
+-- -----------------------------
+-- Table structure for `onethink_auth_group_access`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_auth_group_access`;
+CREATE TABLE `onethink_auth_group_access` (
   `uid` int(10) unsigned NOT NULL COMMENT '用户id',
   `group_id` mediumint(8) unsigned NOT NULL COMMENT '用户组id',
   UNIQUE KEY `uid_group_id` (`uid`,`group_id`),
@@ -276,18 +962,12 @@ CREATE TABLE IF NOT EXISTS `onethink_auth_group_access` (
   KEY `group_id` (`group_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
---
--- 转存表中的数据 `onethink_auth_group_access`
---
 
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_auth_rule`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_auth_rule` (
+-- -----------------------------
+-- Table structure for `onethink_auth_rule`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_auth_rule`;
+CREATE TABLE `onethink_auth_rule` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '规则id,自增主键',
   `module` varchar(20) NOT NULL COMMENT '规则所属module',
   `type` tinyint(2) NOT NULL DEFAULT '1' COMMENT '1-url;2-主菜单',
@@ -297,288 +977,230 @@ CREATE TABLE IF NOT EXISTS `onethink_auth_rule` (
   `condition` varchar(300) NOT NULL DEFAULT '' COMMENT '规则附加条件',
   PRIMARY KEY (`id`),
   KEY `module` (`module`,`status`,`type`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=236 ;
+) ENGINE=MyISAM AUTO_INCREMENT=217 DEFAULT CHARSET=utf8;
 
---
--- 转存表中的数据 `onethink_auth_rule`
---
+-- -----------------------------
+-- Records of `onethink_auth_rule`
+-- -----------------------------
+INSERT INTO `onethink_auth_rule` VALUES ('1', 'admin', '2', 'Admin/Index/index', '首页', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('2', 'admin', '2', 'Admin/Article/index', '内容', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('3', 'admin', '2', 'Admin/User/index', '用户', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('4', 'admin', '2', 'Admin/Addons/index', '扩展', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('5', 'admin', '2', 'Admin/Config/group', '系统', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('7', 'admin', '1', 'Admin/article/add', '新增', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('8', 'admin', '1', 'Admin/article/edit', '编辑', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('9', 'admin', '1', 'Admin/article/setStatus', '改变状态', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('10', 'admin', '1', 'Admin/article/update', '保存', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('11', 'admin', '1', 'Admin/article/autoSave', '保存草稿', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('12', 'admin', '1', 'Admin/article/move', '移动', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('13', 'admin', '1', 'Admin/article/copy', '复制', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('14', 'admin', '1', 'Admin/article/paste', '粘贴', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('15', 'admin', '1', 'Admin/article/permit', '还原', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('16', 'admin', '1', 'Admin/article/clear', '清空', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('17', 'admin', '1', 'Admin/article/examine', '审核列表', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('18', 'admin', '1', 'Admin/article/recycle', '回收站', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('19', 'admin', '1', 'Admin/User/addaction', '新增用户行为', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('20', 'admin', '1', 'Admin/User/editaction', '编辑用户行为', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('21', 'admin', '1', 'Admin/User/saveAction', '保存用户行为', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('22', 'admin', '1', 'Admin/User/setStatus', '变更行为状态', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('23', 'admin', '1', 'Admin/User/changeStatus?method=forbidUser', '禁用会员', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('24', 'admin', '1', 'Admin/User/changeStatus?method=resumeUser', '启用会员', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('25', 'admin', '1', 'Admin/User/changeStatus?method=deleteUser', '删除会员', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('26', 'admin', '1', 'Admin/User/index', '用户信息', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('27', 'admin', '1', 'Admin/User/action', '用户行为', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('28', 'admin', '1', 'Admin/AuthManager/changeStatus?method=deleteGroup', '删除', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('29', 'admin', '1', 'Admin/AuthManager/changeStatus?method=forbidGroup', '禁用', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('30', 'admin', '1', 'Admin/AuthManager/changeStatus?method=resumeGroup', '恢复', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('31', 'admin', '1', 'Admin/AuthManager/createGroup', '新增', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('32', 'admin', '1', 'Admin/AuthManager/editGroup', '编辑', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('33', 'admin', '1', 'Admin/AuthManager/writeGroup', '保存用户组', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('34', 'admin', '1', 'Admin/AuthManager/group', '授权', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('35', 'admin', '1', 'Admin/AuthManager/access', '访问授权', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('36', 'admin', '1', 'Admin/AuthManager/user', '成员授权', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('37', 'admin', '1', 'Admin/AuthManager/removeFromGroup', '解除授权', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('38', 'admin', '1', 'Admin/AuthManager/addToGroup', '保存成员授权', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('39', 'admin', '1', 'Admin/AuthManager/category', '分类授权', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('40', 'admin', '1', 'Admin/AuthManager/addToCategory', '保存分类授权', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('41', 'admin', '1', 'Admin/AuthManager/index', '权限管理', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('42', 'admin', '1', 'Admin/Addons/create', '创建', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('43', 'admin', '1', 'Admin/Addons/checkForm', '检测创建', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('44', 'admin', '1', 'Admin/Addons/preview', '预览', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('45', 'admin', '1', 'Admin/Addons/build', '快速生成插件', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('46', 'admin', '1', 'Admin/Addons/config', '设置', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('47', 'admin', '1', 'Admin/Addons/disable', '禁用', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('48', 'admin', '1', 'Admin/Addons/enable', '启用', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('49', 'admin', '1', 'Admin/Addons/install', '安装', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('50', 'admin', '1', 'Admin/Addons/uninstall', '卸载', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('51', 'admin', '1', 'Admin/Addons/saveconfig', '更新配置', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('52', 'admin', '1', 'Admin/Addons/adminList', '插件后台列表', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('53', 'admin', '1', 'Admin/Addons/execute', 'URL方式访问插件', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('54', 'admin', '1', 'Admin/Addons/index', '插件管理', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('55', 'admin', '1', 'Admin/Addons/hooks', '钩子管理', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('56', 'admin', '1', 'Admin/model/add', '新增', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('57', 'admin', '1', 'Admin/model/edit', '编辑', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('58', 'admin', '1', 'Admin/model/setStatus', '改变状态', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('59', 'admin', '1', 'Admin/model/update', '保存数据', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('60', 'admin', '1', 'Admin/Model/index', '模型管理', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('61', 'admin', '1', 'Admin/Config/edit', '编辑', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('62', 'admin', '1', 'Admin/Config/del', '删除', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('63', 'admin', '1', 'Admin/Config/add', '新增', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('64', 'admin', '1', 'Admin/Config/save', '保存', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('65', 'admin', '1', 'Admin/Config/group', '网站设置', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('66', 'admin', '1', 'Admin/Config/index', '配置管理', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('67', 'admin', '1', 'Admin/Channel/add', '新增', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('68', 'admin', '1', 'Admin/Channel/edit', '编辑', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('69', 'admin', '1', 'Admin/Channel/del', '删除', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('70', 'admin', '1', 'Admin/Channel/index', '导航管理', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('71', 'admin', '1', 'Admin/Category/edit', '编辑', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('72', 'admin', '1', 'Admin/Category/add', '新增', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('73', 'admin', '1', 'Admin/Category/remove', '删除', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('74', 'admin', '1', 'Admin/Category/index', '分类管理', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('75', 'admin', '1', 'Admin/file/upload', '上传控件', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('76', 'admin', '1', 'Admin/file/uploadPicture', '上传图片', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('77', 'admin', '1', 'Admin/file/download', '下载', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('94', 'admin', '1', 'Admin/AuthManager/modelauth', '模型授权', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('79', 'admin', '1', 'Admin/article/batchOperate', '导入', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('80', 'admin', '1', 'Admin/Database/index?type=export', '备份数据库', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('81', 'admin', '1', 'Admin/Database/index?type=import', '还原数据库', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('82', 'admin', '1', 'Admin/Database/export', '备份', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('83', 'admin', '1', 'Admin/Database/optimize', '优化表', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('84', 'admin', '1', 'Admin/Database/repair', '修复表', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('86', 'admin', '1', 'Admin/Database/import', '恢复', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('87', 'admin', '1', 'Admin/Database/del', '删除', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('88', 'admin', '1', 'Admin/User/add', '新增用户', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('89', 'admin', '1', 'Admin/Attribute/index', '属性管理', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('90', 'admin', '1', 'Admin/Attribute/add', '新增', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('91', 'admin', '1', 'Admin/Attribute/edit', '编辑', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('92', 'admin', '1', 'Admin/Attribute/setStatus', '改变状态', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('93', 'admin', '1', 'Admin/Attribute/update', '保存数据', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('95', 'admin', '1', 'Admin/AuthManager/addToModel', '保存模型授权', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('96', 'admin', '1', 'Admin/Category/move', '移动', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('97', 'admin', '1', 'Admin/Category/merge', '合并', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('98', 'admin', '1', 'Admin/Config/menu', '后台菜单管理', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('99', 'admin', '1', 'Admin/Article/mydocument', '内容', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('100', 'admin', '1', 'Admin/Menu/index', '菜单管理', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('101', 'admin', '1', 'Admin/other', '其他', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('102', 'admin', '1', 'Admin/Menu/add', '新增', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('103', 'admin', '1', 'Admin/Menu/edit', '编辑', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('104', 'admin', '1', 'Admin/Think/lists?model=article', '文章管理', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('105', 'admin', '1', 'Admin/Think/lists?model=download', '下载管理', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('106', 'admin', '1', 'Admin/Think/lists?model=config', '配置管理', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('107', 'admin', '1', 'Admin/Action/actionlog', '行为日志', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('108', 'admin', '1', 'Admin/User/updatePassword', '修改密码', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('109', 'admin', '1', 'Admin/User/updateNickname', '修改昵称', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('110', 'admin', '1', 'Admin/action/edit', '查看行为日志', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('205', 'admin', '1', 'Admin/think/add', '新增数据', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('111', 'admin', '2', 'Admin/article/index', '文档列表', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('112', 'admin', '2', 'Admin/article/add', '新增', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('113', 'admin', '2', 'Admin/article/edit', '编辑', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('114', 'admin', '2', 'Admin/article/setStatus', '改变状态', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('115', 'admin', '2', 'Admin/article/update', '保存', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('116', 'admin', '2', 'Admin/article/autoSave', '保存草稿', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('117', 'admin', '2', 'Admin/article/move', '移动', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('118', 'admin', '2', 'Admin/article/copy', '复制', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('119', 'admin', '2', 'Admin/article/paste', '粘贴', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('120', 'admin', '2', 'Admin/article/batchOperate', '导入', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('121', 'admin', '2', 'Admin/article/recycle', '回收站', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('122', 'admin', '2', 'Admin/article/permit', '还原', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('123', 'admin', '2', 'Admin/article/clear', '清空', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('124', 'admin', '2', 'Admin/User/add', '新增用户', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('125', 'admin', '2', 'Admin/User/action', '用户行为', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('126', 'admin', '2', 'Admin/User/addAction', '新增用户行为', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('127', 'admin', '2', 'Admin/User/editAction', '编辑用户行为', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('128', 'admin', '2', 'Admin/User/saveAction', '保存用户行为', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('129', 'admin', '2', 'Admin/User/setStatus', '变更行为状态', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('130', 'admin', '2', 'Admin/User/changeStatus?method=forbidUser', '禁用会员', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('131', 'admin', '2', 'Admin/User/changeStatus?method=resumeUser', '启用会员', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('132', 'admin', '2', 'Admin/User/changeStatus?method=deleteUser', '删除会员', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('133', 'admin', '2', 'Admin/AuthManager/index', '权限管理', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('134', 'admin', '2', 'Admin/AuthManager/changeStatus?method=deleteGroup', '删除', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('135', 'admin', '2', 'Admin/AuthManager/changeStatus?method=forbidGroup', '禁用', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('136', 'admin', '2', 'Admin/AuthManager/changeStatus?method=resumeGroup', '恢复', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('137', 'admin', '2', 'Admin/AuthManager/createGroup', '新增', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('138', 'admin', '2', 'Admin/AuthManager/editGroup', '编辑', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('139', 'admin', '2', 'Admin/AuthManager/writeGroup', '保存用户组', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('140', 'admin', '2', 'Admin/AuthManager/group', '授权', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('141', 'admin', '2', 'Admin/AuthManager/access', '访问授权', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('142', 'admin', '2', 'Admin/AuthManager/user', '成员授权', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('143', 'admin', '2', 'Admin/AuthManager/removeFromGroup', '解除授权', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('144', 'admin', '2', 'Admin/AuthManager/addToGroup', '保存成员授权', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('145', 'admin', '2', 'Admin/AuthManager/category', '分类授权', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('146', 'admin', '2', 'Admin/AuthManager/addToCategory', '保存分类授权', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('147', 'admin', '2', 'Admin/AuthManager/modelauth', '模型授权', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('148', 'admin', '2', 'Admin/AuthManager/addToModel', '保存模型授权', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('149', 'admin', '2', 'Admin/Addons/create', '创建', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('150', 'admin', '2', 'Admin/Addons/checkForm', '检测创建', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('151', 'admin', '2', 'Admin/Addons/preview', '预览', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('152', 'admin', '2', 'Admin/Addons/build', '快速生成插件', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('153', 'admin', '2', 'Admin/Addons/config', '设置', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('154', 'admin', '2', 'Admin/Addons/disable', '禁用', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('155', 'admin', '2', 'Admin/Addons/enable', '启用', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('156', 'admin', '2', 'Admin/Addons/install', '安装', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('157', 'admin', '2', 'Admin/Addons/uninstall', '卸载', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('158', 'admin', '2', 'Admin/Addons/saveconfig', '更新配置', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('159', 'admin', '2', 'Admin/Addons/adminList', '插件后台列表', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('160', 'admin', '2', 'Admin/Addons/execute', 'URL方式访问插件', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('161', 'admin', '2', 'Admin/Addons/hooks', '钩子管理', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('162', 'admin', '2', 'Admin/Model/index', '模型管理', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('163', 'admin', '2', 'Admin/model/add', '新增', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('164', 'admin', '2', 'Admin/model/edit', '编辑', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('165', 'admin', '2', 'Admin/model/setStatus', '改变状态', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('166', 'admin', '2', 'Admin/model/update', '保存数据', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('167', 'admin', '2', 'Admin/Attribute/index', '属性管理', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('168', 'admin', '2', 'Admin/Attribute/add', '新增', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('169', 'admin', '2', 'Admin/Attribute/edit', '编辑', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('170', 'admin', '2', 'Admin/Attribute/setStatus', '改变状态', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('171', 'admin', '2', 'Admin/Attribute/update', '保存数据', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('172', 'admin', '2', 'Admin/Config/index', '配置管理', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('173', 'admin', '2', 'Admin/Config/edit', '编辑', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('174', 'admin', '2', 'Admin/Config/del', '删除', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('175', 'admin', '2', 'Admin/Config/add', '新增', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('176', 'admin', '2', 'Admin/Config/save', '保存', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('177', 'admin', '2', 'Admin/Menu/index', '菜单管理', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('178', 'admin', '2', 'Admin/Channel/index', '导航管理', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('179', 'admin', '2', 'Admin/Channel/add', '新增', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('180', 'admin', '2', 'Admin/Channel/edit', '编辑', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('181', 'admin', '2', 'Admin/Channel/del', '删除', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('182', 'admin', '2', 'Admin/Category/index', '分类管理', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('183', 'admin', '2', 'Admin/Category/edit', '编辑', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('184', 'admin', '2', 'Admin/Category/add', '新增', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('185', 'admin', '2', 'Admin/Category/remove', '删除', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('186', 'admin', '2', 'Admin/Category/move', '移动', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('187', 'admin', '2', 'Admin/Category/merge', '合并', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('188', 'admin', '2', 'Admin/Database/index?type=export', '备份数据库', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('189', 'admin', '2', 'Admin/Database/export', '备份', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('190', 'admin', '2', 'Admin/Database/optimize', '优化表', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('191', 'admin', '2', 'Admin/Database/repair', '修复表', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('192', 'admin', '2', 'Admin/Database/index?type=import', '还原数据库', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('193', 'admin', '2', 'Admin/Database/import', '恢复', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('194', 'admin', '2', 'Admin/Database/del', '删除', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('195', 'admin', '2', 'Admin/other', '其他', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('196', 'admin', '2', 'Admin/Menu/add', '新增', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('197', 'admin', '2', 'Admin/Menu/edit', '编辑', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('198', 'admin', '2', 'Admin/Think/lists?model=article', '应用', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('199', 'admin', '2', 'Admin/Think/lists?model=download', '下载管理', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('200', 'admin', '2', 'Admin/Think/lists?model=config', '应用', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('201', 'admin', '2', 'Admin/Action/actionlog', '行为日志', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('202', 'admin', '2', 'Admin/User/updatePassword', '修改密码', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('203', 'admin', '2', 'Admin/User/updateNickname', '修改昵称', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('204', 'admin', '2', 'Admin/action/edit', '查看行为日志', '-1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('206', 'admin', '1', 'Admin/think/edit', '编辑数据', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('207', 'admin', '1', 'Admin/Menu/import', '导入', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('208', 'admin', '1', 'Admin/Model/generate', '生成', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('209', 'admin', '1', 'Admin/Addons/addHook', '新增钩子', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('210', 'admin', '1', 'Admin/Addons/edithook', '编辑钩子', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('211', 'admin', '1', 'Admin/Article/sort', '文档排序', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('212', 'admin', '1', 'Admin/Config/sort', '排序', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('213', 'admin', '1', 'Admin/Menu/sort', '排序', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('214', 'admin', '1', 'Admin/Channel/sort', '排序', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('215', 'admin', '1', 'Admin/Category/operate/type/move', '移动', '1', '');
+INSERT INTO `onethink_auth_rule` VALUES ('216', 'admin', '1', 'Admin/Category/operate/type/merge', '合并', '1', '');
 
-INSERT INTO `onethink_auth_rule` (`id`, `module`, `type`, `name`, `title`, `status`, `condition`) VALUES
-(1, 'admin', 2, 'Admin/Index/index', '首页', 1, ''),
-(2, 'admin', 2, 'Admin/Article/mydocument', '内容', -1, ''),
-(3, 'admin', 2, 'Admin/User/index', '用户', 1, ''),
-(4, 'admin', 2, 'Admin/Addons/index', '扩展', 1, ''),
-(5, 'admin', 2, 'Admin/Config/group', '系统', 1, ''),
-(7, 'admin', 1, 'Admin/article/add', '新增', 1, ''),
-(8, 'admin', 1, 'Admin/article/edit', '编辑', 1, ''),
-(9, 'admin', 1, 'Admin/article/setStatus', '改变状态', 1, ''),
-(10, 'admin', 1, 'Admin/article/update', '保存', 1, ''),
-(11, 'admin', 1, 'Admin/article/autoSave', '保存草稿', 1, ''),
-(12, 'admin', 1, 'Admin/article/move', '移动', 1, ''),
-(13, 'admin', 1, 'Admin/article/copy', '复制', 1, ''),
-(14, 'admin', 1, 'Admin/article/paste', '粘贴', 1, ''),
-(15, 'admin', 1, 'Admin/article/permit', '还原', 1, ''),
-(16, 'admin', 1, 'Admin/article/clear', '清空', 1, ''),
-(17, 'admin', 1, 'Admin/article/index', '文档列表', 1, ''),
-(18, 'admin', 1, 'Admin/article/recycle', '回收站', 1, ''),
-(19, 'admin', 1, 'Admin/User/addaction', '新增用户行为', 1, ''),
-(20, 'admin', 1, 'Admin/User/editaction', '编辑用户行为', 1, ''),
-(21, 'admin', 1, 'Admin/User/saveAction', '保存用户行为', 1, ''),
-(22, 'admin', 1, 'Admin/User/setStatus', '变更行为状态', 1, ''),
-(23, 'admin', 1, 'Admin/User/changeStatus?method=forbidUser', '禁用会员', 1, ''),
-(24, 'admin', 1, 'Admin/User/changeStatus?method=resumeUser', '启用会员', 1, ''),
-(25, 'admin', 1, 'Admin/User/changeStatus?method=deleteUser', '删除会员', 1, ''),
-(26, 'admin', 1, 'Admin/User/index', '用户信息', 1, ''),
-(27, 'admin', 1, 'Admin/User/action', '用户行为', 1, ''),
-(28, 'admin', 1, 'Admin/AuthManager/changeStatus?method=deleteGroup', '删除', 1, ''),
-(29, 'admin', 1, 'Admin/AuthManager/changeStatus?method=forbidGroup', '禁用', 1, ''),
-(30, 'admin', 1, 'Admin/AuthManager/changeStatus?method=resumeGroup', '恢复', -1, ''),
-(31, 'admin', 1, 'Admin/AuthManager/createGroup', '新增', 1, ''),
-(32, 'admin', 1, 'Admin/AuthManager/editGroup', '编辑', 1, ''),
-(33, 'admin', 1, 'Admin/AuthManager/writeGroup', '保存用户组', 1, ''),
-(34, 'admin', 1, 'Admin/AuthManager/group', '授权', 1, ''),
-(35, 'admin', 1, 'Admin/AuthManager/access', '访问授权', 1, ''),
-(36, 'admin', 1, 'Admin/AuthManager/user', '成员授权', 1, ''),
-(37, 'admin', 1, 'Admin/AuthManager/removeFromGroup', '解除授权', 1, ''),
-(38, 'admin', 1, 'Admin/AuthManager/addToGroup', '保存成员授权', 1, ''),
-(39, 'admin', 1, 'Admin/AuthManager/category', '分类授权', 1, ''),
-(40, 'admin', 1, 'Admin/AuthManager/addToCategory', '保存分类授权', 1, ''),
-(41, 'admin', 1, 'Admin/AuthManager/index', '权限管理', 1, ''),
-(42, 'admin', 1, 'Admin/Addons/create', '创建', 1, ''),
-(43, 'admin', 1, 'Admin/Addons/checkForm', '检测创建', 1, ''),
-(44, 'admin', 1, 'Admin/Addons/preview', '预览', 1, ''),
-(45, 'admin', 1, 'Admin/Addons/build', '快速生成插件', 1, ''),
-(46, 'admin', 1, 'Admin/Addons/config', '设置', 1, ''),
-(47, 'admin', 1, 'Admin/Addons/disable', '禁用', 1, ''),
-(48, 'admin', 1, 'Admin/Addons/enable', '启用', 1, ''),
-(49, 'admin', 1, 'Admin/Addons/install', '安装', 1, ''),
-(50, 'admin', 1, 'Admin/Addons/uninstall', '卸载', 1, ''),
-(51, 'admin', 1, 'Admin/Addons/saveconfig', '更新配置', 1, ''),
-(52, 'admin', 1, 'Admin/Addons/adminList', '插件后台列表', 1, ''),
-(53, 'admin', 1, 'Admin/Addons/execute', 'URL方式访问插件', 1, ''),
-(54, 'admin', 1, 'Admin/Addons/index', '插件管理', 1, ''),
-(55, 'admin', 1, 'Admin/Addons/hooks', '钩子管理', 1, ''),
-(56, 'admin', 1, 'Admin/model/add', '新增', 1, ''),
-(57, 'admin', 1, 'Admin/model/edit', '编辑', 1, ''),
-(58, 'admin', 1, 'Admin/model/setStatus', '改变状态', 1, ''),
-(59, 'admin', 1, 'Admin/model/update', '保存数据', 1, ''),
-(60, 'admin', 1, 'Admin/Model/index', '模型管理', 1, ''),
-(61, 'admin', 1, 'Admin/Config/edit', '编辑', 1, ''),
-(62, 'admin', 1, 'Admin/Config/del', '删除', 1, ''),
-(63, 'admin', 1, 'Admin/Config/add', '新增', 1, ''),
-(64, 'admin', 1, 'Admin/Config/save', '保存', 1, ''),
-(65, 'admin', 1, 'Admin/Config/group', '网站设置', 1, ''),
-(66, 'admin', 1, 'Admin/Config/index', '配置管理', 1, ''),
-(67, 'admin', 1, 'Admin/Channel/add', '新增', 1, ''),
-(68, 'admin', 1, 'Admin/Channel/edit', '编辑', 1, ''),
-(69, 'admin', 1, 'Admin/Channel/del', '删除', 1, ''),
-(70, 'admin', 1, 'Admin/Channel/index', '导航管理', 1, ''),
-(71, 'admin', 1, 'Admin/Category/edit', '编辑', 1, ''),
-(72, 'admin', 1, 'Admin/Category/add', '新增', 1, ''),
-(73, 'admin', 1, 'Admin/Category/remove', '删除', 1, ''),
-(74, 'admin', 1, 'Admin/Category/index', '分类管理', 1, ''),
-(75, 'admin', 1, 'Admin/file/upload', '上传控件', -1, ''),
-(76, 'admin', 1, 'Admin/file/uploadPicture', '上传图片', -1, ''),
-(77, 'admin', 1, 'Admin/file/download', '下载', -1, ''),
-(94, 'admin', 1, 'Admin/AuthManager/modelauth', '模型授权', 1, ''),
-(79, 'admin', 1, 'Admin/article/batchOperate', '导入', 1, ''),
-(80, 'admin', 1, 'Admin/Database/index?type=export', '备份数据库', 1, ''),
-(81, 'admin', 1, 'Admin/Database/index?type=import', '还原数据库', 1, ''),
-(82, 'admin', 1, 'Admin/Database/export', '备份', 1, ''),
-(83, 'admin', 1, 'Admin/Database/optimize', '优化表', 1, ''),
-(84, 'admin', 1, 'Admin/Database/repair', '修复表', 1, ''),
-(86, 'admin', 1, 'Admin/Database/import', '恢复', 1, ''),
-(87, 'admin', 1, 'Admin/Database/del', '删除', 1, ''),
-(88, 'admin', 1, 'Admin/User/add', '新增用户', 1, ''),
-(89, 'admin', 1, 'Admin/Attribute/index', '属性管理', 1, ''),
-(90, 'admin', 1, 'Admin/Attribute/add', '新增', 1, ''),
-(91, 'admin', 1, 'Admin/Attribute/edit', '编辑', 1, ''),
-(92, 'admin', 1, 'Admin/Attribute/setStatus', '改变状态', 1, ''),
-(93, 'admin', 1, 'Admin/Attribute/update', '保存数据', 1, ''),
-(95, 'admin', 1, 'Admin/AuthManager/addToModel', '保存模型授权', 1, ''),
-(96, 'admin', 1, 'Admin/Category/move', '移动', -1, ''),
-(97, 'admin', 1, 'Admin/Category/merge', '合并', -1, ''),
-(98, 'admin', 1, 'Admin/Config/menu', '后台菜单管理', -1, ''),
-(99, 'admin', 1, 'Admin/Article/mydocument', '内容', -1, ''),
-(100, 'admin', 1, 'Admin/Menu/index', '菜单管理', 1, ''),
-(101, 'admin', 1, 'Admin/other', '其他', -1, ''),
-(102, 'admin', 1, 'Admin/Menu/add', '新增', 1, ''),
-(103, 'admin', 1, 'Admin/Menu/edit', '编辑', 1, ''),
-(104, 'admin', 1, 'Admin/Think/lists?model=article', '文章管理', -1, ''),
-(105, 'admin', 1, 'Admin/Think/lists?model=download', '下载管理', -1, ''),
-(106, 'admin', 1, 'Admin/Think/lists?model=config', '配置管理', -1, ''),
-(107, 'admin', 1, 'Admin/Action/actionlog', '行为日志', 1, ''),
-(108, 'admin', 1, 'Admin/User/updatePassword', '修改密码', 1, ''),
-(109, 'admin', 1, 'Admin/User/updateNickname', '修改昵称', 1, ''),
-(110, 'admin', 1, 'Admin/action/edit', '查看行为日志', 1, ''),
-(205, 'admin', 1, 'Admin/think/add', '新增数据', 1, ''),
-(111, 'admin', 2, 'Admin/Article/index', '内容', 1, ''),
-(112, 'admin', 2, 'Admin/article/add', '新增', -1, ''),
-(113, 'admin', 2, 'Admin/article/edit', '编辑', -1, ''),
-(114, 'admin', 2, 'Admin/article/setStatus', '改变状态', -1, ''),
-(115, 'admin', 2, 'Admin/article/update', '保存', -1, ''),
-(116, 'admin', 2, 'Admin/article/autoSave', '保存草稿', -1, ''),
-(117, 'admin', 2, 'Admin/article/move', '移动', -1, ''),
-(118, 'admin', 2, 'Admin/article/copy', '复制', -1, ''),
-(119, 'admin', 2, 'Admin/article/paste', '粘贴', -1, ''),
-(120, 'admin', 2, 'Admin/article/batchOperate', '导入', -1, ''),
-(121, 'admin', 2, 'Admin/article/recycle', '回收站', -1, ''),
-(122, 'admin', 2, 'Admin/article/permit', '还原', -1, ''),
-(123, 'admin', 2, 'Admin/article/clear', '清空', -1, ''),
-(124, 'admin', 2, 'Admin/User/add', '新增用户', -1, ''),
-(125, 'admin', 2, 'Admin/User/action', '用户行为', -1, ''),
-(126, 'admin', 2, 'Admin/User/addAction', '新增用户行为', -1, ''),
-(127, 'admin', 2, 'Admin/User/editAction', '编辑用户行为', -1, ''),
-(128, 'admin', 2, 'Admin/User/saveAction', '保存用户行为', -1, ''),
-(129, 'admin', 2, 'Admin/User/setStatus', '变更行为状态', -1, ''),
-(130, 'admin', 2, 'Admin/User/changeStatus?method=forbidUser', '禁用会员', -1, ''),
-(131, 'admin', 2, 'Admin/User/changeStatus?method=resumeUser', '启用会员', -1, ''),
-(132, 'admin', 2, 'Admin/User/changeStatus?method=deleteUser', '删除会员', -1, ''),
-(133, 'admin', 2, 'Admin/AuthManager/index', '权限管理', -1, ''),
-(134, 'admin', 2, 'Admin/AuthManager/changeStatus?method=deleteGroup', '删除', -1, ''),
-(135, 'admin', 2, 'Admin/AuthManager/changeStatus?method=forbidGroup', '禁用', -1, ''),
-(136, 'admin', 2, 'Admin/AuthManager/changeStatus?method=resumeGroup', '恢复', -1, ''),
-(137, 'admin', 2, 'Admin/AuthManager/createGroup', '新增', -1, ''),
-(138, 'admin', 2, 'Admin/AuthManager/editGroup', '编辑', -1, ''),
-(139, 'admin', 2, 'Admin/AuthManager/writeGroup', '保存用户组', -1, ''),
-(140, 'admin', 2, 'Admin/AuthManager/group', '授权', -1, ''),
-(141, 'admin', 2, 'Admin/AuthManager/access', '访问授权', -1, ''),
-(142, 'admin', 2, 'Admin/AuthManager/user', '成员授权', -1, ''),
-(143, 'admin', 2, 'Admin/AuthManager/removeFromGroup', '解除授权', -1, ''),
-(144, 'admin', 2, 'Admin/AuthManager/addToGroup', '保存成员授权', -1, ''),
-(145, 'admin', 2, 'Admin/AuthManager/category', '分类授权', -1, ''),
-(146, 'admin', 2, 'Admin/AuthManager/addToCategory', '保存分类授权', -1, ''),
-(147, 'admin', 2, 'Admin/AuthManager/modelauth', '模型授权', -1, ''),
-(148, 'admin', 2, 'Admin/AuthManager/addToModel', '保存模型授权', -1, ''),
-(149, 'admin', 2, 'Admin/Addons/create', '创建', -1, ''),
-(150, 'admin', 2, 'Admin/Addons/checkForm', '检测创建', -1, ''),
-(151, 'admin', 2, 'Admin/Addons/preview', '预览', -1, ''),
-(152, 'admin', 2, 'Admin/Addons/build', '快速生成插件', -1, ''),
-(153, 'admin', 2, 'Admin/Addons/config', '设置', -1, ''),
-(154, 'admin', 2, 'Admin/Addons/disable', '禁用', -1, ''),
-(155, 'admin', 2, 'Admin/Addons/enable', '启用', -1, ''),
-(156, 'admin', 2, 'Admin/Addons/install', '安装', -1, ''),
-(157, 'admin', 2, 'Admin/Addons/uninstall', '卸载', -1, ''),
-(158, 'admin', 2, 'Admin/Addons/saveconfig', '更新配置', -1, ''),
-(159, 'admin', 2, 'Admin/Addons/adminList', '插件后台列表', -1, ''),
-(160, 'admin', 2, 'Admin/Addons/execute', 'URL方式访问插件', -1, ''),
-(161, 'admin', 2, 'Admin/Addons/hooks', '钩子管理', -1, ''),
-(162, 'admin', 2, 'Admin/Model/index', '模型管理', -1, ''),
-(163, 'admin', 2, 'Admin/model/add', '新增', -1, ''),
-(164, 'admin', 2, 'Admin/model/edit', '编辑', -1, ''),
-(165, 'admin', 2, 'Admin/model/setStatus', '改变状态', -1, ''),
-(166, 'admin', 2, 'Admin/model/update', '保存数据', -1, ''),
-(167, 'admin', 2, 'Admin/Attribute/index', '属性管理', -1, ''),
-(168, 'admin', 2, 'Admin/Attribute/add', '新增', -1, ''),
-(169, 'admin', 2, 'Admin/Attribute/edit', '编辑', -1, ''),
-(170, 'admin', 2, 'Admin/Attribute/setStatus', '改变状态', -1, ''),
-(171, 'admin', 2, 'Admin/Attribute/update', '保存数据', -1, ''),
-(172, 'admin', 2, 'Admin/Config/index', '配置管理', -1, ''),
-(173, 'admin', 2, 'Admin/Config/edit', '编辑', -1, ''),
-(174, 'admin', 2, 'Admin/Config/del', '删除', -1, ''),
-(175, 'admin', 2, 'Admin/Config/add', '新增', -1, ''),
-(176, 'admin', 2, 'Admin/Config/save', '保存', -1, ''),
-(177, 'admin', 2, 'Admin/Menu/index', '菜单管理', -1, ''),
-(178, 'admin', 2, 'Admin/Channel/index', '导航管理', -1, ''),
-(179, 'admin', 2, 'Admin/Channel/add', '新增', -1, ''),
-(180, 'admin', 2, 'Admin/Channel/edit', '编辑', -1, ''),
-(181, 'admin', 2, 'Admin/Channel/del', '删除', -1, ''),
-(182, 'admin', 2, 'Admin/Category/index', '分类管理', -1, ''),
-(183, 'admin', 2, 'Admin/Category/edit', '编辑', -1, ''),
-(184, 'admin', 2, 'Admin/Category/add', '新增', -1, ''),
-(185, 'admin', 2, 'Admin/Category/remove', '删除', -1, ''),
-(186, 'admin', 2, 'Admin/Category/move', '移动', -1, ''),
-(187, 'admin', 2, 'Admin/Category/merge', '合并', -1, ''),
-(188, 'admin', 2, 'Admin/Database/index?type=export', '备份数据库', -1, ''),
-(189, 'admin', 2, 'Admin/Database/export', '备份', -1, ''),
-(190, 'admin', 2, 'Admin/Database/optimize', '优化表', -1, ''),
-(191, 'admin', 2, 'Admin/Database/repair', '修复表', -1, ''),
-(192, 'admin', 2, 'Admin/Database/index?type=import', '还原数据库', -1, ''),
-(193, 'admin', 2, 'Admin/Database/import', '恢复', -1, ''),
-(194, 'admin', 2, 'Admin/Database/del', '删除', -1, ''),
-(195, 'admin', 2, 'Admin/other', '其他', 1, ''),
-(196, 'admin', 2, 'Admin/Menu/add', '新增', -1, ''),
-(197, 'admin', 2, 'Admin/Menu/edit', '编辑', -1, ''),
-(198, 'admin', 2, 'Admin/Think/lists?model=article', '应用', -1, ''),
-(199, 'admin', 2, 'Admin/Think/lists?model=download', '下载管理', -1, ''),
-(200, 'admin', 2, 'Admin/Think/lists?model=config', '应用', -1, ''),
-(201, 'admin', 2, 'Admin/Action/actionlog', '行为日志', -1, ''),
-(202, 'admin', 2, 'Admin/User/updatePassword', '修改密码', -1, ''),
-(203, 'admin', 2, 'Admin/User/updateNickname', '修改昵称', -1, ''),
-(204, 'admin', 2, 'Admin/action/edit', '查看行为日志', -1, ''),
-(206, 'admin', 1, 'Admin/think/edit', '编辑数据', 1, ''),
-(207, 'admin', 1, 'Admin/Menu/import', '导入', 1, ''),
-(208, 'admin', 1, 'Admin/Model/generate', '生成', 1, ''),
-(209, 'admin', 1, 'Admin/Addons/addHook', '新增钩子', 1, ''),
-(210, 'admin', 1, 'Admin/Addons/edithook', '编辑钩子', 1, ''),
-(211, 'admin', 1, 'Admin/Article/sort', '文档排序', 1, ''),
-(212, 'admin', 1, 'Admin/Config/sort', '排序', 1, ''),
-(213, 'admin', 1, 'Admin/Menu/sort', '排序', 1, ''),
-(214, 'admin', 1, 'Admin/Channel/sort', '排序', 1, ''),
-(215, 'admin', 1, 'Admin/Category/operate/type/move', '移动', 1, ''),
-(216, 'admin', 1, 'Admin/Category/operate/type/merge', '合并', 1, ''),
-(217, 'admin', 1, 'Admin/think/lists', '数据列表', 1, ''),
-(218, 'admin', 1, 'Admin/Order/index', '已提交订单', 1, ''),
-(219, 'admin', 1, 'Admin/Ordertransport/index', '已发货订单', 1, ''),
-(220, 'admin', 2, 'Admin/Order/index', '订单', 1, ''),
-(221, 'admin', 1, 'Admin/Ordercomplete/index', '已签收订单', 1, ''),
-(222, 'admin', 1, 'Admin/Fcoupon/index', '优惠券', 1, ''),
-(223, 'admin', 2, 'Admin/Statistics/index', '数据', 1, ''),
-(224, 'admin', 1, 'Admin/Back/index', '正退货订单', 1, ''),
-(225, 'admin', 1, 'Admin/Backagree/index', '同意退货订单', 1, ''),
-(226, 'admin', 1, 'Admin/Backover/index', '已退货订单', 1, ''),
-(227, 'admin', 1, 'Admin/Change/index', '正换货商品', 1, ''),
-(228, 'admin', 1, 'Admin/Changeagree/index', '同意换货商品', 1, ''),
-(229, 'admin', 1, 'Admin/Changeover/index', '已换货商品', 1, ''),
-(230, 'admin', 1, 'Admin/Statistics/index', '今日销量统计', 1, ''),
-(231, 'admin', 1, 'Admin/Statistics/week', '本周销量统计', 1, ''),
-(232, 'admin', 1, 'Admin/Statistics/month', '本月销量统计', 1, ''),
-(233, 'admin', 1, 'Admin/Report/index', '每日数据', 1, ''),
-(234, 'admin', 1, 'Admin/Report/week', '每周数据', 1, ''),
-(235, 'admin', 1, 'Admin/Report/month', '每月统计', 1, '');
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_backlist`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_backlist` (
-  `ID` int(10) NOT NULL AUTO_INCREMENT,
-  `goodid` int(225) DEFAULT NULL,
-  `num` int(50) DEFAULT NULL,
-  `orderid` varchar(225) DEFAULT NULL COMMENT '订单号',
-  `tool` varchar(225) DEFAULT NULL COMMENT '订单号',
-  `toolid` varchar(225) DEFAULT NULL COMMENT '订单号',
-  `uid` int(225) DEFAULT NULL,
-  `status` int(10) DEFAULT '1',
-  `time` int(10) DEFAULT NULL,
-  `info` varchar(225) NOT NULL,
-  `total` decimal(50,2) DEFAULT NULL,
-  `backinfo` varchar(225) DEFAULT NULL,
-  `addressid` int(225) DEFAULT NULL,
-  `update_time` int(10) DEFAULT NULL,
-  `assistant` int(100) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
-
---
--- 转存表中的数据 `onethink_backlist`
---
-
-INSERT INTO `onethink_backlist` (`ID`, `goodid`, `num`, `orderid`, `tool`, `toolid`, `uid`, `status`, `time`, `info`, `total`, `backinfo`, `addressid`, `update_time`, `assistant`) VALUES
-(1, 5, 2, '56+', '5+4+', '45+4', 1, 4, 5, '同意退货,已重新提交订单并发货', '80.00', NULL, 21, NULL, NULL),
-(4, 8, 4654, NULL, NULL, NULL, NULL, 3, NULL, '同意', '0.00', '退货已完成', 21, 1414070662, NULL),
-(5, 8, 2, NULL, NULL, NULL, 123, 1, 1414087501, '暂无', '10.00', '同意退货', 21, 1414071941, NULL),
-(6, 9, 2, NULL, NULL, NULL, 1, 1, 1414067582, '暂无', '0.00', '正在编辑', 22, 1414092363, NULL);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_category`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_category` (
+-- -----------------------------
+-- Table structure for `onethink_category`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_category`;
+CREATE TABLE `onethink_category` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '分类ID',
   `name` varchar(30) NOT NULL COMMENT '标志',
   `title` varchar(50) NOT NULL COMMENT '标题',
@@ -608,66 +1230,78 @@ CREATE TABLE IF NOT EXISTS `onethink_category` (
   `icon` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '分类图标',
   `ismenu` int(11) DEFAULT NULL COMMENT '无限极分类调用',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_name` (`name`),
-  KEY `pid` (`pid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='分类表' AUTO_INCREMENT=70 ;
+   UNIQUE KEY `uk_name` (`name`) USING BTREE,
+  KEY `pid` (`pid`) USING BTREE
+) ENGINE=MyISAM AUTO_INCREMENT=130 DEFAULT CHARSET=utf8 COMMENT='分类表';
 
---
--- 转存表中的数据 `onethink_category`
---
+-- -----------------------------
+-- Records of `onethink_category`
+-- -----------------------------
+INSERT INTO `onethink_category` VALUES (52, 'fruit', '食品饮料、酒类、生鲜', 0, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1411925214, 1421425856, 1, 60, 1);
+INSERT INTO `onethink_category` VALUES (40, 'vegetable', '新鲜蔬菜', 0, 2, 10, '', '', '', '', '', '', '', '5', '5', '2,1,3', 0, 1, 1, 0, 0, '', '', 1411331932, 1420961619, 1, 6, 0);
+INSERT INTO `onethink_category` VALUES (127, 'lizi', '梨', 57, 0, 10, '', '', '', '', '', '', '', '2,5', '5', '', 0, 1, 1, 0, 0, '', '', 1421503470, 1421503470, 1, 0, 0);
+INSERT INTO `onethink_category` VALUES (45, ' fruit-vegetable', '果菜类', 40, 7, 10, '', '', '', '', '', '', '', '2,3,5', '', '2', 0, 1, 1, 0, 0, '', '', 1411333095, 1412523556, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (58, 'j_fruit', '进口水果', 52, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1411935041, 1421425884, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (56, 'notice', '公告', 0, 8, 10, '', '', '', '', '', '', '', '2,5', '5', '2', 0, 1, 1, 0, 1, '', '', 1411929200, 1422882794, 1, 0, 0);
+INSERT INTO `onethink_category` VALUES (57, 'c_fruit', '国内水果', 52, 0, 5, '', '', '', '', '', '', '', '2,5', '2,5', '2,1,3', 0, 1, 1, 0, 0, '', '', 1411934874, 1422719396, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (68, 'coupon', '优惠券', 0, 0, 10, '', '', '', '', '', '', '', '2', '2', '2', 0, 1, 1, 0, 0, '', '', 1413987264, 1414344293, 1, 0, 0);
+INSERT INTO `onethink_category` VALUES (70, 'activity', '活动', 0, 0, 10, '', '', '', '', '', '', '', '2', '2', '2,1,3', 0, 1, 1, 0, 0, '', '', 1414338807, 1414338807, 1, 0, 0);
+INSERT INTO `onethink_category` VALUES (71, 'tushu', '图书、音像、数字商品', 0, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1414344085, 1420956824, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (72, 'xie', '珠宝、钟表', 0, 0, 10, '', '', '', '', '', '', '', '5', '5', '2,1,3', 0, 1, 1, 0, 0, '', '', 1414674812, 1421415890, 1, 62, 1);
+INSERT INTO `onethink_category` VALUES (73, 'car', '整车、汽车用品', 0, 0, 10, '', '', '', '', '', '', '', '5', '5', '2,1,3', 0, 1, 1, 0, 0, '', '', 1414674847, 1421388297, 1, 58, 1);
+INSERT INTO `onethink_category` VALUES (75, 'fushi', '男装、女装、鞋包', 0, 0, 10, '', '', '', '', '', '', '', '5', '5', '2,1,3', 0, 1, 1, 0, 0, '', '', 1414674964, 1421391978, 1, 61, 1);
+INSERT INTO `onethink_category` VALUES (76, 'jiaju', '母婴、玩具乐器', 0, 0, 10, '', '', '', '', '', '', '', '5', '5', '2,1,3', 0, 1, 1, 0, 0, '', '', 1414675003, 1421388267, 1, 57, 1);
+INSERT INTO `onethink_category` VALUES (77, 'gmlc', '购买流程', 0, 0, 10, '', '', '', '', '', '', '', '2', '2', '2', 0, 1, 1, 0, 0, '', '', 1415464640, 1415464640, 1, 0, 0);
+INSERT INTO `onethink_category` VALUES (126, 'apple', '苹果', 57, 0, 10, '', '', '', '', '', '', '', '2,5', '2,5', '2', 0, 1, 1, 0, 0, '', '', 1421502954, 1421502954, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (80, 'learn', '文档教程', 0, 0, 10, '', '', '', '', '', '', '', '2', '2', '2', 0, 1, 1, 0, 0, '', '', 1420804409, 1421349612, 1, 0, 0);
+INSERT INTO `onethink_category` VALUES (81, 'ebook', '电子书', 71, 0, 10, '', '', '', '', '', '', '', '', '', '', 0, 1, 1, 0, 0, '', '', 1420956858, 1420956858, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (82, 'mianfei', '免费', 81, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420956901, 1420956901, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (83, 'emusic', '数字音乐', 81, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420959330, 1420960517, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (84, 'yinxiang', '  音像', 81, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420960144, 1420960144, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (86, 'renwensheke', '人文社科', 71, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420960622, 1420960622, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (87, 'history', '历史', 86, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420960661, 1420960661, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (88, 'xinli', '心理学', 86, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420960700, 1420960711, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (108, 'qingjie', '清洁', 106, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420963449, 1420963449, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (92, 'nvxie', '女鞋', 72, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420961778, 1420961778, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (90, 'gex', '个护化妆', 0, 0, 10, '', '', '', '', '', '', '', '5', '5', '2,1,3', 0, 1, 1, 0, 0, '', '', 1420961431, 1421388355, 1, 59, 1);
+INSERT INTO `onethink_category` VALUES (93, 'nvxue', '女靴', 92, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420961856, 1420961856, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (94, 'nanxie', '男鞋', 72, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420961909, 1420961909, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (96, 'yundongxie', '运动鞋', 94, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420962056, 1420962056, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (97, 'quanbuche', '全部整车', 73, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420962156, 1420962156, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (98, 'xiaoxingche', '小型车', 97, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420962208, 1420962208, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (99, 'nvbao', '女包', 72, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420962320, 1420962320, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (100, 'danjianbao', '单肩包', 99, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420962475, 1420962475, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (101, 'shoutibao', '手提包', 99, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420962560, 1420962560, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (102, 'weixiubaoyang', '维修保养', 73, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420962736, 1420962736, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (103, 'yunhuayou', '润滑油', 102, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420962815, 1420962815, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (109, 'dianchi', '电池', 105, 0, 10, '', '', '', '', '', '', '', '2,5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420963534, 1421426883, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (104, 'shoujitx', '手机通信', 107, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420963032, 1420963107, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (105, 'shoujipj', '手机配件', 107, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420963151, 1420963151, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (106, 'mbhli', '面部护肤', 90, 0, 10, '', '', '', '', '', '', '', '5', '', '2', 0, 1, 1, 0, 0, '', '', 1420963200, 1420963200, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (107, 'sjsmtx', '手机、数码、通信', 0, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420963286, 1421388202, 1, 55, 1);
+INSERT INTO `onethink_category` VALUES (110, 'mobilephone', '手机', 104, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420963589, 1420963589, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (111, 'jiajujiaz', '家居、家具、家装、厨具', 0, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420963642, 1421388233, 1, 56, 1);
+INSERT INTO `onethink_category` VALUES (112, 'chuju', '厨具', 111, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420963698, 1420963698, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (113, 'prcju', '烹饪厨具', 112, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420963764, 1420963764, 1, 0, 0);
+INSERT INTO `onethink_category` VALUES (114, 'daojiancb', '刀剪菜板', 112, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420963850, 1420963850, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (115, 'nanzhuang', '男装', 75, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420964463, 1420964463, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (116, 'chenshan', '衬衫', 115, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420964510, 1420964510, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (117, 'nvzhuang', '女装', 75, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420964548, 1420964548, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (118, 'fushipj', '服饰配件', 75, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420964671, 1420964671, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (119, 'zbss', '珠宝首饰', 75, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420964736, 1420964736, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (120, 'milk', '奶粉', 76, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420965368, 1420965391, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (121, 'yyfs', '营养辅食', 76, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420965451, 1420965451, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (122, 'dha', 'DHA', 121, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420965492, 1420965492, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (123, 'tyj', '太阳镜', 118, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420965553, 1420965553, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (124, 'clz', '车厘子', 58, 0, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1420965600, 1420965600, 1, 0, 1);
+INSERT INTO `onethink_category` VALUES (128, 'ju', '橘', 57, 0, 10, '', '', '', '', '', '', '', '2,5', '5', '2', 0, 1, 1, 0, 0, '', '', 1421503503, 1421503503, 1, 0, 0);
+INSERT INTO `onethink_category` VALUES (129, 'yurf', '羽绒服', 115, 0, 10, '', '', '', '', '', '', '', '2,5', '5', '2', 0, 1, 1, 0, 0, '', '', 1421591035, 1421591035, 1, 0, 1);
 
-INSERT INTO `onethink_category` (`id`, `name`, `title`, `pid`, `sort`, `list_row`, `meta_title`, `keywords`, `description`, `template_index`, `template_lists`, `template_detail`, `template_edit`, `model`, `model_sub`, `type`, `link_id`, `allow_publish`, `display`, `reply`, `check`, `reply_model`, `extend`, `create_time`, `update_time`, `status`, `icon`, `ismenu`) VALUES
-(52, 'fruit', '新鲜水果', 0, 0, 10, '', '', '', '', '', '', '', '5', '5', '2,1,3', 0, 1, 1, 0, 0, '', '', 1411925214, 1413845667, 1, 0, 1),
-(40, 'vegetable', '新鲜蔬菜', 0, 2, 10, '', '', '', '', '', '', '', '5', '5', '2,1,3', 0, 1, 1, 0, 0, '', '', 1411331932, 1413845937, 1, 6, 1),
-(41, 'root vegetables ', '根菜类', 40, 3, 10, '', '', '', '', '', '', '', '5', '5', '2', 0, 1, 1, 0, 0, '', '', 1411332731, 1413845950, 1, 0, 1),
-(42, 'leaf vegetables', '叶菜类', 40, 4, 10, '', '', '', '', '', '', '', '2,3,5', '', '2', 0, 1, 1, 0, 0, '', '', 1411332913, 1412523532, 1, 0, 1),
-(43, 'stem vegetable', '茎菜类', 40, 5, 10, '', '', '', '', '', '', '', '2,3,5', '', '2', 0, 1, 1, 0, 0, '', '', 1411332994, 1412523540, 1, 0, 1),
-(44, 'flower vegetable', '花菜类', 40, 6, 10, '', '', '', '', '', '', '', '2,3,5', '', '2', 0, 1, 1, 0, 0, '', '', 1411333039, 1412523548, 1, 0, 1),
-(45, ' fruit-vegetable', '果菜类', 40, 7, 10, '', '', '', '', '', '', '', '2,3,5', '', '2', 0, 1, 1, 0, 0, '', '', 1411333095, 1412523556, 1, 0, 1),
-(58, 'j_fruit', '进口水果', 52, 0, 10, '', '', '', '', '', '', '', '5', '5', '2,1,3', 0, 1, 1, 0, 0, '', '', 1411935041, 1413845696, 1, 0, 1),
-(56, 'notice', '公告', 0, 8, 10, '', '', '', '', '', '', '', '2', '5', '2', 0, 1, 1, 0, 1, '', '', 1411929200, 1414003441, 1, 0, 0),
-(57, 'c_fruit', '国内水果', 52, 0, 10, '', '', '', '', '', '', '', '2,3,5', '5', '2', 0, 1, 1, 0, 0, '', '', 1411934874, 1413198856, 1, 0, 1),
-(68, 'coupon', '优惠券', 0, 0, 10, '', '', '', '', '', '', '', '2', '2', '2', 0, 1, 1, 0, 0, '', '', 1413987264, 1413987264, 1, 0, NULL);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_change`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_change` (
-  `ID` int(10) NOT NULL AUTO_INCREMENT,
-  `goodid` int(225) DEFAULT NULL,
-  `num` int(50) DEFAULT NULL,
-  `orderid` varchar(225) DEFAULT NULL COMMENT '订单号',
-  `tool` varchar(225) DEFAULT NULL COMMENT '订单号',
-  `toolid` varchar(225) DEFAULT NULL COMMENT '订单号',
-  `uid` int(225) DEFAULT NULL,
-  `status` int(10) DEFAULT '1',
-  `time` int(10) DEFAULT NULL,
-  `info` varchar(225) NOT NULL,
-  `total` decimal(50,2) DEFAULT NULL,
-  `backinfo` varchar(225) DEFAULT NULL,
-  `addressid` int(225) DEFAULT NULL,
-  `update_time` int(10) DEFAULT NULL,
-  `assistant` int(100) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
-
---
--- 转存表中的数据 `onethink_change`
---
-
-INSERT INTO `onethink_change` (`ID`, `goodid`, `num`, `orderid`, `tool`, `toolid`, `uid`, `status`, `time`, `info`, `total`, `backinfo`, `addressid`, `update_time`, `assistant`) VALUES
-(7, 5, 6, '455', '564', '1', NULL, 1, 1414087501, '5656', NULL, '正处理换货商品', NULL, 1414076414, 1);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_channel`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_channel` (
+-- -----------------------------
+-- Table structure for `onethink_channel`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_channel`;
+CREATE TABLE `onethink_channel` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '频道ID',
   `pid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '上级频道ID',
   `title` char(30) NOT NULL COMMENT '频道标题',
@@ -679,111 +1313,110 @@ CREATE TABLE IF NOT EXISTS `onethink_channel` (
   `target` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '新窗口打开',
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
---
--- 转存表中的数据 `onethink_channel`
---
+-- -----------------------------
+-- Records of `onethink_channel`
+-- -----------------------------
+INSERT INTO `onethink_channel` VALUES ('1', '0', '首页', 'Index/index', '1', '1379475111', '1379923177', '1', '0');
+INSERT INTO `onethink_channel` VALUES (2, 0, '团购', 'Tuan/index', 4, 1412872458, 1421573046, 1, 0);
+INSERT INTO `onethink_channel` VALUES (3, 0, '秒杀', 'Index/index', 5, 1420704911, 1421163127, 1, 0);
+INSERT INTO `onethink_channel` VALUES (4, 0, '大牌闪购', 'Index/index', 6, 1420705067, 1420705078, 1, 0);
+INSERT INTO `onethink_channel` VALUES (5, 0, '品牌闪购', 'Index/index', 7, 1420705067, 1420705078, 1, 0);
 
-INSERT INTO `onethink_channel` (`id`, `pid`, `title`, `url`, `sort`, `create_time`, `update_time`, `status`, `target`) VALUES
-(1, 0, '首页', 'Index/index', 1, 1379475111, 1412579864, 1, 0),
-(7, 0, '新鲜水果', 'Article/index?category=fruit', 5, 1412760390, 1413205567, 1, 0),
-(5, 4, '根菜类', 'Article/index?category=root vegetables', 0, 1411719441, 1411719441, 1, 0),
-(8, 0, '个人中心', 'Center/index', 4, 1412872458, 1413205562, 1, 0);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_check_info`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_check_info` (
-  `uid` int(11) DEFAULT NULL,
-  `con_num` int(11) DEFAULT '1',
-  `total_num` int(11) DEFAULT '1',
-  `ctime` int(11) DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- 转存表中的数据 `onethink_check_info`
---
-
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_config`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_config` (
+-- -----------------------------
+-- Table structure for `onethink_config`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_config`;
+CREATE TABLE `onethink_config` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '配置ID',
   `name` varchar(30) NOT NULL DEFAULT '' COMMENT '配置名称',
   `type` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '配置类型',
   `title` varchar(50) NOT NULL DEFAULT '' COMMENT '配置说明',
   `group` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '配置分组',
   `extra` varchar(255) NOT NULL DEFAULT '' COMMENT '配置值',
-  `remark` varchar(100) NOT NULL COMMENT '配置说明',
+  `remark` varchar(100) NOT NULL DEFAULT '' COMMENT '配置说明',
   `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态',
-  `value` text NOT NULL COMMENT '配置值',
+  `value` text NULL  COMMENT '配置值',
   `sort` smallint(3) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_name` (`name`),
   KEY `type` (`type`),
   KEY `group` (`group`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=50 ;
+) ENGINE=MyISAM AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
 
---
--- 转存表中的数据 `onethink_config`
---
+-- -----------------------------
+-- Records of `onethink_config`
+-- -----------------------------
+INSERT INTO `onethink_config` VALUES ('1', 'WEB_SITE_TITLE', '1', '网站标题', '1', '', '网站标题前台显示标题', '1378898976', '1379235274', '1', 'yershop商城系统', '0');
+INSERT INTO `onethink_config` VALUES ('2', 'WEB_SITE_DESCRIPTION', '2', '网站描述', '1', '', '网站搜索引擎描述', '1378898976', '1379235841', '1', 'yershop商城系统', '1');
+INSERT INTO `onethink_config` VALUES ('3', 'WEB_SITE_KEYWORD', '2', '网站关键字', '1', '', '网站搜索引擎关键字', '1378898976', '1381390100', '1', 'yershop,OneThink商城，thinkphp商城系统', '8');
+INSERT INTO `onethink_config` VALUES ('4', 'WEB_SITE_CLOSE', '4', '关闭站点', '1', '0:关闭,1:开启', '站点关闭后其他用户不能访问，管理员可以正常访问', '1378898976', '1379235296', '1', '1', '1');
+INSERT INTO `onethink_config` VALUES ('9', 'CONFIG_TYPE_LIST', '3', '配置类型列表', '4', '', '主要用于数据解析和页面表单的生成', '1378898976', '1379235348', '1', '0:数字\r\n1:字符\r\n2:文本\r\n3:数组\r\n4:枚举', '2');
+INSERT INTO `onethink_config` VALUES ('10', 'WEB_SITE_ICP', '1', '网站备案号', '1', '', '设置在网站底部显示的备案号，如“沪ICP备12007941号-2', '1378900335', '1379235859', '1', '', '9');
+INSERT INTO `onethink_config` VALUES ('11', 'DOCUMENT_POSITION', '3', '文档推荐位', '2', '', '文档推荐位，推荐到多个位置KEY值相加即可', '1379053380', '1379235329', '1', '1:列表推荐\r\n2:频道推荐\r\n4:首页推荐', '3');
+INSERT INTO `onethink_config` VALUES ('12', 'DOCUMENT_DISPLAY', '3', '文档可见性', '2', '', '文章可见性仅影响前台显示，后台不收影响', '1379056370', '1379235322', '1', '0:所有人可见\r\n1:仅注册会员可见\r\n2:仅管理员可见', '4');
+INSERT INTO `onethink_config` VALUES ('13', 'COLOR_STYLE', '4', '后台色系', '1', 'default_color:默认\r\nblue_color:紫罗兰', '后台颜色风格', '1379122533', '1379235904', '1', 'default_color', '10');
+INSERT INTO `onethink_config` VALUES ('20', 'CONFIG_GROUP_LIST', '3', '配置分组', 4, '', '配置分组', '1379228036', '1414272713', '1', '1:基本\r\n2:内容\r\n3:用户\r\n4:系统\r\n5:费用\r\n6:商城\r\n7:接口\r\n8:邮箱', '4');
+INSERT INTO `onethink_config` VALUES ('21', 'HOOKS_TYPE', '3', '钩子的类型', '4', '', '类型 1-用于扩展显示内容，2-用于扩展业务处理', '1379313397', '1379313407', '1', '1:视图\r\n2:控制器', '6');
+INSERT INTO `onethink_config` VALUES ('22', 'AUTH_CONFIG', '3', 'Auth配置', '4', '', '自定义Auth.class.php类配置', '1379409310', '1379409564', '1', 'AUTH_ON:1\r\nAUTH_TYPE:2', '8');
+INSERT INTO `onethink_config` VALUES ('23', 'OPEN_DRAFTBOX', '4', '是否开启草稿功能', '2', '0:关闭草稿功能\r\n1:开启草稿功能\r\n', '新增文章时的草稿功能配置', '1379484332', '1379484591', '1', '1', '1');
+INSERT INTO `onethink_config` VALUES ('24', 'DRAFT_AOTOSAVE_INTERVAL', '0', '自动保存草稿时间', '2', '', '自动保存草稿的时间间隔，单位：秒', '1379484574', '1386143323', '1', '60', '2');
+INSERT INTO `onethink_config` VALUES ('25', 'LIST_ROWS', '0', '后台每页记录数', '2', '', '后台数据每页显示记录数', '1379503896', '1380427745', '1', '10', '10');
+INSERT INTO `onethink_config` VALUES ('26', 'USER_ALLOW_REGISTER', '4', '是否允许用户注册', '3', '0:关闭注册\r\n1:允许注册', '是否开放用户注册', '1379504487', '1379504580', '1', '1', '3');
+INSERT INTO `onethink_config` VALUES ('27', 'CODEMIRROR_THEME', '4', '预览插件的CodeMirror主题', '4', '3024-day:3024 day\r\n3024-night:3024 night\r\nambiance:ambiance\r\nbase16-dark:base16 dark\r\nbase16-light:base16 light\r\nblackboard:blackboard\r\ncobalt:cobalt\r\neclipse:eclipse\r\nelegant:elegant\r\nerlang-dark:erlang-dark\r\nlesser-dark:lesser-dark\r\nmidnight:midnight', '详情见CodeMirror官网', '1379814385', '1384740813', '1', 'ambiance', '3');
+INSERT INTO `onethink_config` VALUES ('28', 'DATA_BACKUP_PATH', '1', '数据库备份根路径', '4', '', '路径必须以 / 结尾', '1381482411', '1381482411', '1', './Data/', '5');
+INSERT INTO `onethink_config` VALUES ('29', 'DATA_BACKUP_PART_SIZE', '0', '数据库备份卷大小', '4', '', '该值用于限制压缩后的分卷最大长度。单位：B；建议设置20M', '1381482488', '1381729564', '1', '20971520', '7');
+INSERT INTO `onethink_config` VALUES ('30', 'DATA_BACKUP_COMPRESS', '4', '数据库备份文件是否启用压缩', '4', '0:不压缩\r\n1:启用压缩', '压缩备份文件需要PHP环境支持gzopen,gzwrite函数', '1381713345', '1381729544', '1', '1', '9');
+INSERT INTO `onethink_config` VALUES ('31', 'DATA_BACKUP_COMPRESS_LEVEL', '4', '数据库备份文件压缩级别', '4', '1:普通\r\n4:一般\r\n9:最高', '数据库备份文件的压缩级别，该配置在开启压缩时生效', '1381713408', '1381713408', '1', '9', '10');
+INSERT INTO `onethink_config` VALUES ('32', 'DEVELOP_MODE', '4', '开启开发者模式', '4', '0:关闭\r\n1:开启', '是否开启开发者模式', '1383105995', '1383291877', '1', '1', '11');
+INSERT INTO `onethink_config` VALUES ('33', 'ALLOW_VISIT', '3', '不受限控制器方法', '0', '', '', '1386644047', '1386644741', '1', '0:article/draftbox\r\n1:article/mydocument\r\n2:Category/tree\r\n3:Index/verify\r\n4:file/upload\r\n5:file/download\r\n6:user/updatePassword\r\n7:user/updateNickname\r\n8:user/submitPassword\r\n9:user/submitNickname\r\n10:file/uploadpicture', '0');
+INSERT INTO `onethink_config` VALUES ('34', 'DENY_VISIT', '3', '超管专限控制器方法', '0', '', '仅超级管理员可访问的控制器方法', '1386644141', '1386644659', '1', '0:Addons/addhook\r\n1:Addons/edithook\r\n2:Addons/delhook\r\n3:Addons/updateHook\r\n4:Admin/getMenus\r\n5:Admin/recordList\r\n6:AuthManager/updateRules\r\n7:AuthManager/tree', '0');
+INSERT INTO `onethink_config` VALUES ('35', 'REPLY_LIST_ROWS', '0', '回复列表每页条数', '2', '', '', '1386645376', '1387178083', '1', '10', '0');
+INSERT INTO `onethink_config` VALUES ('36', 'ADMIN_ALLOW_IP', '2', '后台允许访问IP', '4', '', '多个用逗号分隔，如果不配置表示不限制IP访问', '1387165454', '1387165553', '1', '', '12');
+INSERT INTO `onethink_config` VALUES ('37', 'SHOW_PAGE_TRACE', '4', '是否显示页面Trace', '4', '0:关闭\r\n1:开启', '是否显示页面Trace信息', '1387165685', '1387165685', '1', '0', '1');
+INSERT INTO `onethink_config` VALUES ('40', 'HOTSEARCH', '1', '热词', '1', '', '热门搜索词，必须逗号隔开', '1413221018', '1414964609', '1', '佳沃智利进口蓝莓,香蕉,苹果,香梨,红提',' 0');
+INSERT INTO `onethink_config` VALUES ('41', 'SHIPMONEY', '0', '运费', '5', '', '低于一定金额的运费', '1414001070', '1414001482', '1', '10','0');
+INSERT INTO `onethink_config` VALUES (42, 'LOWWEST', 0, '最低消费金额', 5, '', '用户最低消费的金额，低于该金额，则增加运费', 1414001165, 1414001495, 1, '50', 0);
+INSERT INTO `onethink_config` VALUES (43, 'RATIO', 0, '积分现金兑换比', 5, '', '1000表示1000积分可兑换成1元', 1414153401, 1414153401, 1, '1000', 0);
+INSERT INTO `onethink_config` VALUES (44, 'DEADTIME', 0, '退货有效期', 5, '', '从订单签收完成多少天内可以退货', 1414164561, 1414164642, 1, '7', 0);
+INSERT INTO `onethink_config` VALUES (45, 'CHANGETIME', 1, '换货期', 5, '', '订单签收多少天内后可以换货', 1414164627, 1414164654, 1, '15', 0);
+INSERT INTO `onethink_config` VALUES (46, 'QQ', 1, 'QQ客服', 6, '', '网站客服的qq代码', 1414183635, 1414664781, 1, '1010422715', 0);
+INSERT INTO `onethink_config` VALUES (47, 'ALWW', 0, '阿里旺旺号', 6, '', '网站阿里旺旺客服', 1414183716, 1414664772, 1, '', 0);
+INSERT INTO `onethink_config` VALUES (48, 'IP_TONGJI', 4, '开启ip访问统计', 3, '0:关闭,1:开启', '开启后追踪用户的访问页面，访问明细，访问地域', 1414244159, 1414244270, 1, '1', 0);
+INSERT INTO `onethink_config` VALUES (49, 'LAG', 0, '统计时间间隔（小时）', 3, '', '重复访问的会员每隔多少时间统计，小于这一时间，不统计', 1414258358, 1414407504, 1, '6', 21);
+INSERT INTO `onethink_config` VALUES (50, 'DOMAIN', 1, '网站域名', 1, '', '网站域名', 1414504643, 1414504839, 1, 'http://www.yershop.com', 0);
+INSERT INTO `onethink_config` VALUES (51, '100KEY', 1, '0-快递100查询key', 7, '', '申请地址：http://www.kuaidi100.com/openapi/applyapi.shtml，用于查询运单号', 1414664721, 1415473565, 1, '', 0);
+INSERT INTO `onethink_config` VALUES (52, 'ADDRESS', 1, '发货地址', 6, '', '卖家的发货地址', 1414664871, 1414664871, 1, '广东广州', 0);
+INSERT INTO `onethink_config` VALUES (53, 'CONTACT', 1, '联系电话', 6, '', '卖家的联系方式', 1414664911, 1414664911, 1, '13645000000', 0);
+INSERT INTO `onethink_config` VALUES (54, 'SHOPNAME', 1, '卖家名称', 6, '', '卖家发货时填写的昵称', 1414665008, 1414665008, 1, '小米', 0);
+INSERT INTO `onethink_config` VALUES (55, 'SITENAME', 1, '网站名称', 1, '', '用于网站支付时显示，如土豆网', 1414761363, 1414761398, 1, 'yershop商城', 0);
+INSERT INTO `onethink_config` VALUES (56, 'ALIPAYPARTNER', 1, '1-支付宝商户号', 7, '', '这里是你在成功申请支付宝接口后获取到的PID', 1414769351, 1415137270, 1, '', 0);
+INSERT INTO `onethink_config` VALUES (57, 'ALIPAYKEY', 1, '支付宝密钥', 7, '', '这里是你在成功申请支付宝接口后获取到的Key', 1414769402, 1414769402, 1, '', 0);
+INSERT INTO `onethink_config` VALUES (67, 'TENPAYPARTNER', 1, '2-财付通合作者ID', 7, '', '合作者ID，财付通有该配置，开通财付通账户后给予', 1415472468, 1415473488, 1, '', 1);
+INSERT INTO `onethink_config` VALUES (66, 'TENPAYKEY', 1, '财付通加密key', 7, '', '加密key，开通财付通账户后给予', 1415472288, 1415473499, 1, '', 2);
+INSERT INTO `onethink_config` VALUES (68, 'PALPAYPARTNER', 1, '3-贝宝账号', 7, '', '合作者ID，贝宝有该配置，开通贝宝账户后给予不需密码', 1415472655, 1415473914, 1, '', 3);
+INSERT INTO `onethink_config` VALUES (69, 'YEEPAYPARTNER', 1, '4-易付宝合作者id', 7, '', '易付宝给予的合作者id', 1415472817, 1415473522, 1, '', 4);
+INSERT INTO `onethink_config` VALUES (64, 'ALIPAYEMAIL', 1, '支付宝收款账号', 7, '', '支付宝收款账号邮箱', 1415472043, 1415472347, 1, '', 0);
+INSERT INTO `onethink_config` VALUES (70, 'YEEPAYKEY', 1, '易付宝密钥', 7, '', '易付宝合作者的密钥', 1415473084, 1415473533, 1, '', 5);
+INSERT INTO `onethink_config` VALUES (71, 'KUAIQIANPARTNER', 1, '5-快钱合作者id', 7, '', '合作者ID，快钱有该配置，开通财付通账户后给予', 1415473241, 1415473540, 1, '', 5);
+INSERT INTO `onethink_config` VALUES (72, 'KUAIQIANKEY', 1, '快钱key', 7, '', '加密key，开通快钱账户后给予', 1415473293, 1415473553, 1, '', 5);
+INSERT INTO `onethink_config` VALUES (73, 'UNIONPARTNER', 1, '6-银联合作者账号', 7, '', '合作者ID，银联有该配置，开通银联账户后给予', 1415473364, 1415473424, 1, '', 6);
+INSERT INTO `onethink_config` VALUES (74, 'UNIONKEY', 1, '银联key', 7, '', ' 加密key，开通银联账户后给予', 1415473475, 1415473475, 1, '', 6);
+INSERT INTO `onethink_config` VALUES (75, 'SCODE', 1, '授权码', 1, '', ' 商城的授权码', 1415473475, 1415473475, 1, '', 6);
+INSERT INTO `onethink_config` VALUES (76, 'MAIL_HOST', 1, 'smtp服务器的名称', 8, '', ' smtp服务器的名称，默认QQ', 1415473475, 1415473475, 1, '未授权', 6);
+INSERT INTO `onethink_config` VALUES (77, 'MAIL_USERNAME', 1, '邮箱用户名', 8, '', ' 邮箱用户名', 1415473475, 1415473475, 1, '', 6);
+INSERT INTO `onethink_config` VALUES (78, 'MAIL_FROMNAME', 1, '发件人姓名', 8, '', ' 商城网站名称，如yershop商城，默认QQ', 1415473475, 1415473475, 1, '', 6);
+INSERT INTO `onethink_config` VALUES (79, 'MAIL_PASSWORD', 1, '邮箱密码', 8, '', ' 配置的邮箱密码', 1415473475, 1415473475, 1, '', 6);
 
-INSERT INTO `onethink_config` (`id`, `name`, `type`, `title`, `group`, `extra`, `remark`, `create_time`, `update_time`, `status`, `value`, `sort`) VALUES
-(1, 'WEB_SITE_TITLE', 1, '网站标题', 1, '', '网站标题前台*显示标题*', 1378898976, 1412577255, 1, 'b2b商城系统-onethink b2b商城系统-，thinkphp商城系统', 0),
-(2, 'WEB_SITE_DESCRIPTION', 2, '网站描述', 1, '', '网站搜索引擎描述', 1378898976, 1379235841, 1, 'b2b商城系统-onethink b2b商城系统-，thinkphp商城系统', 1),
-(3, 'WEB_SITE_KEYWORD', 2, '网站关键字', 1, '', '网站搜索引擎关键字', 1378898976, 1381390100, 1, 'ThinkPHP,OneThink，b2b商城系统', 8),
-(4, 'WEB_SITE_CLOSE', 4, '关闭站点', 1, '0:关闭,1:开启', '站点关闭后其他用户不能访问，管理员可以正常访问', 1378898976, 1379235296, 1, '1', 1),
-(9, 'CONFIG_TYPE_LIST', 3, '配置类型列表', 4, '', '主要用于数据解析和页面表单的生成', 1378898976, 1379235348, 1, '0:数字\r\n1:字符\r\n2:文本\r\n3:数组\r\n4:枚举', 2),
-(10, 'WEB_SITE_ICP', 1, '网站备案号', 1, '', '设置在网站底部显示的备案号，如“沪ICP备12007941号-2', 1378900335, 1379235859, 1, '沪ICP备12007941号-2', 9),
-(11, 'DOCUMENT_POSITION', 3, '文档推荐位', 2, '', '文档推荐位，推荐到多个位置KEY值相加即可', 1379053380, 1379235329, 1, '1:列表推荐\r\n2:频道推荐\r\n4:首页推荐', 3),
-(12, 'DOCUMENT_DISPLAY', 3, '文档可见性', 2, '', '文章可见性仅影响前台显示，后台不收影响', 1379056370, 1379235322, 1, '0:所有人可见\r\n1:仅注册会员可见\r\n2:仅管理员可见', 4),
-(13, 'COLOR_STYLE', 4, '后台色系', 1, 'default_color:默认\r\nblue_color:紫罗兰\r\namaze:妹子UI', '后台颜色风格', 1379122533, 1411636415, 1, 'default_color', 10),
-(20, 'CONFIG_GROUP_LIST', 3, '配置分组', 4, '', '配置分组', 1379228036, 1384418383, 1, '1:基本\r\n2:内容\r\n3:用户\r\n4:系统\r\n5:运费', 4),
-(21, 'HOOKS_TYPE', 3, '钩子的类型', 4, '', '类型 1-用于扩展显示内容，2-用于扩展业务处理', 1379313397, 1379313407, 1, '1:视图\r\n2:控制器', 6),
-(22, 'AUTH_CONFIG', 3, 'Auth配置', 4, '', '自定义Auth.class.php类配置', 1379409310, 1379409564, 1, 'AUTH_ON:1\r\nAUTH_TYPE:2', 8),
-(23, 'OPEN_DRAFTBOX', 4, '是否开启草稿功能', 2, '0:关闭草稿功能\r\n1:开启草稿功能\r\n', '新增文章时的草稿功能配置', 1379484332, 1379484591, 1, '1', 1),
-(24, 'DRAFT_AOTOSAVE_INTERVAL', 0, '自动保存草稿时间', 2, '', '自动保存草稿的时间间隔，单位：秒', 1379484574, 1386143323, 1, '60', 2),
-(25, 'LIST_ROWS', 0, '后台每页记录数', 2, '', '后台数据每页显示记录数', 1379503896, 1380427745, 1, '10', 10),
-(26, 'USER_ALLOW_REGISTER', 4, '是否允许用户注册', 3, '0:关闭注册\r\n1:允许注册', '是否开放用户注册', 1379504487, 1379504580, 1, '1', 3),
-(27, 'CODEMIRROR_THEME', 4, '预览插件的CodeMirror主题', 4, '3024-day:3024 day\r\n3024-night:3024 night\r\nambiance:ambiance\r\nbase16-dark:base16 dark\r\nbase16-light:base16 light\r\nblackboard:blackboard\r\ncobalt:cobalt\r\neclipse:eclipse\r\nelegant:elegant\r\nerlang-dark:erlang-dark\r\nlesser-dark:lesser-dark\r\nmidnight:midnight', '详情见CodeMirror官网', 1379814385, 1384740813, 1, 'ambiance', 3),
-(28, 'DATA_BACKUP_PATH', 1, '数据库备份根路径', 4, '', '路径必须以 / 结尾', 1381482411, 1381482411, 1, './Data/', 5),
-(29, 'DATA_BACKUP_PART_SIZE', 0, '数据库备份卷大小', 4, '', '该值用于限制压缩后的分卷最大长度。单位：B；建议设置20M', 1381482488, 1381729564, 1, '20971520', 7),
-(30, 'DATA_BACKUP_COMPRESS', 4, '数据库备份文件是否启用压缩', 4, '0:不压缩\r\n1:启用压缩', '压缩备份文件需要PHP环境支持gzopen,gzwrite函数', 1381713345, 1381729544, 1, '1', 9),
-(31, 'DATA_BACKUP_COMPRESS_LEVEL', 4, '数据库备份文件压缩级别', 4, '1:普通\r\n4:一般\r\n9:最高', '数据库备份文件的压缩级别，该配置在开启压缩时生效', 1381713408, 1381713408, 1, '9', 10),
-(32, 'DEVELOP_MODE', 4, '开启开发者模式', 4, '0:关闭\r\n1:开启', '是否开启开发者模式', 1383105995, 1383291877, 1, '1', 11),
-(33, 'ALLOW_VISIT', 3, '不受限控制器方法', 0, '', '', 1386644047, 1386644741, 1, '0:article/draftbox\r\n1:article/mydocument\r\n2:Category/tree\r\n3:Index/verify\r\n4:file/upload\r\n5:file/download\r\n6:user/updatePassword\r\n7:user/updateNickname\r\n8:user/submitPassword\r\n9:user/submitNickname\r\n10:file/uploadpicture', 0),
-(34, 'DENY_VISIT', 3, '超管专限控制器方法', 0, '', '仅超级管理员可访问的控制器方法', 1386644141, 1386644659, 1, '0:Addons/addhook\r\n1:Addons/edithook\r\n2:Addons/delhook\r\n3:Addons/updateHook\r\n4:Admin/getMenus\r\n5:Admin/recordList\r\n6:AuthManager/updateRules\r\n7:AuthManager/tree', 0),
-(35, 'REPLY_LIST_ROWS', 0, '回复列表每页条数', 2, '', '', 1386645376, 1387178083, 1, '10', 0),
-(36, 'ADMIN_ALLOW_IP', 2, '后台允许访问IP', 4, '', '多个用逗号分隔，如果不配置表示不限制IP访问', 1387165454, 1387165553, 1, '', 12),
-(37, 'SHOW_PAGE_TRACE', 4, '是否显示页面Trace', 4, '0:关闭\r\n1:开启', '是否显示页面Trace信息', 1387165685, 1387165685, 1, '0', 1),
-(40, 'HOTSEARCH', 1, '热词', 1, '', '热门搜索词', 1413221018, 1413224479, 1, '国庆节放假时间,商务小清新,苹果,中国风,美女', 0),
-(41, 'SHIPPRICE', 0, '运费', 5, '', '低于一定金额的运费', 1414001070, 1414001482, 1, '10', 0),
-(42, 'LOWWEST', 0, '最低消费金额', 5, '', '用户最低消费的金额，低于该金额，则增加运费', 1414001165, 1414001495, 1, '50', 0),
-(43, 'RATIO', 0, '积分现金兑换比', 5, '', '1000表示1000积分可兑换成1元', 1414153401, 1414153401, 1, '1000', 0),
-(44, 'DEADTIME', 0, '退货有效期', 5, '', '从订单签收完成多少天内可以退货', 1414164561, 1414164642, 1, '7', 0),
-(45, 'CHANGETIME', 0, '换货期', 5, '', '订单签收多少天内后可以换货', 1414164627, 1414164654, 1, '15', 0),
-(46, 'QQ', 1, 'QQ客服', 5, '', '网站客服的qq代码', 1414183635, 1414183635, 1, '1010422715', 0),
-(47, 'ALWW', 0, '阿里旺旺号', 5, '', '网站阿里旺旺客服', 1414183716, 1414183716, 1, '', 0),
-(48, 'IP_TONGJI', 4, '开启ip访问统计', 3, '0:关闭,1:开启', '开启后追踪用户的访问页面，访问明细，访问地域', 1414244159, 1414244270, 1, '1', 0),
-(49, 'LAG', 0, '统计时间间隔（小时）', 0, '', '重复访问的会员每隔多少时间统计，小于这一时间，不统计', 1414258358, 1414258358, 1, '6', 21);
 
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_document`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_document` (
+-- -----------------------------
+-- Table structure for `onethink_document`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_document`;
+CREATE TABLE `onethink_document` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '文档ID',
   `uid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
   `name` char(40) NOT NULL DEFAULT '' COMMENT '标识',
@@ -808,27 +1441,45 @@ CREATE TABLE IF NOT EXISTS `onethink_document` (
   `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`id`),
-  KEY `idx_category_status` (`category_id`,`status`),
-  KEY `idx_status_type_pid` (`status`,`uid`,`pid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='文档模型基础表' AUTO_INCREMENT=13 ;
+  KEY `idx_category_status` (`category_id`,`status`) USING BTREE,
+  KEY `idx_status_type_pid` (`status`,`uid`,`pid`) USING BTREE
+ 
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='文档模型基础表';
 
---
--- 转存表中的数据 `onethink_document`
---
+-- -----------------------------
+-- Records of `onethink_document`
+-- -----------------------------
+INSERT INTO `onethink_document` VALUES(5, 1, '', '金灯果（又名“姑娘果”）（盒装1000g）', 57, '', 0, 0, 5, 2, 4, 0, 15, 1, 0, 0, 1909, 0, 0, 0, 1411380420, 1422019300, 1);
+INSERT INTO `onethink_document` VALUES(8, 1, '', '【天天果园】智利青苹果12个', 57, '酸爽多汁，肉质细嫩，高品质新鲜保证', 0, 0, 5, 2, 2, 0, 7, 1, 0, 0, 884, 0, 0, 0, 1411927620, 1414532702, 1);
+INSERT INTO `onethink_document` VALUES(9, 1, '', '常鲜生 正宗菲律宾进口香蕉', 57, '', 0, 0, 5, 2, 4, 0, 9, 1, 0, 0, 384, 0, 0, 0, 1411928400, 1414533394, 1);
+INSERT INTO `onethink_document` VALUES(13, 1, '', '冷冻（藏）品只配送京津', 56, '', 0, 0, 2, 2, 0, 0, 0, 1, 0, 0, 20, 0, 0, 0, 1414333120, 1414333120, -1);
+INSERT INTO `onethink_document` VALUES(14, 1, '', '褚橙开售', 57, '', 0, 0, 5, 2, 4, 0, 17, 1, 0, 0, 187, 0, 0, 0, 1414339080, 1414343243, 1);
+INSERT INTO `onethink_document` VALUES(15, 1, '', '河南河阴软籽石榴（中果） 4粒装（单果重250-300g）', 57, '', 0, 0, 5, 2, 0, 0, 20, 1, 0, 0, 122, 0, 0, 0, 1414342440, 1414343076, 1);
+INSERT INTO `onethink_document` VALUES(16, 1, '', '佳沃智利进口蓝莓一级果125g', 57, '', 0, 0, 5, 2, 0, 0, 21, 1, 0, 0, 283, 0, 0, 0, 1414342560, 1414343180, 1);
+INSERT INTO `onethink_document` VALUES(17, 1, '', '新疆红提950-1000g', 57, '', 0, 0, 5, 2, 0, 0, 24, 1, 0, 0, 484, 0, 0, 0, 1414342620, 1414343496, 1);
+INSERT INTO `onethink_document` VALUES(18, 1, '', '新疆库尔勒香梨 950g-1000g 香而清甜，虽小却好吃', 57, '', 0, 0, 5, 2, 0, 0, 23, 1, 0, 0, 337, 0, 0, 0, 1414342680, 1415713929, 1);
+INSERT INTO `onethink_document` VALUES(19, 1, '', '在线支付', 77, '', 0, 0, 2, 2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1415464949, 1415464949, 1);
+INSERT INTO `onethink_document` VALUES(33, 1, '', '新疆阿克苏冰糖心苹果 3粒装', 128, '', 0, 0, 5, 2, 0, 0, 64, 1, 0, 0, 0, 0, 0, 0, 1421504275, 1421504275, 1);
+INSERT INTO `onethink_document` VALUES(21, 1, '', '新疆库尔勒香梨 950g-1000g 香而清甜，虽小却好吃', 57, '', 0, 0, 5, 2, 0, 0, 23, 1, 0, 0, 285, 0, 0, 0, 1417527785, 1417527785, -1);
+INSERT INTO `onethink_document` VALUES(32, 1, '', '延安宜川红富士 12粒装（70-75mm）', 128, '', 0, 0, 5, 2, 0, 0, 63, 1, 0, 0, 0, 0, 0, 0, 1421504074, 1421504074, 1);
+INSERT INTO `onethink_document` VALUES(34, 1, '', '新疆阿克苏冰糖心苹果 3粒装', 128, '', 0, 0, 5, 2, 0, 0, 64, 1, 0, 0, 2, 0, 0, 0, 1421504278, 1421504278, 3);
+INSERT INTO `onethink_document` VALUES(35, 1, '', '延安宜川红富士 12粒优品装（80mm）', 128, '', 0, 0, 5, 2, 0, 0, 65, 1, 0, 0, 3, 0, 0, 0, 1421504400, 1421504499, 1);
+INSERT INTO `onethink_document` VALUES(36, 1, '', '延安宜川红富士 12粒优品装（80mm）', 126, '', 0, 0, 5, 2, 0, 0, 65, 1, 0, 0, 0, 0, 0, 0, 1421504552, 1421504552, -1);
+INSERT INTO `onethink_document` VALUES(37, 1, '', '延安宜川红富士 12粒优品装（80mm）', 126, '', 0, 0, 5, 2, 0, 0, 65, 1, 0, 0, 0, 0, 0, 0, 1421504562, 1421504562, -1);
+INSERT INTO `onethink_document` VALUES(38, 1, '', '延安宜川红富士 12粒优品装（80mm）', 126, '', 0, 0, 5, 2, 0, 0, 65, 1, 0, 0, 0, 0, 0, 0, 1421504568, 1421504568, -1);
+INSERT INTO `onethink_document` VALUES(39, 1, '', '延安宜川红富士 12粒优品装（80mm）', 126, '', 0, 0, 5, 2, 0, 0, 65, 1, 0, 0, 0, 0, 0, 0, 1421504641, 1421504641, 1);
+INSERT INTO `onethink_document` VALUES(40, 1, '', '新疆阿克苏冰糖心苹果 3粒装', 126, '', 0, 0, 5, 2, 0, 0, 64, 1, 0, 0, 0, 0, 0, 0, 1421504702, 1421504702, 1);
+INSERT INTO `onethink_document` VALUES(41, 1, '', '延安宜川红富士 12粒装（70-75mm）', 126, '', 0, 0, 5, 2, 0, 0, 63, 1, 0, 0, 0, 0, 0, 0, 1421504724, 1421504724, 1);
+INSERT INTO `onethink_document` VALUES(42, 1, '', '山东栖霞富士 2粒/470-500g', 126, '', 0, 0, 5, 2, 0, 0, 66, 1, 0, 0, 0, 0, 0, 0, 1421504849, 1421504849, 1);
+INSERT INTO `onethink_document` VALUES(43, 1, '', '浙江涌泉蜜桔 1.7-1.9kg', 128, '', 0, 0, 5, 2, 0, 0, 67, 1, 0, 0, 6, 0, 0, 0, 1421505175, 1421505175, 1);
+INSERT INTO `onethink_document` VALUES(44, 1, '', '广西金桔 500-550g', 128, '', 0, 0, 5, 2, 0, 0, 68, 1, 0, 0, 0, 0, 0, 0, 1421505360, 1421505438, 1);
+;
 
-INSERT INTO `onethink_document` (`id`, `uid`, `name`, `title`, `category_id`, `description`, `root`, `pid`, `model_id`, `type`, `position`, `link_id`, `cover_id`, `display`, `deadline`, `attach`, `view`, `comment`, `extend`, `level`, `create_time`, `update_time`, `status`) VALUES
-(12, 1, '', '肯德基电子优惠券', 68, '1236589443679', 0, 0, 2, 2, 0, 0, 11, 1, 0, 0, 5, 0, 0, 0, 1413988167, 1413988167, 1),
-(5, 1, '', '新鲜胡萝卜 蔬菜 水果 同城 送菜 到家 货到付款 只售珠三角地区', 45, '', 0, 0, 5, 2, 4, 0, 4, 1, 0, 0, 815, 0, 0, 0, 1411380420, 1413909051, 1),
-(8, 1, '', '【天天果园】智利青苹果12个', 57, '酸爽多汁，肉质细嫩，高品质新鲜保证', 0, 0, 5, 2, 4, 0, 7, 1, 0, 0, 500, 0, 0, 0, 1411927620, 1414093868, 1),
-(9, 1, '', '常鲜生 正宗菲律宾进口香蕉', 57, '', 0, 0, 5, 2, 4, 0, 9, 1, 0, 0, 162, 0, 0, 0, 1411928400, 1414093842, 1);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_document_article`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_document_article` (
+-- -----------------------------
+-- Table structure for `onethink_document_article`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_document_article`;
+CREATE TABLE `onethink_document_article` (
   `id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '文档ID',
   `parse` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '内容解析类型',
   `content` text NOT NULL COMMENT '文章内容',
@@ -837,22 +1488,16 @@ CREATE TABLE IF NOT EXISTS `onethink_document_article` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='文档模型文章表';
 
---
--- 转存表中的数据 `onethink_document_article`
---
+-- -----------------------------
+-- Records of `onethink_document_article`
+-- -----------------------------
+INSERT INTO `onethink_document_article` VALUES ('1', '0', '<h1>\r\n	OneThink1.1开发版发布&nbsp;\r\n</h1>\r\n<p>\r\n	<br />\r\n</p>\r\n<p>\r\n	<strong>OneThink是一个开源的内容管理框架，基于最新的ThinkPHP3.2版本开发，提供更方便、更安全的WEB应用开发体验，采用了全新的架构设计和命名空间机制，融合了模块化、驱动化和插件化的设计理念于一体，开启了国内WEB应用傻瓜式开发的新潮流。&nbsp;</strong> \r\n</p>\r\n<h2>\r\n	主要特性：\r\n</h2>\r\n<p>\r\n	1. 基于ThinkPHP最新3.2版本。\r\n</p>\r\n<p>\r\n	2. 模块化：全新的架构和模块化的开发机制，便于灵活扩展和二次开发。&nbsp;\r\n</p>\r\n<p>\r\n	3. 文档模型/分类体系：通过和文档模型绑定，以及不同的文档类型，不同分类可以实现差异化的功能，轻松实现诸如资讯、下载、讨论和图片等功能。\r\n</p>\r\n<p>\r\n	4. 开源免费：OneThink遵循Apache2开源协议,免费提供使用。&nbsp;\r\n</p>\r\n<p>\r\n	5. 用户行为：支持自定义用户行为，可以对单个用户或者群体用户的行为进行记录及分享，为您的运营决策提供有效参考数据。\r\n</p>\r\n<p>\r\n	6. 云端部署：通过驱动的方式可以轻松支持平台的部署，让您的网站无缝迁移，内置已经支持SAE和BAE3.0。\r\n</p>\r\n<p>\r\n	7. 云服务支持：即将启动支持云存储、云安全、云过滤和云统计等服务，更多贴心的服务让您的网站更安心。\r\n</p>\r\n<p>\r\n	8. 安全稳健：提供稳健的安全策略，包括备份恢复、容错、防止恶意攻击登录，网页防篡改等多项安全管理功能，保证系统安全，可靠、稳定的运行。&nbsp;\r\n</p>\r\n<p>\r\n	9. 应用仓库：官方应用仓库拥有大量来自第三方插件和应用模块、模板主题，有众多来自开源社区的贡献，让您的网站“One”美无缺。&nbsp;\r\n</p>\r\n<p>\r\n	<br />\r\n</p>\r\n<p>\r\n	<strong>&nbsp;OneThink集成了一个完善的后台管理体系和前台模板标签系统，让你轻松管理数据和进行前台网站的标签式开发。&nbsp;</strong> \r\n</p>\r\n<p>\r\n	<br />\r\n</p>\r\n<h2>\r\n	后台主要功能：\r\n</h2>\r\n<p>\r\n	1. 用户Passport系统\r\n</p>\r\n<p>\r\n	2. 配置管理系统&nbsp;\r\n</p>\r\n<p>\r\n	3. 权限控制系统\r\n</p>\r\n<p>\r\n	4. 后台建模系统&nbsp;\r\n</p>\r\n<p>\r\n	5. 多级分类系统&nbsp;\r\n</p>\r\n<p>\r\n	6. 用户行为系统&nbsp;\r\n</p>\r\n<p>\r\n	7. 钩子和插件系统\r\n</p>\r\n<p>\r\n	8. 系统日志系统&nbsp;\r\n</p>\r\n<p>\r\n	9. 数据备份和还原\r\n</p>\r\n<p>\r\n	<br />\r\n</p>\r\n<p>\r\n	&nbsp;[ 官方下载：&nbsp;<a href=\"http://www.onethink.cn/download.html\" target=\"_blank\">http://www.onethink.cn/download.html</a>&nbsp;&nbsp;开发手册：<a href=\"http://document.onethink.cn/\" target=\"_blank\">http://document.onethink.cn/</a>&nbsp;]&nbsp;\r\n</p>\r\n<p>\r\n	<br />\r\n</p>\r\n<p>\r\n	<strong>OneThink开发团队 2013~2014</strong> \r\n</p>', '', '0');
 
-INSERT INTO `onethink_document_article` (`id`, `parse`, `content`, `template`, `bookmark`) VALUES
-(1, 0, '<h1>\r\n	OneThink1.1开发版发布&nbsp;\r\n</h1>\r\n<p>\r\n	<br />\r\n</p>\r\n<p>\r\n	<strong>OneThink是一个开源的内容管理框架，基于最新的ThinkPHP3.2版本开发，提供更方便、更安全的WEB应用开发体验，采用了全新的架构设计和命名空间机制，融合了模块化、驱动化和插件化的设计理念于一体，开启了国内WEB应用傻瓜式开发的新潮流。&nbsp;</strong> \r\n</p>\r\n<h2>\r\n	主要特性：\r\n</h2>\r\n<p>\r\n	1. 基于ThinkPHP最新3.2版本。\r\n</p>\r\n<p>\r\n	2. 模块化：全新的架构和模块化的开发机制，便于灵活扩展和二次开发。&nbsp;\r\n</p>\r\n<p>\r\n	3. 文档模型/分类体系：通过和文档模型绑定，以及不同的文档类型，不同分类可以实现差异化的功能，轻松实现诸如资讯、下载、讨论和图片等功能。\r\n</p>\r\n<p>\r\n	4. 开源免费：OneThink遵循Apache2开源协议,免费提供使用。&nbsp;\r\n</p>\r\n<p>\r\n	5. 用户行为：支持自定义用户行为，可以对单个用户或者群体用户的行为进行记录及分享，为您的运营决策提供有效参考数据。\r\n</p>\r\n<p>\r\n	6. 云端部署：通过驱动的方式可以轻松支持平台的部署，让您的网站无缝迁移，内置已经支持SAE和BAE3.0。\r\n</p>\r\n<p>\r\n	7. 云服务支持：即将启动支持云存储、云安全、云过滤和云统计等服务，更多贴心的服务让您的网站更安心。\r\n</p>\r\n<p>\r\n	8. 安全稳健：提供稳健的安全策略，包括备份恢复、容错、防止恶意攻击登录，网页防篡改等多项安全管理功能，保证系统安全，可靠、稳定的运行。&nbsp;\r\n</p>\r\n<p>\r\n	9. 应用仓库：官方应用仓库拥有大量来自第三方插件和应用模块、模板主题，有众多来自开源社区的贡献，让您的网站“One”美无缺。&nbsp;\r\n</p>\r\n<p>\r\n	<br />\r\n</p>\r\n<p>\r\n	<strong>&nbsp;OneThink集成了一个完善的后台管理体系和前台模板标签系统，让你轻松管理数据和进行前台网站的标签式开发。&nbsp;</strong> \r\n</p>\r\n<p>\r\n	<br />\r\n</p>\r\n<h2>\r\n	后台主要功能：\r\n</h2>\r\n<p>\r\n	1. 用户Passport系统\r\n</p>\r\n<p>\r\n	2. 配置管理系统&nbsp;\r\n</p>\r\n<p>\r\n	3. 权限控制系统\r\n</p>\r\n<p>\r\n	4. 后台建模系统&nbsp;\r\n</p>\r\n<p>\r\n	5. 多级分类系统&nbsp;\r\n</p>\r\n<p>\r\n	6. 用户行为系统&nbsp;\r\n</p>\r\n<p>\r\n	7. 钩子和插件系统\r\n</p>\r\n<p>\r\n	8. 系统日志系统&nbsp;\r\n</p>\r\n<p>\r\n	9. 数据备份和还原\r\n</p>\r\n<p>\r\n	<br />\r\n</p>\r\n<p>\r\n	&nbsp;[ 官方下载：&nbsp;<a href="http://www.onethink.cn/download.html" target="_blank">http://www.onethink.cn/download.html</a>&nbsp;&nbsp;开发手册：<a href="http://document.onethink.cn/" target="_blank">http://document.onethink.cn/</a>&nbsp;]&nbsp;\r\n</p>\r\n<p>\r\n	<br />\r\n</p>\r\n<p>\r\n	<strong>OneThink开发团队 2013~2014</strong> \r\n</p>', '', 0),
-(4, 0, '<div id="description" class="tshop-psm ke-post J_DetailSection">\r\n	<div class="content" id="J_DivItemDesc">\r\n		<p style="background:white;">\r\n			<b><span style="font-size:15.0pt;background:white;color:#0000cc;font-family:宋体;">营养价值</span></b><b><span style="font-size:15.0pt;background:white;color:#0000cc;font-family:arial sans-serif;"></span></b> \r\n		</p>\r\n		<p style="background:white;text-indent:-35.0pt;">\r\n			<span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"><span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></span><span style="font-size:14.0pt;font-family:宋体;">韭菜的</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>营养</span></span></a></span><span style="font-size:14.0pt;font-family:宋体;">价值很高，每</span><span style="font-size:14.0pt;"><span>100</span></span><span style="font-size:14.0pt;font-family:宋体;">克可食用部分含</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>蛋白质</span></span></a></span><span style="font-size:14.0pt;"><span>2~2.85</span></span><span style="font-size:14.0pt;font-family:宋体;">克，脂肪</span><span style="font-size:14.0pt;"><span>0.2~0.5</span></span><span style="font-size:14.0pt;font-family:宋体;">克，</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>碳水化合物</span></span></a></span><span style="font-size:14.0pt;"><span>2.4~6</span></span><span style="font-size:14.0pt;font-family:宋体;">克，纤维素</span><span style="font-size:14.0pt;"><span>0.6~3.2</span></span><span style="font-size:14.0pt;font-family:宋体;">克。还有大量的维生素，如</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>胡萝卜素</span></span></a></span><span style="font-size:14.0pt;"><span>0.08~3.26</span></span><span style="font-size:14.0pt;font-family:宋体;">毫克，</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>核黄素</span></span></a></span><span style="font-size:14.0pt;"><span>0.05~0.8</span></span><span style="font-size:14.0pt;font-family:宋体;">毫克，</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>尼克酸</span></span></a></span><span style="font-size:14.0pt;"><span>0.3~1</span></span><span style="font-size:14.0pt;font-family:宋体;">毫克，维生素</span><span style="font-size:14.0pt;"><span>C10~62.8</span></span><span style="font-size:14.0pt;font-family:宋体;">毫克，韭菜含的矿质元素也较多，如钙</span><span style="font-size:14.0pt;"><span>10~86</span></span><span style="font-size:14.0pt;font-family:宋体;">毫克，磷</span><span style="font-size:14.0pt;"><span>9~51</span></span><span style="font-size:14.0pt;font-family:宋体;">毫克，铁</span><span style="font-size:14.0pt;"><span>0.6~2.4</span></span><span style="font-size:14.0pt;font-family:宋体;">毫克，此外，韭菜含有挥发性的硫化丙烯，因此具有辛辣味，有促进食欲的作用。韭菜除做菜用外，还有良好的药用价值。</span></span> \r\n		</p>\r\n		<p style="background:white;text-indent:-35.0pt;">\r\n			<span><span style="font-size:14.0pt;font-family:宋体;"></span></span><b><span style="font-size:15.0pt;background:white;color:#0000cc;font-family:宋体;">饮食宜忌</span></b><b><span style="font-size:15.0pt;background:white;color:#0000cc;font-family:arial sans-serif;"></span></b> \r\n		</p>\r\n		<p style="background:white;text-indent:35.0pt;text-align:left;" align="left">\r\n			<span><span style="font-size:14.0pt;"><span>1</span></span><span style="font-size:14.0pt;font-family:宋体;">、一般人群均能食用。</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n		</p>\r\n		<p style="background:white;text-indent:35.0pt;text-align:left;" align="left">\r\n			<span><span style="font-size:14.0pt;"><span>2</span></span><span style="font-size:14.0pt;font-family:宋体;">、适宜便秘、产后想断乳的女性、</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>寒性体质</span></span></a></span><span style="font-size:14.0pt;font-family:宋体;">等人群。</span><span style="font-size:14.0pt;"></span></span> \r\n		</p>\r\n		<p style="background:white;text-indent:-21.0pt;text-align:left;" align="left">\r\n			<span><span style="font-size:14.0pt;"><span>3</span></span><span style="font-size:14.0pt;font-family:宋体;">、便秘者建议多吃，因为韭菜含有大量的</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>膳食纤维</span></span></a></span><span style="font-size:14.0pt;font-family:宋体;">，能改善肠道，润肠通便。</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n		</p>\r\n		<p style="background:white;text-indent:35.0pt;text-align:left;" align="left">\r\n			<span><span style="font-size:14.0pt;"><span>4</span></span><span style="font-size:14.0pt;font-family:宋体;">、现代医学认为，有阳亢及热性病症的人不宜食用。</span><span style="font-size:14.0pt;"></span></span> \r\n		</p>\r\n		<p style="background:white;text-indent:-21.0pt;text-align:left;" align="left">\r\n			<span><span style="font-size:14.0pt;"><span>5</span></span><span style="font-size:14.0pt;font-family:宋体;">、韭菜的粗纤维较多，不易消化吸收，所以一次不能吃太多韭菜，否则大量粗纤维刺激肠壁，</span><span style="font-size:14.0pt;font-family:宋体;">酒后尤忌</span><span style="font-size:14.0pt;font-family:宋体;">。</span></span><a name="8_2"></a><a name="sub25243_8_2"></a><span style="font-size:14.0pt;"></span> \r\n		</p>\r\n		<p>\r\n			<span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"><span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>6</span></span><span style="font-size:14.0pt;font-family:宋体;">、韭菜偏热性，多食易上火，因此阴虚火旺者不宜多吃。</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n		</p>\r\n		<p style="text-indent:35.0pt;">\r\n			<span><span style="font-size:14.0pt;"><span>7</span></span><span style="font-size:14.0pt;font-family:宋体;">、胃虚有热、消化不良不宜食用。</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n		</p>\r\n		<p style="text-indent:-21.0pt;">\r\n			<span><span style="font-size:14.0pt;"><span>8</span></span><span style="font-size:14.0pt;font-family:宋体;">、夏韭老化，纤维多而粗造，不易被人肠胃消化吸收，加之夏季胃肠蠕动，功能降低，多会引起胃肠不适或腹泻，因此夏季热时不宜多食。</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n		</p>\r\n		<p style="text-indent:35.0pt;">\r\n			<span><span style="font-size:14.0pt;"><span>9</span></span><span style="font-size:14.0pt;font-family:宋体;">、熟的韭菜不能隔夜吃</span><span style="font-size:14.0pt;"></span></span> \r\n		</p>\r\n		<p>\r\n			<a name="11_2"></a><a name="sub25243_11_2"></a><b><span style="font-size:15.0pt;color:#0000cc;font-family:宋体;">推荐食谱</span></b><b><span style="font-size:15.0pt;color:#0000cc;"></span></b> \r\n		</p>\r\n		<p style="text-indent:27.75pt;">\r\n			<span><b><span style="font-size:14.0pt;background:white;font-family:宋体;">韭菜炒蛋</span></b><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n		</p>\r\n		<p style="text-indent:-35.0pt;">\r\n			<span><span style="font-size:14.0pt;font-family:宋体;">【原料】：韭菜</span><span style="font-size:14.0pt;"><span>4</span></span><span style="font-size:14.0pt;font-family:宋体;">两（约</span><span style="font-size:14.0pt;"><span>200</span></span><span style="font-size:14.0pt;font-family:宋体;">克），大鸡蛋</span><span style="font-size:14.0pt;"><span>3</span></span><span style="font-size:14.0pt;font-family:宋体;">只，调料：</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>生油</span></span></a></span><span style="font-size:14.0pt;"><span>3</span></span><span style="font-size:14.0pt;font-family:宋体;">汤匙，</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>生粉</span></span></a></span><span style="font-size:14.0pt;"><span>2</span></span><span style="font-size:14.0pt;font-family:宋体;">茶匙，清水</span><span style="font-size:14.0pt;"><span>1</span></span><span style="font-size:14.0pt;font-family:宋体;">汤匙，鸡粉</span><span style="font-size:14.0pt;"><span>1/4</span></span><span style="font-size:14.0pt;font-family:宋体;">茶匙，麻油</span><span style="font-size:14.0pt;"><span>1</span></span><span style="font-size:14.0pt;font-family:宋体;">茶匙，</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>胡椒粉</span></span></a></span><span style="font-size:14.0pt;font-family:宋体;">少许。</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n		</p>\r\n		<p style="text-indent:-35.0pt;">\r\n			<span><span style="font-size:14.0pt;font-family:宋体;">【做法】：</span><span style="font-size:14.0pt;"><span>1</span></span><span style="font-size:14.0pt;font-family:宋体;">、韭菜洗净切小段；</span><span style="font-size:14.0pt;"></span></span> \r\n		</p>\r\n		<p style="text-indent:28.0pt;">\r\n			<span><span style="font-size:14.0pt;"><span>2</span></span><span style="font-size:14.0pt;font-family:宋体;">、生粉用水拌匀制成生粉水，待用；</span><span style="font-size:14.0pt;"></span></span> \r\n		</p>\r\n		<p style="text-indent:28.0pt;">\r\n			<span><span style="font-size:14.0pt;"><span>3</span></span><span style="font-size:14.0pt;font-family:宋体;">、将调料、韭菜、生粉水一起拌匀；</span><span style="font-size:14.0pt;"></span></span> \r\n		</p>\r\n		<p style="text-indent:28.0pt;">\r\n			<span><span style="font-size:14.0pt;"><span>4</span></span><span style="font-size:14.0pt;font-family:宋体;">、在大碗内搅散鸡蛋；</span><span style="font-size:14.0pt;"></span></span> \r\n		</p>\r\n		<p style="text-indent:-14.0pt;">\r\n			<span><span style="font-size:14.0pt;"><span>5</span></span><span style="font-size:14.0pt;font-family:宋体;">、炒锅烧热，放入三汤匙生油，待油热后，倒入韭菜、蛋液，快炒至凝固，即可装盘食用。</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n		</p>\r\n		<p style="text-indent:-14.0pt;">\r\n			<span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n		</p>\r\n		<p style="text-indent:28.0pt;">\r\n			<span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><b><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>豆丝韭菜</span></span></b></a></span><span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n		</p>\r\n		<p style="text-indent:-49.0pt;">\r\n			<span><span style="font-size:14.0pt;font-family:宋体;">【原料】：韭菜</span><span style="font-size:14.0pt;"><span>500</span></span><span style="font-size:14.0pt;font-family:宋体;">克，</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>土豆</span></span></a></span><span style="font-size:14.0pt;font-family:宋体;">（黄皮）</span><span style="font-size:14.0pt;"><span>200</span></span><span style="font-size:14.0pt;font-family:宋体;">克。调料：胡麻油</span><span style="font-size:14.0pt;"><span>15</span></span><span style="font-size:14.0pt;font-family:宋体;">克，盐</span><span style="font-size:14.0pt;"><span>3</span></span><span style="font-size:14.0pt;font-family:宋体;">克，</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>味精</span></span></a></span><span style="font-size:14.0pt;"><span>2</span></span><span style="font-size:14.0pt;font-family:宋体;">克。</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n		</p>\r\n		<p style="text-indent:-84.0pt;">\r\n			<span><span style="font-size:14.0pt;font-family:宋体;">【做法】：</span><span style="font-size:14.0pt;"><span>1.</span></span><span style="font-size:14.0pt;font-family:宋体;">韭菜洗净后切成段，放入沸水锅中焯一下，沥干水分；土豆洗净后去皮切成丝。</span><span style="font-size:14.0pt;"></span></span> \r\n		</p>\r\n		<p style="text-indent:-14.0pt;">\r\n			<span><span style="font-size:14.0pt;"><span>2.</span></span><span style="font-size:14.0pt;font-family:宋体;">花椒油、味精、</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>精盐</span></span></a></span><span style="font-size:14.0pt;font-family:宋体;">、韭菜段和土豆丝一起放入盆内，拌匀装盘即可。</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span></span><span><span style="font-size:14.0pt;font-family:宋体;"></span></span> \r\n		</p>\r\n		<p>\r\n			<b><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><span>&nbsp;</span></span></b> \r\n		</p>\r\n		<p style="text-indent:29.1pt;">\r\n			<span><b><span style="font-size:14.0pt;background:white;font-family:宋体;">韭菜炒咸猪肉</span></b><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n		</p>\r\n		<p style="text-indent:-49.0pt;">\r\n			<span><span style="font-size:14.0pt;font-family:宋体;">【原料】：</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>咸猪肉</span></span></a></span><span style="font-size:14.0pt;font-family:宋体;">片，韭菜，新鲜干</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>葱头</span></span></a></span><span style="font-size:14.0pt;font-family:宋体;">甲片，</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>红萝卜</span></span></a></span><span style="font-size:14.0pt;font-family:宋体;">花，炸蒜片，</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>小葱</span></span></a></span><span style="font-size:14.0pt;font-family:宋体;">度。</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n		</p>\r\n		<p style="text-indent:-42.0pt;">\r\n			<span><span style="font-size:14.0pt;font-family:宋体;">【做法】：锅内烧净</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>色拉油</span></span></a></span><span style="font-size:14.0pt;font-family:宋体;">至</span><span style="font-size:14.0pt;"><span>7</span></span><span style="font-size:14.0pt;font-family:宋体;">成热，逐片放入腌制好的咸猪肉片后离火，炸成略脆状后倒出。将韭菜花飞水后，加入少许味水略炒后倒出。锅内放少许油，倒入料头炒香，加入炸好咸猪肉片，韭菜花，料酒，味水芡汁（带少许</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>蚝油</span></span></a></span><span style="font-size:14.0pt;font-family:宋体;">），快速炒匀后亮油起锅。</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n		</p>\r\n		<p>\r\n			<b><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><span>&nbsp;</span></span></b> \r\n		</p>\r\n		<p style="text-indent:29.1pt;">\r\n			<span><b><span style="font-size:14.0pt;background:white;font-family:宋体;">培根炒韭菜</span></b><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n		</p>\r\n		<p style="text-indent:55.45pt;">\r\n			<span><span style="font-size:14.0pt;font-family:宋体;">【原料】：</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>韭菜</span></span></a></span><span style="font-size:14.0pt;font-family:宋体;">美式</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>培根</span></span></a></span><span style="font-size:14.0pt;font-family:宋体;">若干条、</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>食用油</span></span></a></span><span style="font-size:14.0pt;background:white;font-family:宋体;">、</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>盐</span></span></a></span><span style="font-size:14.0pt;font-family:宋体;">、</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>糖</span></span></a></span><span style="font-size:14.0pt;font-family:宋体;">。　</span><span style="font-size:14.0pt;"></span></span> \r\n		</p>\r\n		<p style="text-indent:-77.0pt;">\r\n			<span><span style="font-size:14.0pt;font-family:宋体;">【做法】：</span><span style="font-size:14.0pt;"><span>1</span></span><span style="font-size:14.0pt;font-family:宋体;">、培根整条放入不粘锅中，小火煎至金黄肉脆，肥油全部渗出。</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n		</p>\r\n		<p style="text-indent:-14.0pt;">\r\n			<span><span style="font-size:14.0pt;"><span>2</span></span><span style="font-size:14.0pt;font-family:宋体;">、取出培根条，切小片备用。</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n		</p>\r\n		<p style="text-indent:-14.0pt;">\r\n			<span><span style="font-size:14.0pt;"><span>3</span></span><span style="font-size:14.0pt;font-family:宋体;">、煎培根的原锅中添加适量的食用油（视韭菜量），油热后加入韭菜快速翻炒。</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n		</p>\r\n		<p style="text-indent:-14.0pt;">\r\n			<span><span style="font-size:14.0pt;"><span>4</span></span><span style="font-size:14.0pt;font-family:宋体;">、韭菜断生后，立即加入培根片，少许盐，糖调味，出锅装盘即可。</span></span> \r\n		</p>\r\n	</div>\r\n</div>', '', 0),
-(12, 0, '1236589443679', '', 0);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_document_download`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_document_download` (
+-- -----------------------------
+-- Table structure for `onethink_document_download`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_document_download`;
+CREATE TABLE `onethink_document_download` (
   `id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '文档ID',
   `parse` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '内容解析类型',
   `content` text NOT NULL COMMENT '下载详细描述',
@@ -863,126 +1508,12 @@ CREATE TABLE IF NOT EXISTS `onethink_document_download` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='文档模型下载表';
 
---
--- 转存表中的数据 `onethink_document_download`
---
 
-INSERT INTO `onethink_document_download` (`id`, `parse`, `content`, `template`, `file_id`, `download`, `size`) VALUES
-(2, 0, '<blockquote style="background-color:#F4F5F7;color:#999999;font-size:16px;font-family:''Century Gothic'', ''MicroSoft YaHei'', ''hiragino sans GB'', ''Helvetica Neue'', Helvetica, Arial, sans-serif;">\r\n	题，并作了大量的改进，是一个值得升级的版本！\r\n</blockquote>\r\n<img src="http://yun.topthink.com/Uploads/Editor/2014-07-22/53ce00d943be3.png" alt="" /><br />\r\n<span style="color:#333333;font-family:''Century Gothic'', ''MicroSoft YaHei'', ''hiragino sans GB'', ''Helvetica Neue'', Helvetica, Arial, sans-serif;background-color:#F4F6F8;font-size:18px;"><span style="color:#E53333;"><b>OneThink会一如既往的让你的开发变得更简单！</b></span></span><br />\r\n<br />\r\n<span style="color:#333333;font-family:''Century Gothic'', ''MicroSoft YaHei'', ''hiragino sans GB'', ''Helvetica Neue'', Helvetica, Arial, sans-serif;background-color:#F4F6F8;font-size:24px;">1.1开发版本会保持快速迭代，欢迎大家多参与。</span><br />\r\n<span style="color:#333333;font-family:''Century Gothic'', ''MicroSoft YaHei'', ''hiragino sans GB'', ''Helvetica Neue'', Helvetica, Arial, sans-serif;background-color:#F4F6F8;font-size:24px;"> \r\n<blockquote style="background-color:#F4F5F7;color:#999999;font-size:16px;">\r\n	<b><span style="color:#E53333;">注意：最新的开发版本数据库驱动用PDO重写了，所以如果之前配置的是PDO驱动类型的话，请改成具体的数据库类型。</span></b> \r\n</blockquote>\r\n</span><br />\r\n<span style="color:#333333;font-family:''Century Gothic'', ''MicroSoft YaHei'', ''hiragino sans GB'', ''Helvetica Neue'', Helvetica, Arial, sans-serif;background-color:#F4F6F8;font-size:24px;">[&nbsp;更新列表&nbsp;]</span><br />\r\n<span style="color:#333333;font-family:''Century Gothic'', ''MicroSoft YaHei'', ''hiragino sans GB'', ''Helvetica Neue'', Helvetica, Arial, sans-serif;background-color:#F4F6F8;font-size:24px;"><b><span style="font-size:18px;"><b>1.1.140825_dev&nbsp;[2014.8.25]：</b></span></b></span><br />\r\n<ul style="color:#333333;font-family:''Century Gothic'', ''MicroSoft YaHei'', ''hiragino sans GB'', ''Helvetica Neue'', Helvetica, Arial, sans-serif;font-size:16px;background-color:#F4F6F8;">\r\n	<li>\r\n		安装SQL文件更新\r\n	</li>\r\n	<li>\r\n		修复七牛上传驱动的命名空间\r\n	</li>\r\n	<li>\r\n		修正数据库备份类\r\n	</li>\r\n	<li>\r\n		修正一些警告错误\r\n	</li>\r\n	<li>\r\n		修正模板大小写问题\r\n	</li>\r\n	<li>\r\n		修正导航的授权显示\r\n	</li>\r\n	<li>\r\n		更新数据库驱动\r\n	</li>\r\n	<li>\r\n		hooks表增加status字段，修正使用lists方法查询时的bug\r\n	</li>\r\n	<li>\r\n		支持无钩子的插件安装\r\n	</li>\r\n	<li>\r\n		改进菜单获取方法\r\n	</li>\r\n	<li>\r\n		优化菜单显示&nbsp;采用session缓存&nbsp;修改菜单后需要重启才能生效\r\n	</li>\r\n</ul>\r\n<span style="color:#333333;font-family:''Century Gothic'', ''MicroSoft YaHei'', ''hiragino sans GB'', ''Helvetica Neue'', Helvetica, Arial, sans-serif;background-color:#F4F6F8;font-size:24px;"><b><span style="font-size:18px;"><b>1.1.140817_dev&nbsp;[2014.8.17]：</b></span></b></span><br />\r\n<ul style="color:#333333;font-family:''Century Gothic'', ''MicroSoft YaHei'', ''hiragino sans GB'', ''Helvetica Neue'', Helvetica, Arial, sans-serif;font-size:16px;background-color:#F4F6F8;">\r\n	<li>\r\n		修正一些警告错误\r\n	</li>\r\n	<li>\r\n		修正后台封面图片上传的显示问题\r\n	</li>\r\n	<li>\r\n		后台生成模型的时候支持指定名称和标识\r\n	</li>\r\n	<li>\r\n		修正后台模型生成获取数据表的错误\r\n	</li>\r\n	<li>\r\n		支持更准确的SQL记录\r\n	</li>\r\n	<li>\r\n		修正参数绑定可能导致的冲突问题\r\n	</li>\r\n	<li>\r\n		修正安装程序用户表写入生日字段默认值错误\r\n	</li>\r\n	<li>\r\n		改进Admin模块的ModelModel类的generate方法\r\n	</li>\r\n	<li>\r\n		改进article:list标签的category属性可以包含当前分类\r\n	</li>\r\n	<li>\r\n		修正数据备份操作\r\n	</li>\r\n</ul>\r\n<span style="color:#333333;font-family:''Century Gothic'', ''MicroSoft YaHei'', ''hiragino sans GB'', ''Helvetica Neue'', Helvetica, Arial, sans-serif;background-color:#F4F6F8;font-size:24px;"><b><span style="font-size:18px;"><b>1.1.140809_dev&nbsp;[2014.8.9]：</b></span></b></span><br />\r\n<ul style="color:#333333;font-family:''Century Gothic'', ''MicroSoft YaHei'', ''hiragino sans GB'', ''Helvetica Neue'', Helvetica, Arial, sans-serif;font-size:16px;background-color:#F4F6F8;">\r\n	<li>\r\n		升级核心框架，驱动类库采用PDO重写\r\n	</li>\r\n	<li>\r\n		修正后台文档列表查询的状态查询问题\r\n	</li>\r\n	<li>\r\n		去掉后台BaseLogic类的lists方法\r\n	</li>\r\n	<li>\r\n		简化后台模块的DocumentModel类，去掉部分不需要的方法\r\n	</li>\r\n	<li>\r\n		改进文档模型的name标识检测&nbsp;根分类下面不能重名\r\n	</li>\r\n	<li>\r\n		独立模型数据列表页改进\r\n	</li>\r\n	<li>\r\n		Home模块的Logic类改进\r\n	</li>\r\n	<li>\r\n		修正模型的属性定义中使用函数定义的问题\r\n	</li>\r\n	<li>\r\n		模板调整和删除一些无用的数据\r\n	</li>\r\n</ul>\r\n<span style="color:#333333;font-family:''Century Gothic'', ''MicroSoft YaHei'', ''hiragino sans GB'', ''Helvetica Neue'', Helvetica, Arial, sans-serif;background-color:#F4F6F8;font-size:24px;"><b><span style="font-size:18px;"><b>1.1.140726_dev&nbsp;[2014.7.26]：</b></span></b></span><br />\r\n<ul style="color:#333333;font-family:''Century Gothic'', ''MicroSoft YaHei'', ''hiragino sans GB'', ''Helvetica Neue'', Helvetica, Arial, sans-serif;font-size:16px;background-color:#F4F6F8;">\r\n	<li>\r\n		文档模型的扩展属性支持在属性管理中设置是否必须、自动验证和自动完成，并且会自动和对应的Logic类合并；\r\n	</li>\r\n	<li>\r\n		安装完成后的后台访问错误修正；\r\n	</li>\r\n	<li>\r\n		修正多处警告错误；\r\n	</li>\r\n</ul>', '', 1, 0, 23324),
-(3, 0, '<ul style="font-family:宋体, arial, sans-serif;color:#232426;background-color:#FFFFFF;">\r\n	<li style="color:#777777;">\r\n		上映年代：2014&nbsp;&nbsp;状态：全集\r\n	</li>\r\n	<li style="color:#777777;">\r\n		类型：\r\n	</li>\r\n	<li style="color:#777777;">\r\n		主演：<a href="http://www.beiwo.tv/index.php?s=vod-search-actor-%E6%B2%B3%E6%AD%A3%E5%AE%87.html" target="_blank">河正宇</a>&nbsp;<a href="http://www.beiwo.tv/index.php?s=vod-search-actor-%E5%A7%9C%E4%B8%9C%E5%85%83.html" target="_blank">姜东元</a>&nbsp;<a href="http://www.beiwo.tv/index.php?s=vod-search-actor-%E5%B0%B9%E6%99%BA%E6%85%A7.html" target="_blank">尹智慧</a>&nbsp;<a href="http://www.beiwo.tv/index.php?s=vod-search-actor-%E6%9D%8E%E7%92%9F%E8%8D%A3.html" target="_blank">李璟荣</a>\r\n	</li>\r\n	<li style="color:#777777;">\r\n		地区：韩国<img src="/111/Uploads/Editor/2014-09-18/5419eb8071136.png" alt="" />\r\n	</li>\r\n	<li style="color:#777777;">\r\n		更新日期：2014-09-08&nbsp;&nbsp;\r\n	</li>\r\n</ul>\r\n<p>\r\n	剧情： 描绘了19世纪朝鲜时代抢夺贪官污吏钱财救济百姓们的侠盗与士大夫们之间的对决。...<a href="http://www.beiwo.tv/vod/21258/#desc">详细剧情</a>\r\n</p>\r\n<p>\r\n	<br />\r\n</p>', '', 2, 0, 206166);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_document_product`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_document_product` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `price` varchar(255) NOT NULL DEFAULT '1.00' COMMENT '价格',
-  `content` text NOT NULL COMMENT '内容详细描述',
-  `weight` varchar(255) NOT NULL DEFAULT '500' COMMENT '净重',
-  `totalsales` int(10) unsigned NOT NULL COMMENT '总销量',
-  `area` varchar(255) NOT NULL DEFAULT '中国大陆' COMMENT '产地',
-  `ads_pic_id` int(10) unsigned NOT NULL COMMENT '首页幻灯大图',
-  `adtitle` varchar(255) NOT NULL COMMENT '广告宣传标题',
-  `yprice` varchar(255) NOT NULL COMMENT '原价',
-  `mark` varchar(255) NOT NULL COMMENT '附加标签',
-  `unionid` varchar(255) NOT NULL COMMENT '关联商品',
-  `num` int(10) unsigned NOT NULL DEFAULT '1' COMMENT '库存',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC AUTO_INCREMENT=11 ;
-
---
--- 转存表中的数据 `onethink_document_product`
---
-
-INSERT INTO `onethink_document_product` (`id`, `price`, `content`, `weight`, `totalsales`, `area`, `ads_pic_id`, `adtitle`, `yprice`, `mark`, `unionid`, `num`) VALUES
-(5, '2.98', '<p style="background:white;text-align:left;" align="left">\r\n	<b><span style="font-size:15.0pt;background:white;color:#0000cc;font-family:宋体;">营养成份</span></b><b><span style="font-size:15.0pt;background:white;color:#0000cc;font-family:arial sans-serif;"></span></b> \r\n</p>\r\n<p style="text-indent:-35.0pt;">\r\n	<span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"><span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></span><span style="font-size:14.0pt;font-family:宋体;">每</span><span style="font-size:14.0pt;"><span>100</span></span><span style="font-size:14.0pt;font-family:宋体;">克胡萝卜中，约含</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>蛋白质</span></span></a></span><span style="font-size:14.0pt;"><span>0.6</span></span><span style="font-size:14.0pt;font-family:宋体;">克，</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>脂肪</span></span></a></span><span style="font-size:14.0pt;"><span>0.3</span></span><span style="font-size:14.0pt;font-family:宋体;">克，糖类</span><span style="font-size:14.0pt;"><span>7.6</span></span><span style="font-size:14.0pt;font-family:宋体;">～</span><span style="font-size:14.0pt;"><span>8.3</span></span><span style="font-size:14.0pt;font-family:宋体;">克，铁</span><span style="font-size:14.0pt;"><span>0.6</span></span><span style="font-size:14.0pt;font-family:宋体;">毫克，</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>维生素</span></span><span style="color:windowtext;text-decoration:none;">A</span><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>原</span></span></a></span><span style="font-size:14.0pt;font-family:宋体;">（胡萝卜素）</span><span style="font-size:14.0pt;"><span>1.35</span></span><span style="font-size:14.0pt;font-family:宋体;">～</span><span style="font-size:14.0pt;"><span>17.25</span></span><span style="font-size:14.0pt;font-family:宋体;">毫克，</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>维生素</span></span><span style="color:windowtext;text-decoration:none;">B1</span></a></span><span style="font-size:14.0pt;"><span>0.02</span></span><span style="font-size:14.0pt;font-family:宋体;">～</span><span style="font-size:14.0pt;"><span>0.04</span></span><span style="font-size:14.0pt;font-family:宋体;">毫克，</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>维生素</span></span><span style="color:windowtext;text-decoration:none;">B2</span></a></span><span style="font-size:14.0pt;"><span>0.04</span></span><span style="font-size:14.0pt;font-family:宋体;">～</span><span style="font-size:14.0pt;"><span>0.05</span></span><span style="font-size:14.0pt;font-family:宋体;">毫克，维生素</span><span style="font-size:14.0pt;"><span>C12</span></span><span style="font-size:14.0pt;font-family:宋体;">毫克，热量</span><span style="font-size:14.0pt;"><span>150.7</span></span><span style="font-size:14.0pt;font-family:宋体;">千焦，另含果胶、淀粉、无机盐和多种氨基酸。各类品种中尤以深橘红色胡萝卜素含量最高，各种胡萝卜所含能量在</span><span style="font-size:14.0pt;"><span>79.5</span></span><span style="font-size:14.0pt;font-family:宋体;">干焦～</span><span style="font-size:14.0pt;"><span>1339.8</span></span><span style="font-size:14.0pt;font-family:宋体;">千焦之间。胡萝卜是一种质脆味美、营养丰富的家常蔬菜，素有</span><span style="font-size:14.0pt;"><span>“</span></span><span style="font-size:14.0pt;font-family:宋体;">小人参</span><span style="font-size:14.0pt;"><span>”</span></span><span style="font-size:14.0pt;font-family:宋体;">之称。胡萝卜富含糖类、脂肪、挥发油、胡萝卜素、维生素</span><span style="font-size:14.0pt;"><span>A</span></span><span style="font-size:14.0pt;font-family:宋体;">、维生素</span><span style="font-size:14.0pt;"><span>B1</span></span><span style="font-size:14.0pt;font-family:宋体;">、维生素</span><span style="font-size:14.0pt;"><span>B2</span></span><span style="font-size:14.0pt;font-family:宋体;">、</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>花青素</span></span></a></span><span style="font-size:14.0pt;font-family:宋体;">、钙、铁等营养成分。</span><span style="font-size:14.0pt;"></span></span> \r\n</p>\r\n<p style="background:white;text-align:left;" align="left">\r\n	<b><span style="font-size:15.0pt;background:white;color:#0000cc;font-family:宋体;">饮食宜忌</span></b><span style="font-size:14.0pt;"></span> \r\n</p>\r\n<ul>\r\n	<li>\r\n		<span style="font-size:14.0pt;"></span><span><span style="font-size:14.0pt;font-family:宋体;">胡萝卜也适宜于</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>皮肤干燥</span></span></a></span><span style="font-size:14.0pt;font-family:宋体;">、粗糙，或患毛发苔藓、黑头粉刺、角化型</span><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"><a><span style="color:windowtext;font-family:宋体;text-decoration:none;"><span>湿疹</span></span></a></span><span style="font-size:14.0pt;font-family:宋体;">者食用。</span><span style="font-size:14.0pt;"></span></span> \r\n	</li>\r\n	<li>\r\n		<span style="font-size:14.0pt;"></span><span><span style="font-size:14.0pt;font-family:宋体;">适宜癌症、高血压、夜盲症、干眼症患者、营养不良、食欲不振者、皮肤粗糙者。</span><span style="font-size:14.0pt;"></span></span> \r\n	</li>\r\n	<li>\r\n		<span style="font-size:14.0pt;"></span><span><span style="font-size:14.0pt;font-family:宋体;">烹调胡萝卜时，不要加醋，以免胡萝卜素损失。另外不要过量食用。大量摄入胡萝卜素会令皮肤的色素产生变化，变成橙黄色。</span><span style="font-size:14.0pt;"></span></span> \r\n	</li>\r\n	<li>\r\n		<span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;"><span><span>&nbsp;</span></span></span></span><span><span style="font-size:14.0pt;font-family:宋体;">不宜食用切碎后水洗或久浸泡于水中的萝卜。</span><span style="font-size:14.0pt;"></span></span> \r\n	</li>\r\n	<li>\r\n		<span style="font-size:14.0pt;"></span><span><span style="font-size:14.0pt;font-family:宋体;">服用双氢克尿塞时不宜食用。</span><span style="font-size:14.0pt;"></span></span> \r\n	</li>\r\n	<li>\r\n		<span style="font-size:14.0pt;"></span><span><span style="font-size:14.0pt;font-family:宋体;">食时咀嚼时间不宜过短。</span><span style="font-size:14.0pt;"></span></span> \r\n	</li>\r\n	<li>\r\n		<span style="font-size:14.0pt;"></span><span><span style="font-size:14.0pt;font-family:宋体;">不可与白萝卜同时食用。</span><span style="font-size:14.0pt;"></span></span> \r\n	</li>\r\n	<li>\r\n		<span style="font-size:14.0pt;"></span><span><span style="font-size:14.0pt;font-family:宋体;">不宜与富含维生素</span><span style="font-size:14.0pt;"><span>C</span></span><span style="font-size:14.0pt;font-family:宋体;">的蔬菜（如菠菜、油菜、花菜、番茄、辣椒等），水果（如柑橘、柠檬、草莓、枣子等）同食破坏维生素</span><span style="font-size:14.0pt;"><span>C</span></span><span style="font-size:14.0pt;font-family:宋体;">，降低营养价值。</span><span style="font-size:14.0pt;"></span></span> \r\n	</li>\r\n	<li>\r\n		<span style="font-size:14.0pt;"></span><span><span style="font-size:14.0pt;font-family:宋体;">禁忌生食。胡萝卜虽是蔬菜，但只有烹调，其所含的类萝卜素才较稳定。按照我们的炒菜方法，营养可保存</span><span style="font-size:14.0pt;"><span>76%</span></span><span style="font-size:14.0pt;font-family:宋体;">至</span><span style="font-size:14.0pt;"><span>94%</span></span><span style="font-size:14.0pt;font-family:宋体;">。因此生吃胡萝卜，类萝卜素因没有脂肪而很难被吸收，从而造成浪费。</span><span style="font-size:14.0pt;"></span></span> \r\n	</li>\r\n	<li>\r\n		<span style="font-size:14.0pt;"></span><span><span style="font-size:14.0pt;font-family:宋体;">研究发现，妇女过多吃胡萝卜后，摄入的大量胡萝卜素会引起闭经和抑制卵巢的正常排卵功能。因此</span><b><span style="font-size:14.0pt;background:white;font-family:宋体;">欲怀孕的妇女不宜多吃胡萝卜</span></b><span style="font-size:14.0pt;font-family:宋体;">。</span><span style="font-size:14.0pt;"></span></span> \r\n	</li>\r\n</ul>\r\n<p style="background:white;">\r\n	<a name="3_1"></a><a name="sub17967_3_1"></a><b><span style="font-size:15.0pt;background:white;color:#0000cc;font-family:宋体;">作用</span></b><b><span style="font-size:15.0pt;background:white;color:#0000cc;font-family:arial sans-serif;"></span></b> \r\n</p>\r\n<p>\r\n	<span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"><span><span>&nbsp;</span>1</span></span><span style="font-size:14.0pt;font-family:宋体;">、益肝明目；</span><span style="font-size:14.0pt;"><span>2</span></span><span style="font-size:14.0pt;font-family:宋体;">、利膈宽肠；</span><span style="font-size:14.0pt;"><span><span>3</span></span></span><span style="font-size:14.0pt;font-family:宋体;">、健脾除疳；</span><span style="font-size:14.0pt;"></span></span> \r\n</p>\r\n<p style="text-indent:42.0pt;">\r\n	<span><span style="font-size:14.0pt;"><span>4</span></span><span style="font-size:14.0pt;font-family:宋体;">、增强免疫功能；</span><span style="font-size:14.0pt;"><span><span>5</span></span></span><span style="font-size:14.0pt;font-family:宋体;">、降糖降脂。</span><span style="font-size:14.0pt;"></span></span> \r\n</p>\r\n<p>\r\n	<a name="3_2"></a><a name="sub17967_3_2"></a><a name="8_1"></a><a name="sub17967_8_1"></a><b><span style="font-size:15.0pt;color:#0000cc;font-family:宋体;">推荐食谱</span></b><b><span style="font-size:15.0pt;color:#0000cc;"></span></b> \r\n</p>\r\n<p style="background:white;text-indent:29.1pt;">\r\n	<a name="8_3"></a><a name="sub17967_8_3"></a><a name="8_4"></a><a name="sub17967_8_4"></a><span><b><span style="font-size:14.0pt;background:white;font-family:宋体;">胡萝卜蛋饼</span></b><b><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"></span></b></span> \r\n</p>\r\n<p style="text-indent:55.6pt;">\r\n	<span><span style="font-size:14.0pt;font-family:宋体;">【原料】：胡萝卜、苦瓜、鸡蛋、葱花　</span><span style="font-size:14.0pt;"></span></span> \r\n</p>\r\n<p style="text-indent:55.6pt;">\r\n	<span><span style="font-size:14.0pt;font-family:宋体;">【调料】：盐、胡椒粉、油</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n</p>\r\n<p style="text-indent:55.6pt;">\r\n	<span><span style="font-size:14.0pt;font-family:宋体;">【做法】：</span><span style="font-size:14.0pt;"><span>1</span></span><span style="font-size:14.0pt;font-family:宋体;">、胡萝卜切小丁、苦瓜切小丁，</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n</p>\r\n<p style="text-indent:-21.0pt;">\r\n	<span><span style="font-size:14.0pt;"><span>2</span></span><span style="font-size:14.0pt;font-family:宋体;">、鸡蛋打散，放入，苦瓜、胡萝卜、加盐、胡椒粉、拌匀，</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n</p>\r\n<p style="text-indent:7.0pt;">\r\n	<span><span style="font-size:14.0pt;"><span>3</span></span><span style="font-size:14.0pt;font-family:宋体;">、锅中放油，</span><span style="font-size:14.0pt;"><span>5</span></span><span style="font-size:14.0pt;font-family:宋体;">成油温时放入蛋液两面煎熟即可。</span><span style="font-size:14.0pt;"></span></span> \r\n</p>\r\n<p style="background:white;text-indent:29.1pt;">\r\n	<a name="8_5"></a><a name="sub17967_8_5"></a><span><b><span style="font-size:14.0pt;background:white;font-family:宋体;">香烧胡萝卜</span></b><b><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"></span></b></span> \r\n</p>\r\n<p style="text-indent:-119.0pt;">\r\n	<span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"><span><span>&nbsp;&nbsp;&nbsp;</span></span></span><span style="font-size:14.0pt;font-family:宋体;">【原料】：胡萝卜</span><span style="font-size:14.0pt;"><span>3</span></span><span style="font-size:14.0pt;font-family:宋体;">根、生抽</span><span style="font-size:14.0pt;"><span>2</span></span><span style="font-size:14.0pt;font-family:宋体;">小勺、白糖</span><span style="font-size:14.0pt;"><span>2</span></span><span style="font-size:14.0pt;font-family:宋体;">小勺、老抽</span><span style="font-size:14.0pt;"><span>1</span></span><span style="font-size:14.0pt;font-family:宋体;">小勺（用家里的白瓷汤勺就行）、盐少许。</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n</p>\r\n<p style="text-indent:56.0pt;">\r\n	<span><span style="font-size:14.0pt;font-family:宋体;">【做法】：</span><span style="font-size:14.0pt;"><span>1</span></span><span style="font-size:14.0pt;font-family:宋体;">、胡萝卜去皮，切滚刀块，不宜太大。</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n</p>\r\n<p style="text-indent:-21.0pt;">\r\n	<span><span style="font-size:14.0pt;"><span>2</span></span><span style="font-size:14.0pt;font-family:宋体;">、两小勺生抽，一小勺老抽，两小勺白糖，少许的盐，混合调成汁。</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n</p>\r\n<p style="text-indent:-21.0pt;">\r\n	<span><span style="font-size:14.0pt;"><span>3</span></span><span style="font-size:14.0pt;font-family:宋体;">、平底锅倒油烧热，下入胡萝卜块，中小火慢慢的烧，中间不加水，也不用盖锅盖，将胡萝卜烧软；</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n</p>\r\n<p style="text-indent:-21.0pt;">\r\n	<span><span style="font-size:14.0pt;"><span>4</span></span><span style="font-size:14.0pt;font-family:宋体;">、待胡萝卜的棱角变圆，变得绵软并且没有一点生味。胡萝卜烧透后倒入调味汁，待汤汁烧至略干，香味渗入胡萝卜就可以关火了。</span><span style="font-size:14.0pt;"></span></span> \r\n</p>\r\n<p style="background:white;text-indent:29.1pt;">\r\n	<a name="8_6"></a><a name="sub17967_8_6"></a><a name="8_7"></a><a name="sub17967_8_7"></a><span><b><span style="font-size:14.0pt;background:white;font-family:宋体;">炝炒胡萝卜片</span></b><b><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"></span></b></span> \r\n</p>\r\n<p style="text-indent:-133.0pt;">\r\n	<span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"><span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></span><span style="font-size:14.0pt;font-family:宋体;">【原料】：胡萝卜</span><span style="font-size:14.0pt;"><span>2</span></span><span style="font-size:14.0pt;font-family:宋体;">根约</span><span style="font-size:14.0pt;"><span>300</span></span><span style="font-size:14.0pt;font-family:宋体;">克、蒜苗（青蒜）</span><span style="font-size:14.0pt;"><span>50</span></span><span style="font-size:14.0pt;font-family:宋体;">克、干辣椒</span><span style="font-size:14.0pt;"><span>15</span></span><span style="font-size:14.0pt;font-family:宋体;">克、盐适量、油。</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n</p>\r\n<p style="text-indent:-84.0pt;">\r\n	<span><span style="font-size:14.0pt;font-family:宋体;">【做法】：</span><span style="font-size:14.0pt;"><span>1</span></span><span style="font-size:14.0pt;font-family:宋体;">、将胡萝卜洗净去皮，切成菱形片（先斜切成段，在纵切成片）；</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n</p>\r\n<p style="text-indent:-21.0pt;">\r\n	<span><span style="font-size:14.0pt;"><span>2</span></span><span style="font-size:14.0pt;font-family:宋体;">、锅中放入适量水和少量油，将胡萝卜片放入煮熟，捞出沥干待用；</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n</p>\r\n<p style="text-indent:-21.0pt;">\r\n	<span><span style="font-size:14.0pt;"><span>3</span></span><span style="font-size:14.0pt;font-family:宋体;">、蒜苗洗净拍松切成段，干辣椒去籽切段或者丝；</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n</p>\r\n<p style="text-indent:-21.0pt;">\r\n	<span><span style="font-size:14.0pt;"><span>4</span></span><span style="font-size:14.0pt;font-family:宋体;">、炒锅烧热，放入少量油，放入干辣椒炒香；</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n</p>\r\n<p style="text-indent:-21.0pt;">\r\n	<span><span style="font-size:14.0pt;"><span>5</span></span><span style="font-size:14.0pt;font-family:宋体;">、再放入蒜苗炒香；</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n</p>\r\n<p style="text-indent:-21.0pt;">\r\n	<span><span style="font-size:14.0pt;"><span>6</span></span><span style="font-size:14.0pt;font-family:宋体;">、最后加入胡萝卜片炒匀，加盐调味即可。</span><span style="font-size:14.0pt;"></span></span> \r\n</p>\r\n<p style="background:white;text-indent:28.95pt;">\r\n	<a name="8_8"></a><a name="sub17967_8_8"></a><a name="9_1"></a><a name="sub17967_9_1"></a><a name="9_2"></a><a name="sub17967_9_2"></a><a name="9_3"></a><a name="sub17967_9_3"></a><span><b><span style="font-size:14.0pt;background:white;font-family:宋体;">胡萝卜白米香粥</span></b><span style="font-size:14.0pt;background:white;font-family:宋体;">（</span><span style="font-size:14.0pt;font-family:宋体;">适合</span><span style="font-size:14.0pt;"><span>5</span></span><span style="font-size:14.0pt;font-family:宋体;">个月以上的宝宝）</span><b><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"></span></b></span> \r\n</p>\r\n<p style="text-indent:56.0pt;">\r\n	<span><span style="font-size:14.0pt;font-family:宋体;">【原料】：胡萝卜</span><span style="font-size:14.0pt;"><span>1</span></span><span style="font-size:14.0pt;font-family:宋体;">根，煮到烂熟的白米粥半小碗。</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n</p>\r\n<p style="text-indent:-63.0pt;">\r\n	<span><span style="font-size:14.0pt;font-family:宋体;">【做法】：把胡萝卜清洗干净后，去皮煮熟，然后和白米粥一起压成泥状，也可采用果汁机打成泥状，经过加热就可以喂宝贝了。</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n</p>\r\n<p style="text-indent:-63.0pt;">\r\n	<span><span style="font-size:14.0pt;font-family:宋体;">【贴心小提醒】：也可以把胡萝卜和白米饭一起煮到烂熟，再用勺子压碎，待放凉后就可喂宝贝了。</span><span style="font-size:14.0pt;"></span></span> \r\n</p>\r\n<p style="background:white;text-indent:29.1pt;">\r\n	<a name="8_2"></a><a name="sub17967_8_2"></a><span><b><span style="font-size:14.0pt;background:white;font-family:宋体;">胡萝卜香泥</span></b><b><span style="font-size:14.0pt;background:white;font-family:arial sans-serif;"></span></b></span> \r\n</p>\r\n<p>\r\n	<span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"><span><span>&nbsp;&nbsp;&nbsp;</span></span></span><span style="font-size:14.0pt;font-family:宋体;">【原料】：新鲜胡萝卜半根。</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n</p>\r\n<p style="text-indent:-63.0pt;">\r\n	<span><span style="font-size:14.0pt;font-family:宋体;">【做法】：先把胡萝卜清洗干净，煮熟或蒸熟，然后将其放凉后去皮，再用压泥器压成碎泥状，就可以喂宝贝吃了。</span><span style="font-size:14.0pt;"></span><span style="font-size:14.0pt;font-family:宋体;"></span><span style="font-size:14.0pt;"></span></span> \r\n</p>\r\n<span><span style="font-size:14.0pt;font-family:宋体;">【贴心小提醒】：胡萝卜虽然富有营养，但吃得适量最好。如果给宝贝吃得过多，容易使皮肤变黄。</span></span><br />', '500', 15, '中国大陆', 8, 'Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.', '', '2', '8,9', 1),
-(8, '10.00', '<div id="J_DcTopRightWrap" style="margin:0px;padding:0px;color:#404040;font-family:tahoma, arial, 微软雅黑, sans-serif;background-color:#FFFFFF;">\r\n	<div id="J_DcTopRight" class="J_DcAsyn tb-shop" style="margin:0px;padding:0px;">\r\n		<div class="J_TModule" id="shop8751140001" style="margin:0px;padding:0px;">\r\n			<div class="skin-box tb-module tshop-pbsm tshop-pbsm-shop-self-defined" style="margin:0px;padding:0px;">\r\n				<div class="skin-box-bd clear-fix" style="margin:0px;padding:0px;border:0px solid #FFFFFF;color:#828282;background:none;">\r\n					<span> \r\n					<p>\r\n						<img src="http://img03.taobaocdn.com/imgextra/i3/738580955/TB2oT.ZapXXXXaxXXXXXXXXXXXX-738580955.jpg_.webp" /> \r\n					</p>\r\n</span> \r\n				</div>\r\n<s class="skin-box-bt"><b></b></s> \r\n			</div>\r\n		</div>\r\n		<div class="J_TModule" id="shop8825085575" style="margin:0px;padding:0px;">\r\n			<div class="skin-box tb-module tshop-pbsm tshop-pbsm-shop-self-defined" style="margin:0px;padding:0px;">\r\n				<s class="skin-box-tp"><b></b></s> \r\n				<div class="skin-box-bd clear-fix" style="margin:0px;padding:0px;border:0px solid #FFFFFF;color:#828282;background:none;">\r\n					<span> \r\n					<p>\r\n						<a href="http://detail.tmall.com/item.htm?spm=a220z.1000880.0.0.UoC3cM&id=35904185523&scene=taobao_shop" target="_blank"><img src="http://img03.taobaocdn.com/imgextra/i3/738580955/TB2AEVlaFXXXXbOXXXXXXXXXXXX-738580955.jpg_.webp" /></a> \r\n					</p>\r\n</span> \r\n				</div>\r\n<s class="skin-box-bt"><b></b></s> \r\n			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<div id="description" class="J_DetailSection tshop-psm tshop-psm-bdetaildes" style="margin:0px;padding:0px;color:#404040;font-family:tahoma, arial, 微软雅黑, sans-serif;background-color:#FFFFFF;">\r\n	<div class="content ke-post" style="margin:10px 0px 0px;padding:0px;font-size:14px;font-family:tahoma, arial, 宋体, sans-serif;">\r\n		<div style="margin:0px;padding:0px;">\r\n			<span><span style="font-weight:700;"><span style="font-size:18px;">智利青苹果</span></span><br />\r\n</span> \r\n		</div>\r\n		<div style="margin:0px;padding:0px;">\r\n			<p>\r\n				<span><span style="font-weight:700;"><img class="ke_anchor" id="ids-tag-m-35171" src="http://a.tbcdn.cn/kissy/1.0.0/build/imglazyload/spaceball.gif" style="height:1px;" />产品简介</span><br />\r\n智利苹果色泽艳丽，颜色从青绿到浅绿都有，也可能会略带粉红色。口感上则相当酸，是喜欢酸味朋友们的大爱，爽脆多汁，口味鲜美，吃法较多。&nbsp;</span> \r\n			</p>\r\n		</div>\r\n		<div style="margin:0px;padding:0px;">\r\n			<span><span style="font-weight:700;">温馨提示</span><br />\r\n</span> \r\n		</div>\r\n		<div style="margin:0px;padding:0px;">\r\n			<span>此款产地为智利。</span> \r\n		</div>\r\n		<div style="margin:0px;padding:0px;">\r\n			<span>冰箱冷藏保存时间会更久，保存时表皮不要沾水。苹果皮中含有丰富营养素，建议连皮一起吃。</span> \r\n			<p>\r\n				<img align="absmiddle" src="http://img02.taobaocdn.com/imgextra/i2/738580955/T2zOhCXfdOXXXXXXXX-738580955.jpg" /><img align="absmiddle" src="http://img04.taobaocdn.com/imgextra/i4/738580955/T2Zz1aXXtdXXXXXXXX-738580955.jpg" /><img align="absmiddle" src="http://img01.taobaocdn.com/imgextra/i1/738580955/T2VPCuXc4cXXXXXXXX-738580955.jpg" /><img align="absmiddle" src="http://img04.taobaocdn.com/imgextra/i4/738580955/T2ZwXBXl8NXXXXXXXX-738580955.jpg" /> \r\n			</p>\r\n			<p>\r\n				<img align="absmiddle" src="http://img04.taobaocdn.com/imgextra/i4/738580955/T2MmJyXi0OXXXXXXXX-738580955.jpg_.webp" /><img class="ke_anchor" id="ids-tag-m-35173" src="http://a.tbcdn.cn/kissy/1.0.0/build/imglazyload/spaceball.gif" style="height:1px;" /><img align="absmiddle" src="http://img01.taobaocdn.com/imgextra/i1/738580955/T2yn4DXj8OXXXXXXXX-738580955.jpg_.webp" /> \r\n			</p>\r\n		</div>\r\n		<p>\r\n			<img class="ke_anchor" id="ids-tag-m-35176" src="http://a.tbcdn.cn/kissy/1.0.0/build/imglazyload/spaceball.gif" style="height:1px;" /><img align="absmiddle" src="http://img03.taobaocdn.com/imgextra/i3/738580955/T28tdGXd0OXXXXXXXX-738580955.jpg_.webp" /> \r\n		</p>\r\n	</div>\r\n</div>', '500', 11, '中国大陆', 8, '正宗进口青苹果水果酸甜新鲜水果', '', '', '', 1),
-(9, '5.00', '<h2 align="center" style="font-family:tahoma, arial, 宋体, sans-serif;background-color:#FFFFFF;">\r\n	配送范围：目前江浙沪（其他城市或者偏远乡镇村目前不配送，谢谢）\r\n</h2>\r\n<p align="center" style="font-family:tahoma, arial, 宋体, sans-serif;font-size:14px;background-color:#FFFFFF;">\r\n	<img src="http://gd1.alicdn.com/imgextra/i1/595478579/T2gtbxXINaXXXXXXXX_!!595478579.jpg" /> \r\n</p>\r\n<p align="center" style="font-family:tahoma, arial, 宋体, sans-serif;font-size:14px;background-color:#FFFFFF;">\r\n	<img src="http://gd2.alicdn.com/imgextra/i2/595478579/T2yOPCXKFaXXXXXXXX_!!595478579.jpg" /><img src="http://gd3.alicdn.com/imgextra/i3/595478579/T2S52CXMlaXXXXXXXX_!!595478579.jpg" /><img src="http://gd3.alicdn.com/imgextra/i3/595478579/T2XmrCXLNaXXXXXXXX_!!595478579.jpg" /> \r\n</p>\r\n<p align="center" style="font-family:tahoma, arial, 宋体, sans-serif;font-size:14px;background-color:#FFFFFF;">\r\n	<img src="http://gd3.alicdn.com/imgextra/i3/595478579/T2poTvXMpaXXXXXXXX_!!595478579.jpg" /> \r\n</p>', '500', 0, '中国大陆', 10, '常鲜生 菲律宾进口香蕉 都乐香蕉 新鲜水果 整箱批发', '', '', '', 1);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_favortable`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_favortable` (
-  `ID` int(10) NOT NULL AUTO_INCREMENT,
-  `uid` int(5) NOT NULL,
-  `goodid` int(100) DEFAULT NULL,
-  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `num` int(11) DEFAULT '1',
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
-
---
--- 转存表中的数据 `onethink_favortable`
---
-
-INSERT INTO `onethink_favortable` (`ID`, `uid`, `goodid`, `time`, `num`) VALUES
-(13, 1, 8, '2014-10-22 19:14:47', 1),
-(14, 1, 9, '2014-10-25 01:16:34', 1);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_fcoupon`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_fcoupon` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '分类ID',
-  `name` varchar(30) NOT NULL COMMENT '标志',
-  `title` varchar(50) NOT NULL COMMENT '标题',
-  `pid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '上级分类ID',
-  `sort` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '排序（同级有效）',
-  `list_row` tinyint(3) unsigned NOT NULL DEFAULT '10' COMMENT '列表每页行数',
-  `price` varchar(50) NOT NULL COMMENT '金额',
-  `code` varchar(255) NOT NULL COMMENT '关键字',
-  `description` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
-  `template_index` varchar(100) NOT NULL COMMENT '频道页模板',
-  `template_lists` varchar(100) NOT NULL COMMENT '列表页模板',
-  `template_detail` varchar(100) NOT NULL COMMENT '详情页模板',
-  `template_edit` varchar(100) NOT NULL COMMENT '编辑页模板',
-  `model` varchar(100) NOT NULL DEFAULT '' COMMENT '列表绑定模型',
-  `model_sub` varchar(100) NOT NULL DEFAULT '' COMMENT '子文档绑定模型',
-  `type` varchar(100) NOT NULL DEFAULT '' COMMENT '允许发布的内容类型',
-  `link_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '外链',
-  `allow_publish` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '是否允许发布内容',
-  `display` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '可见性',
-  `reply` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '是否允许回复',
-  `check` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '发布的文章是否需要审核',
-  `reply_model` varchar(100) NOT NULL DEFAULT '',
-  `extend` text NOT NULL COMMENT '扩展设置',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  `status` int(4) DEFAULT NULL COMMENT '数据状态',
-  `icon` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '分类图标',
-  `ismenu` int(11) DEFAULT NULL COMMENT '无限极分类调用',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_name` (`name`),
-  KEY `pid` (`pid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
-
---
--- 转存表中的数据 `onethink_fcoupon`
---
-
-INSERT INTO `onethink_fcoupon` (`id`, `name`, `title`, `pid`, `sort`, `list_row`, `price`, `code`, `description`, `template_index`, `template_lists`, `template_detail`, `template_edit`, `model`, `model_sub`, `type`, `link_id`, `allow_publish`, `display`, `reply`, `check`, `reply_model`, `extend`, `create_time`, `update_time`, `status`, `icon`, `ismenu`) VALUES
-(1, '645645', '肯德基', 0, 0, 10, '30', '6fsgwcjf', '', '', '', '', '', '', '', '', 0, 1, 1, 0, 0, '', '', 1414012468, 1414174845, 1, 5, NULL),
-(2, '645465', '麦当劳', 0, 0, 10, '6644', '453ljnq7', '', '', '', '', '', '', '', '', 0, 1, 1, 0, 0, '', '', 1414012758, 1414174944, 1, 11, NULL),
-(3, '64645', '麦考林', 0, 0, 10, '656', '4nm34itt', '', '', '', '', '', '', '', '', 0, 1, 1, 0, 0, '', '', 1414012817, 1414175369, 1, 14, NULL),
-(4, '564456', '小肥羊', 0, 0, 10, '65445', 'chmvc29z', '', '', '', '', '', '', '', '', 0, 1, 1, 0, 0, '', '', 1414012977, 1414174856, 1, 12, NULL),
-(5, '', '必胜客', 0, 0, 10, '50', '2xs1rdw0', '', '', '', '', '', '', '', '', 0, 0, 1, 0, 0, '', '', 1414174826, 1414174826, 1, 13, NULL);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_file`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_file` (
+-- -----------------------------
+-- Table structure for `onethink_file`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_file`;
+CREATE TABLE `onethink_file` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '文件ID',
   `name` char(30) NOT NULL DEFAULT '' COMMENT '原始文件名',
   `savename` char(20) NOT NULL DEFAULT '' COMMENT '保存名称',
@@ -994,139 +1525,53 @@ CREATE TABLE IF NOT EXISTS `onethink_file` (
   `sha1` char(40) NOT NULL DEFAULT '' COMMENT '文件 sha1编码',
   `location` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '文件保存位置',
   `url` varchar(255) NOT NULL DEFAULT '' COMMENT '远程地址',
-  `create_time` int(10) unsigned NOT NULL COMMENT '上传时间',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '上传时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_md5` (`md5`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='文件表' AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='文件表';
 
---
--- 转存表中的数据 `onethink_file`
---
 
-INSERT INTO `onethink_file` (`id`, `name`, `savename`, `savepath`, `ext`, `mime`, `size`, `md5`, `sha1`, `location`, `url`, `create_time`) VALUES
-(1, 'yunwuxin-ThinkPay-master.zip', '5405e116b5a4e.zip', '2014-09-02/', 'zip', 'application/octet-stream', 23324, '1565d08c019b3958b1767bd8970f9f2c', '130d04a2ec9800243dc324b6ddce53f9c2c69e35', 0, '', 1409671446),
-(2, '14552934C-0.jpg', '5419eb9223a5f.jpg', '2014-09-18/', 'jpg', 'application/octet-stream', 206166, '66b8f2a751472d0de3b1c86c20be9949', '323183b6c93f2f5031daa8a47f2da0c3f362e3b7', 0, '', 1410984849);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_hooks`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_hooks` (
+-- -----------------------------
+-- Table structure for `onethink_hooks`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_hooks`;
+CREATE TABLE `onethink_hooks` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `name` varchar(40) NOT NULL DEFAULT '' COMMENT '钩子名称',
-  `description` text NOT NULL COMMENT '描述',
+  `description` text NULL  COMMENT '描述',
   `type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
   `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `addons` varchar(255) NOT NULL DEFAULT '' COMMENT '钩子挂载的插件 ''，''分割',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
+) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
---
--- 转存表中的数据 `onethink_hooks`
---
-
-INSERT INTO `onethink_hooks` (`id`, `name`, `description`, `type`, `update_time`, `addons`, `status`) VALUES
-(1, 'pageHeader', '页面header钩子，一般用于加载插件CSS文件和代码', 1, 0, '', 1),
-(2, 'pageFooter', '页面footer钩子，一般用于加载插件JS文件和JS代码', 1, 0, 'ReturnTop', 1),
-(3, 'documentEditForm', '添加编辑表单的 扩展内容钩子', 1, 0, 'Attachment', 1),
-(4, 'documentDetailAfter', '文档末尾显示', 1, 0, 'Attachment,SocialComment', 1),
-(5, 'documentDetailBefore', '页面内容前显示用钩子', 1, 0, '', 1),
-(6, 'documentSaveComplete', '保存文档数据后的扩展钩子', 2, 0, 'Attachment', 1),
-(7, 'documentEditFormContent', '添加编辑表单的内容显示钩子', 1, 0, 'Editor', 1),
-(8, 'adminArticleEdit', '后台内容编辑页编辑器', 1, 1378982734, 'EditorForAdmin', 1),
-(13, 'AdminIndex', '首页小格子个性化显示', 1, 1382596073, 'SiteStat,SystemInfo,DevTeam', 1),
-(14, 'topicComment', '评论提交方式扩展钩子。', 1, 1380163518, 'Editor', 1),
-(16, 'app_begin', '应用开始', 2, 1384481614, '', 1),
-(17, 'OTcaiji', 'OT采集插件钩子', 1, 1411634246, 'OTcaiji', 1),
-(22, 'indexAliPlay', '支付宝钩子', 1, 1412762558, 'indexAliPlay,AliPlay', 1),
-(19, 'J_China_City', '每个系统都需要的一个中国省市区三级联动插件。', 1, 1411636527, 'ChinaCity', 1),
-(20, 'J_iyo9Table', '向着要编辑的位置点击一下，访位置会变成一个可编辑的input标签，编辑好后，鼠标再点击空白地方，即可保存', 1, 1411636824, 'Iyo9Table', 1),
-(24, 'checkin', '签到', 1, 1395371353, '', 1),
-(21, 'Template', '模版管理插件钩子', 1, 1411637366, 'Template', 1),
-(23, 'SyncLogin', '第三方账号同步登陆', 1, 1412762818, 'SyncLogin', 1);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_iswork`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_iswork` (
-  `ID` int(10) NOT NULL AUTO_INCREMENT,
-  `uid` varchar(225) CHARACTER SET utf8 NOT NULL,
-  `time` varchar(225) DEFAULT NULL,
-  `status` int(10) DEFAULT NULL COMMENT '1-未使用 2-已使用',
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=23 ;
-
---
--- 转存表中的数据 `onethink_iswork`
---
-
-INSERT INTO `onethink_iswork` (`ID`, `uid`, `time`, `status`) VALUES
-(18, '1', '14189089729', 1),
-(22, '1', '1414090388', 1);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_listtmp`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_listtmp` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(200) CHARACTER SET utf8 NOT NULL,
-  `url` text CHARACTER SET utf8 NOT NULL,
-  `source` text CHARACTER SET utf8 NOT NULL,
-  `sourceurl` text CHARACTER SET utf8 NOT NULL,
-  `dates` int(10) NOT NULL,
-  `st` int(1) NOT NULL,
-  `zt` int(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
---
--- 转存表中的数据 `onethink_listtmp`
---
-
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_login`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_login` (
-  `login_id` int(11) NOT NULL AUTO_INCREMENT,
-  `uid` int(11) NOT NULL COMMENT '用户UID',
-  `type_uid` varchar(255) NOT NULL COMMENT '授权登陆用户名 第三方分配的appid',
-  `type` char(80) NOT NULL COMMENT '登陆类型 qq|sina',
-  `oauth_token` varchar(150) DEFAULT NULL COMMENT '授权账号',
-  `oauth_token_secret` varchar(150) DEFAULT NULL COMMENT '授权密码',
-  PRIMARY KEY (`login_id`),
-  KEY `uid` (`uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- 转存表中的数据 `onethink_login`
---
-
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_member`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_member` (
+-- -----------------------------
+-- Records of `onethink_hooks`
+-- -----------------------------
+INSERT INTO `onethink_hooks` VALUES ('1', 'pageHeader', '页面header钩子，一般用于加载插件CSS文件和代码', '1', '0', '', '1');
+INSERT INTO `onethink_hooks` VALUES ('2', 'pageFooter', '页面footer钩子，一般用于加载插件JS文件和JS代码', '1', '0', 'ReturnTop', '1');
+INSERT INTO `onethink_hooks` VALUES ('3', 'documentEditForm', '添加编辑表单的 扩展内容钩子', '1', '0', 'Attachment', '1');
+INSERT INTO `onethink_hooks` VALUES ('4', 'documentDetailAfter', '文档末尾显示', '1', '0', 'Attachment,SocialComment', '1');
+INSERT INTO `onethink_hooks` VALUES ('5', 'documentDetailBefore', '页面内容前显示用钩子', '1', '0', '', '1');
+INSERT INTO `onethink_hooks` VALUES ('6', 'documentSaveComplete', '保存文档数据后的扩展钩子', '2', '0', 'Attachment', '1');
+INSERT INTO `onethink_hooks` VALUES ('7', 'documentEditFormContent', '添加编辑表单的内容显示钩子', '1', '0', 'Editor', '1');
+INSERT INTO `onethink_hooks` VALUES ('8', 'adminArticleEdit', '后台内容编辑页编辑器', '1', '1378982734', 'EditorForAdmin', '1');
+INSERT INTO `onethink_hooks` VALUES ('13', 'AdminIndex', '首页小格子个性化显示', '1', '1382596073', 'SiteStat,SystemInfo,DevTeam', '1');
+INSERT INTO `onethink_hooks` VALUES ('14', 'topicComment', '评论提交方式扩展钩子。', '1', '1380163518', 'Editor', '1');
+INSERT INTO `onethink_hooks` VALUES ('16', 'app_begin', '应用开始', '2', '1384481614', '', '1');
+INSERT INTO `onethink_hooks` VALUES(28, 'Template', '模版管理插件钩子', 1, 1420796865, 'Template', 1);
+INSERT INTO `onethink_hooks` VALUES(23, 'SyncLogin', '第三方账号同步登陆', 1, 1412762818, 'SyncLogin', 1);
+-- -----------------------------
+-- Table structure for `onethink_member`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_member`;
+CREATE TABLE `onethink_member` (
   `uid` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户ID',
   `nickname` char(16) NOT NULL DEFAULT '' COMMENT '昵称',
   `sex` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '性别',
-  `birthday` date NOT NULL DEFAULT '0000-00-00' COMMENT '生日',
+  `birthday` varchar(16) NOT NULL DEFAULT '' COMMENT '生日',
   `qq` char(10) NOT NULL DEFAULT '' COMMENT 'qq号',
   `score` mediumint(8) NOT NULL DEFAULT '0' COMMENT '用户积分',
   `login` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '登录次数',
@@ -1135,31 +1580,15 @@ CREATE TABLE IF NOT EXISTS `onethink_member` (
   `last_login_ip` bigint(20) NOT NULL DEFAULT '0' COMMENT '最后登录IP',
   `last_login_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最后登录时间',
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '会员状态',
-  `address` varchar(225) DEFAULT NULL,
-  `cellphone` varchar(225) DEFAULT NULL,
-  `position` varchar(225) DEFAULT NULL,
-  `realname` varchar(225) DEFAULT NULL,
-  `youbian` varchar(225) DEFAULT NULL,
-  `lever` varchar(225) DEFAULT 'lv1 ',
-  `iswors` int(10) DEFAULT NULL,
   PRIMARY KEY (`uid`),
   KEY `status` (`status`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='会员表' AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='会员表';
 
---
--- 转存表中的数据 `onethink_member`
---
-
-INSERT INTO `onethink_member` (`uid`, `nickname`, `sex`, `birthday`, `qq`, `score`, `login`, `reg_ip`, `reg_time`, `last_login_ip`, `last_login_time`, `status`, `address`, `cellphone`, `position`, `realname`, `youbian`, `lever`, `iswors`) VALUES
-(1, '123', 30, '1900-00-00', '1010422715', 330, 76, 2130706433, 1413206453, 2130706433, 1414264315, 1, '5656', '56546', '5564', '5456', '', 'lv1', NULL);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_menu`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_menu` (
+-- -----------------------------
+-- Table structure for `onethink_menu`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_menu`;
+CREATE TABLE `onethink_menu` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '文档ID',
   `title` varchar(50) NOT NULL DEFAULT '' COMMENT '标题',
   `pid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '上级分类ID',
@@ -1173,162 +1602,176 @@ CREATE TABLE IF NOT EXISTS `onethink_menu` (
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`),
   KEY `status` (`status`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=151 ;
+) ENGINE=MyISAM AUTO_INCREMENT=122 DEFAULT CHARSET=utf8;
 
---
--- 转存表中的数据 `onethink_menu`
---
+-- -----------------------------
+-- Records of `onethink_menu`
+-- -----------------------------
+INSERT INTO `onethink_menu` VALUES ('1', '首页', '0', '1', 'Index/index', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('2', '文章', '0', '5', 'Article/index', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('3', '文档列表', '2', '0', 'article/index', '1', '', '内容', '0','1');
+INSERT INTO `onethink_menu` VALUES ('4', '新增', '3', '0', 'article/add', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('5', '编辑', '3', '0', 'article/edit', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('6', '改变状态', '3', '0', 'article/setStatus', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('7', '保存', '3', '0', 'article/update', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('8', '保存草稿', '3', '0', 'article/autoSave', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('9', '移动', '3', '0', 'article/move', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('10', '复制', '3', '0', 'article/copy', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('11', '粘贴', '3', '0', 'article/paste', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('12', '导入', '3', '0', 'article/batchOperate', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('13', '回收站', '2', '0', 'article/recycle', '1', '', '内容', '0','1');
+INSERT INTO `onethink_menu` VALUES ('14', '还原', '13', '0', 'article/permit', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('15', '清空', '13', '0', 'article/clear', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('16', '用户', '0', '7', 'User/index', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('17', '用户信息', '16', '0', 'User/index', '0', '', '用户管理', '0','1');
+INSERT INTO `onethink_menu` VALUES ('18', '新增用户', '17', '0', 'User/add', '0', '添加新用户', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('19', '用户行为', '16', '0', 'User/action', '0', '', '行为管理', '0','1');
+INSERT INTO `onethink_menu` VALUES ('20', '新增用户行为', '19', '0', 'User/addaction', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('21', '编辑用户行为', '19', '0', 'User/editaction', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('22', '保存用户行为', '19', '0', 'User/saveAction', '0', '\"用户->用户行为\"保存编辑和新增的用户行为', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('23', '变更行为状态', '19', '0', 'User/setStatus', '0', '\"用户->用户行为\"中的启用,禁用和删除权限', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('24', '禁用会员', '19', '0', 'User/changeStatus?method=forbidUser', '0', '\"用户->用户信息\"中的禁用', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('25', '启用会员', '19', '0', 'User/changeStatus?method=resumeUser', '0', '\"用户->用户信息\"中的启用', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('26', '删除会员', '19', '0', 'User/changeStatus?method=deleteUser', '0', '\"用户->用户信息\"中的删除', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('27', '权限管理', '16', '0', 'AuthManager/index', '0', '', '用户管理', '0','1');
+INSERT INTO `onethink_menu` VALUES ('28', '删除', '27', '0', 'AuthManager/changeStatus?method=deleteGroup', '0', '删除用户组', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('29', '禁用', '27', '0', 'AuthManager/changeStatus?method=forbidGroup', '0', '禁用用户组', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('30', '恢复', '27', '0', 'AuthManager/changeStatus?method=resumeGroup', '0', '恢复已禁用的用户组', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('31', '新增', '27', '0', 'AuthManager/createGroup', '0', '创建新的用户组', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('32', '编辑', '27', '0', 'AuthManager/editGroup', '0', '编辑用户组名称和描述', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('33', '保存用户组', '27', '0', 'AuthManager/writeGroup', '0', '新增和编辑用户组的\"保存\"按钮', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('34', '授权', '27', '0', 'AuthManager/group', '0', '\"后台 \\ 用户 \\ 用户信息\"列表页的\"授权\"操作按钮,用于设置用户所属用户组', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('35', '访问授权', '27', '0', 'AuthManager/access', '0', '\"后台 \\ 用户 \\ 权限管理\"列表页的\"访问授权\"操作按钮', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('36', '成员授权', '27', '0', 'AuthManager/user', '0', '\"后台 \\ 用户 \\ 权限管理\"列表页的\"成员授权\"操作按钮', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('37', '解除授权', '27', '0', 'AuthManager/removeFromGroup', '0', '\"成员授权\"列表页内的解除授权操作按钮', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('38', '保存成员授权', '27', '0', 'AuthManager/addToGroup', '0', '\"用户信息\"列表页\"授权\"时的\"保存\"按钮和\"成员授权\"里右上角的\"添加\"按钮)', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('39', '分类授权', '27', '0', 'AuthManager/category', '0', '\"后台 \\ 用户 \\ 权限管理\"列表页的\"分类授权\"操作按钮', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('40', '保存分类授权', '27', '0', 'AuthManager/addToCategory', '0', '\"分类授权\"页面的\"保存\"按钮', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('41', '模型授权', '27', '0', 'AuthManager/modelauth', '0', '\"后台 \\ 用户 \\ 权限管理\"列表页的\"模型授权\"操作按钮', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('42', '保存模型授权', '27', '0', 'AuthManager/addToModel', '0', '\"分类授权\"页面的\"保存\"按钮', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('43', '扩展', '0', '8', 'Addons/index', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('44', '插件管理', '43', '1', 'Addons/index', '0', '', '扩展', '0','1');
+INSERT INTO `onethink_menu` VALUES ('45', '创建', '44', '0', 'Addons/create', '0', '服务器上创建插件结构向导', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('46', '检测创建', '44', '0', 'Addons/checkForm', '0', '检测插件是否可以创建', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('47', '预览', '44', '0', 'Addons/preview', '0', '预览插件定义类文件', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('48', '快速生成插件', '44', '0', 'Addons/build', '0', '开始生成插件结构', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('49', '设置', '44', '0', 'Addons/config', '0', '设置插件配置', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('50', '禁用', '44', '0', 'Addons/disable', '0', '禁用插件', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('51', '启用', '44', '0', 'Addons/enable', '0', '启用插件', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('52', '安装', '44', '0', 'Addons/install', '0', '安装插件', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('53', '卸载', '44', '0', 'Addons/uninstall', '0', '卸载插件', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('54', '更新配置', '44', '0', 'Addons/saveconfig', '0', '更新插件配置处理', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('55', '插件后台列表', '44', '0', 'Addons/adminList', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('56', 'URL方式访问插件', '44', '0', 'Addons/execute', '0', '控制是否有权限通过url访问插件控制器方法', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('57', '钩子管理', '43', '2', 'Addons/hooks', '0', '', '扩展', '0','1');
+INSERT INTO `onethink_menu` VALUES ('58', '模型管理', '68', '3', 'Model/index', '0', '', '系统设置', '0','1');
+INSERT INTO `onethink_menu` VALUES ('59', '新增', '58', '0', 'model/add', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('60', '编辑', '58', '0', 'model/edit', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('61', '改变状态', '58', '0', 'model/setStatus', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('62', '保存数据', '58', '0', 'model/update', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('63', '属性管理', '68', '0', 'Attribute/index', '1', '网站属性配置。', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('64', '新增', '63', '0', 'Attribute/add', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('65', '编辑', '63', '0', 'Attribute/edit', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('66', '改变状态', '63', '0', 'Attribute/setStatus', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('67', '保存数据', '63', '0', 'Attribute/update', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('68', '系统', '0', '2', 'Config/group', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('69', '网站设置', '68', '1', 'Config/group', '0', '', '系统设置', '0','1');
+INSERT INTO `onethink_menu` VALUES ('70', '配置管理', '68', '4', 'Config/index', '0', '', '系统设置', '0','1');
+INSERT INTO `onethink_menu` VALUES ('71', '编辑', '70', '0', 'Config/edit', '0', '新增编辑和保存配置', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('72', '删除', '70', '0', 'Config/del', '0', '删除配置', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('73', '新增', '70', '0', 'Config/add', '0', '新增配置', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('74', '保存', '70', '0', 'Config/save', '0', '保存配置', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('75', '菜单管理', '68', '5', 'Menu/index', '0', '', '系统设置', '0','1');
+INSERT INTO `onethink_menu` VALUES ('76', '导航管理', '68', '6', 'Channel/index', '0', '', '系统设置', '0','1');
+INSERT INTO `onethink_menu` VALUES ('77', '新增', '76', '0', 'Channel/add', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('78', '编辑', '76', '0', 'Channel/edit', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('79', '删除', '76', '0', 'Channel/del', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('80', '分类管理', '68', '2', 'Category/index', '0', '', '系统设置', '0','1');
+INSERT INTO `onethink_menu` VALUES ('81', '编辑', '80', '0', 'Category/edit', '0', '编辑和保存栏目分类', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('82', '新增', '80', '0', 'Category/add', '0', '新增栏目分类', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('83', '删除', '80', '0', 'Category/remove', '0', '删除栏目分类', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('84', '移动', '80', '0', 'Category/operate/type/move', '0', '移动栏目分类', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('85', '合并', '80', '0', 'Category/operate/type/merge', '0', '合并栏目分类', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('86', '备份数据库', '68', '0', 'Database/index?type=export', '0', '', '数据备份', '0','1');
+INSERT INTO `onethink_menu` VALUES ('87', '备份', '86', '0', 'Database/export', '0', '备份数据库', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('88', '优化表', '86', '0', 'Database/optimize', '0', '优化数据表', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('89', '修复表', '86', '0', 'Database/repair', '0', '修复数据表', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('90', '还原数据库', '68', '0', 'Database/index?type=import', '0', '', '数据备份', '0','1');
+INSERT INTO `onethink_menu` VALUES ('91', '恢复', '90', '0', 'Database/import', '0', '数据库恢复', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('92', '删除', '90', '0', 'Database/del', '0', '删除备份文件', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('93', '其他', '0', '5', 'other', '1', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('96', '新增', '75', '0', 'Menu/add', '0', '', '系统设置', '0','1');
+INSERT INTO `onethink_menu` VALUES ('98', '编辑', '75', '0', 'Menu/edit', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('106', '行为日志', '16', '0', 'Action/actionlog', '0', '', '行为管理', '0','1');
+INSERT INTO `onethink_menu` VALUES ('108', '修改密码', '16', '0', 'User/updatePassword', '1', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('109', '修改昵称', '16', '0', 'User/updateNickname', '1', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('110', '查看行为日志', '106', '0', 'action/edit', '1', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('112', '新增数据', '58', '0', 'think/add', '1', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('113', '编辑数据', '58', '0', 'think/edit', '1', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('114', '导入', '75', '0', 'Menu/import', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('115', '生成', '58', '0', 'Model/generate', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('116', '新增钩子', '57', '0', 'Addons/addHook', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('117', '编辑钩子', '57', '0', 'Addons/edithook', '0', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('118', '文档排序', '3', '0', 'Article/sort', '1', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('119', '排序', '70', '0', 'Config/sort', '1', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('120', '排序', '75', '0', 'Menu/sort', '1', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('121', '排序', '76', '0', 'Channel/sort', '1', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('122', '数据列表', '58', '0', 'think/lists', '1', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES ('123', '审核列表', '3', '0', 'Article/examine', '1', '', '', '0','1');
+INSERT INTO `onethink_menu` VALUES(135, '已发货订单', 131, 2, 'Ordertransport/index', 0, '', '订单管理', 0, 1);
+INSERT INTO `onethink_menu` VALUES(134, '优惠券', 68, 4, 'Fcoupon/index', 0, '', '优惠券管理', 0, 1);
+INSERT INTO `onethink_menu` VALUES(131, '订单', 0, 3, 'Order/index', 0, '', '', 0, 1);
+INSERT INTO `onethink_menu` VALUES(132, '已提交订单', 131, 1, 'Order/index', 0, '', '订单管理', 0, 1);
+INSERT INTO `onethink_menu` VALUES(133, '已签收订单', 131, 3, 'Ordercomplete/index', 0, '', '订单管理', 0, 1);
+INSERT INTO `onethink_menu` VALUES(137, '正退货订单', 131, 6, 'Back/index', 0, '', '退货管理', 0, 1);
+INSERT INTO `onethink_menu` VALUES(141, '同意换货商品', 131, 10, 'Changeagree/index', 0, '', '换货管理', 0, 1);
+INSERT INTO `onethink_menu` VALUES(138, '同意退货订单', 131, 7, 'Backagree/index', 0, '', '退货管理', 0, 1);
+INSERT INTO `onethink_menu` VALUES(139, '已退货订单', 131, 8, 'Backover/index', 0, '', '退货管理', 0, 1);
+INSERT INTO `onethink_menu` VALUES(140, '正换货商品', 131, 9, 'Change/index', 0, '', '换货管理', 0, 1);
+INSERT INTO `onethink_menu` VALUES(142, '已换货商品', 131, 12, 'Changeover/index', 0, '', '换货管理', 0, 1);
+INSERT INTO `onethink_menu` VALUES(143, '今日销量统计', 146, 13, 'Statistics/index', 0, '', '数据统计', 0, 1);
+INSERT INTO `onethink_menu` VALUES(144, '本周销量统计', 146, 14, 'Statistics/week', 0, '', '数据统计', 0, 1);
+INSERT INTO `onethink_menu` VALUES(145, '本月销量统计', 146, 15, 'Statistics/month', 0, '', '数据统计', 0, 1);
+INSERT INTO `onethink_menu` VALUES(146, '数据', 0, 6, 'Statistics/index', 0, '', '数据统计', 0, 1);
+INSERT INTO `onethink_menu` VALUES(147, '每日数据', 146, 16, 'Report/index', 0, '', '报表统计', 0, 1);
+INSERT INTO `onethink_menu` VALUES(148, '每周数据', 146, 17, 'Report/week', 0, '', '报表统计', 0, 1);
+INSERT INTO `onethink_menu` VALUES(149, '每月统计', 146, 18, 'Report/month', 0, '', '报表统计', 0, 1);
+INSERT INTO `onethink_menu` VALUES(151, '栏目页统计', 146, 23, 'Lookup/category', 0, '', '访问统计', 0, 1);
+INSERT INTO `onethink_menu` VALUES(152, '内容页统计', 146, 24, 'Lookup/article', 0, '', '访问统计', 0, 1);
+INSERT INTO `onethink_menu` VALUES(153, '申请取消的订单', 131, 0, 'Cancel/index', 0, '', '取消管理', 0, 1);
+INSERT INTO `onethink_menu` VALUES(154, '拒绝的订单', 131, 0, 'Cancelrefuse/index', 0, '', '取消管理', 0, 1);
+INSERT INTO `onethink_menu` VALUES(155, '同意取消的订单', 131, 0, 'Cancelagree/index', 0, '', '取消管理', 0, 1);
+INSERT INTO `onethink_menu` VALUES(156, '已支付的订单', 131, 0, 'Pay/index', 0, '', '支付管理', 0, 1);
+INSERT INTO `onethink_menu` VALUES(157, '首页商品推广', 158, 0, 'Brand/index', 0, '', '广告管理', 0, 1);
+INSERT INTO `onethink_menu` VALUES(158, '广告', 0, 7, 'Ad/index', 0, '', '', 0, 1);
+INSERT INTO `onethink_menu` VALUES(159, '首页分类推广', 158, 0, 'Ad/index', 0, '', '广告管理', 0, 1);
+INSERT INTO `onethink_menu` VALUES(160, '首页幻灯片推广', 158, 0, 'Slide/index', 0, '', '广告管理', 0, 1);
+INSERT INTO `onethink_menu` VALUES(161, '团购管理', 158, 0, 'Tuan/index', 0, '团购分类，添加团购商品', '活动管理', 0, 1);
+INSERT INTO `onethink_menu` VALUES(162, '拒绝退货订单', 131, 4, 'Backrefuse/index', 0, '', '退货管理', 0, 1);
+INSERT INTO `onethink_menu` VALUES(163, '退货途中订单', 131, 5, 'Backon/index', 0, '', '退货管理', 0, 1);
+INSERT INTO `onethink_menu` VALUES(164, '拒绝换货订单', 131, 11, 'Changerefuse/index', 0, '', '换货管理', 0, 1);
+INSERT INTO `onethink_menu` VALUES(165, '换货途中订单', 131, 11, 'Changeon/index', 0, '', '换货管理', 0, 1);
+INSERT INTO `onethink_menu` VALUES(166, '商品', 0, 4, 'Goods/index', 0, '', '', 0, 1);
 
-INSERT INTO `onethink_menu` (`id`, `title`, `pid`, `sort`, `url`, `hide`, `tip`, `group`, `is_dev`, `status`) VALUES
-(1, '首页', 0, 1, 'Index/index', 0, '', '', 0, 1),
-(2, '内容', 0, 4, 'Article/index', 0, '', '', 0, 1),
-(3, '文档列表', 2, 0, 'article/index', 1, '', '内容', 0, 1),
-(4, '新增', 3, 0, 'article/add', 0, '', '', 0, 1),
-(5, '编辑', 3, 0, 'article/edit', 0, '', '', 0, 1),
-(6, '改变状态', 3, 0, 'article/setStatus', 0, '', '', 0, 1),
-(7, '保存', 3, 0, 'article/update', 0, '', '', 0, 1),
-(8, '保存草稿', 3, 0, 'article/autoSave', 0, '', '', 0, 1),
-(9, '移动', 3, 0, 'article/move', 0, '', '', 0, 1),
-(10, '复制', 3, 0, 'article/copy', 0, '', '', 0, 1),
-(11, '粘贴', 3, 0, 'article/paste', 0, '', '', 0, 1),
-(12, '导入', 3, 0, 'article/batchOperate', 0, '', '', 0, 1),
-(13, '回收站', 2, 0, 'article/recycle', 1, '', '内容', 0, 1),
-(14, '还原', 13, 0, 'article/permit', 0, '', '', 0, 1),
-(15, '清空', 13, 0, 'article/clear', 0, '', '', 0, 1),
-(16, '用户', 0, 5, 'User/index', 0, '', '', 0, 1),
-(17, '用户信息', 16, 0, 'User/index', 0, '', '用户管理', 0, 1),
-(18, '新增用户', 17, 0, 'User/add', 0, '添加新用户', '', 0, 1),
-(19, '用户行为', 16, 0, 'User/action', 0, '', '行为管理', 0, 1),
-(20, '新增用户行为', 19, 0, 'User/addaction', 0, '', '', 0, 1),
-(21, '编辑用户行为', 19, 0, 'User/editaction', 0, '', '', 0, 1),
-(22, '保存用户行为', 19, 0, 'User/saveAction', 0, '"用户->用户行为"保存编辑和新增的用户行为', '', 0, 1),
-(23, '变更行为状态', 19, 0, 'User/setStatus', 0, '"用户->用户行为"中的启用,禁用和删除权限', '', 0, 1),
-(24, '禁用会员', 19, 0, 'User/changeStatus?method=forbidUser', 0, '"用户->用户信息"中的禁用', '', 0, 1),
-(25, '启用会员', 19, 0, 'User/changeStatus?method=resumeUser', 0, '"用户->用户信息"中的启用', '', 0, 1),
-(26, '删除会员', 19, 0, 'User/changeStatus?method=deleteUser', 0, '"用户->用户信息"中的删除', '', 0, 1),
-(27, '权限管理', 16, 0, 'AuthManager/index', 0, '', '用户管理', 0, 1),
-(28, '删除', 27, 0, 'AuthManager/changeStatus?method=deleteGroup', 0, '删除用户组', '', 0, 1),
-(29, '禁用', 27, 0, 'AuthManager/changeStatus?method=forbidGroup', 0, '禁用用户组', '', 0, 1),
-(150, '浏览统计', 146, 20, 'Lookup/index', 0, '', '访问统计', 0, 1),
-(31, '新增', 27, 0, 'AuthManager/createGroup', 0, '创建新的用户组', '', 0, 1),
-(32, '编辑', 27, 0, 'AuthManager/editGroup', 0, '编辑用户组名称和描述', '', 0, 1),
-(33, '保存用户组', 27, 0, 'AuthManager/writeGroup', 0, '新增和编辑用户组的"保存"按钮', '', 0, 1),
-(34, '授权', 27, 0, 'AuthManager/group', 0, '"后台 \\ 用户 \\ 用户信息"列表页的"授权"操作按钮,用于设置用户所属用户组', '', 0, 1),
-(35, '访问授权', 27, 0, 'AuthManager/access', 0, '"后台 \\ 用户 \\ 权限管理"列表页的"访问授权"操作按钮', '', 0, 1),
-(36, '成员授权', 27, 0, 'AuthManager/user', 0, '"后台 \\ 用户 \\ 权限管理"列表页的"成员授权"操作按钮', '', 0, 1),
-(37, '解除授权', 27, 0, 'AuthManager/removeFromGroup', 0, '"成员授权"列表页内的解除授权操作按钮', '', 0, 1),
-(38, '保存成员授权', 27, 0, 'AuthManager/addToGroup', 0, '"用户信息"列表页"授权"时的"保存"按钮和"成员授权"里右上角的"添加"按钮)', '', 0, 1),
-(39, '分类授权', 27, 0, 'AuthManager/category', 0, '"后台 \\ 用户 \\ 权限管理"列表页的"分类授权"操作按钮', '', 0, 1),
-(40, '保存分类授权', 27, 0, 'AuthManager/addToCategory', 0, '"分类授权"页面的"保存"按钮', '', 0, 1),
-(41, '模型授权', 27, 0, 'AuthManager/modelauth', 0, '"后台 \\ 用户 \\ 权限管理"列表页的"模型授权"操作按钮', '', 0, 1),
-(42, '保存模型授权', 27, 0, 'AuthManager/addToModel', 0, '"分类授权"页面的"保存"按钮', '', 0, 1),
-(43, '扩展', 0, 6, 'Addons/index', 0, '', '', 0, 1),
-(44, '插件管理', 43, 1, 'Addons/index', 0, '', '扩展', 0, 1),
-(45, '创建', 44, 0, 'Addons/create', 0, '服务器上创建插件结构向导', '', 0, 1),
-(46, '检测创建', 44, 0, 'Addons/checkForm', 0, '检测插件是否可以创建', '', 0, 1),
-(47, '预览', 44, 0, 'Addons/preview', 0, '预览插件定义类文件', '', 0, 1),
-(48, '快速生成插件', 44, 0, 'Addons/build', 0, '开始生成插件结构', '', 0, 1),
-(49, '设置', 44, 0, 'Addons/config', 0, '设置插件配置', '', 0, 1),
-(50, '禁用', 44, 0, 'Addons/disable', 0, '禁用插件', '', 0, 1),
-(51, '启用', 44, 0, 'Addons/enable', 0, '启用插件', '', 0, 1),
-(52, '安装', 44, 0, 'Addons/install', 0, '安装插件', '', 0, 1),
-(53, '卸载', 44, 0, 'Addons/uninstall', 0, '卸载插件', '', 0, 1),
-(54, '更新配置', 44, 0, 'Addons/saveconfig', 0, '更新插件配置处理', '', 0, 1),
-(55, '插件后台列表', 44, 0, 'Addons/adminList', 0, '', '', 0, 1),
-(56, 'URL方式访问插件', 44, 0, 'Addons/execute', 0, '控制是否有权限通过url访问插件控制器方法', '', 0, 1),
-(57, '钩子管理', 43, 2, 'Addons/hooks', 0, '', '扩展', 0, 1),
-(58, '模型管理', 68, 3, 'Model/index', 0, '', '系统设置', 0, 1),
-(59, '新增', 58, 0, 'model/add', 0, '', '', 0, 1),
-(60, '编辑', 58, 0, 'model/edit', 0, '', '', 0, 1),
-(61, '改变状态', 58, 0, 'model/setStatus', 0, '', '', 0, 1),
-(62, '保存数据', 58, 0, 'model/update', 0, '', '', 0, 1),
-(63, '属性管理', 68, 0, 'Attribute/index', 0, '网站属性配置。', '', 0, 1),
-(64, '新增', 63, 0, 'Attribute/add', 0, '', '', 0, 1),
-(65, '编辑', 63, 0, 'Attribute/edit', 0, '', '', 0, 1),
-(66, '改变状态', 63, 0, 'Attribute/setStatus', 0, '', '', 0, 1),
-(67, '保存数据', 63, 0, 'Attribute/update', 0, '', '', 0, 1),
-(68, '系统', 0, 2, 'Config/group', 0, '', '', 0, 1),
-(69, '网站设置', 68, 1, 'Config/group', 0, '', '系统设置', 0, 1),
-(70, '配置管理', 68, 4, 'Config/index', 0, '', '系统设置', 0, 1),
-(71, '编辑', 70, 0, 'Config/edit', 0, '新增编辑和保存配置', '', 0, 1),
-(72, '删除', 70, 0, 'Config/del', 0, '删除配置', '', 0, 1),
-(73, '新增', 70, 0, 'Config/add', 0, '新增配置', '', 0, 1),
-(74, '保存', 70, 0, 'Config/save', 0, '保存配置', '', 0, 1),
-(75, '菜单管理', 68, 5, 'Menu/index', 0, '', '系统设置', 0, 1),
-(76, '导航管理', 68, 6, 'Channel/index', 0, '', '系统设置', 0, 1),
-(77, '新增', 76, 0, 'Channel/add', 0, '', '', 0, 1),
-(78, '编辑', 76, 0, 'Channel/edit', 0, '', '', 0, 1),
-(79, '删除', 76, 0, 'Channel/del', 0, '', '', 0, 1),
-(80, '分类管理', 68, 2, 'Category/index', 0, '', '系统设置', 0, 1),
-(81, '编辑', 80, 0, 'Category/edit', 0, '编辑和保存栏目分类', '', 0, 1),
-(82, '新增', 80, 0, 'Category/add', 0, '新增栏目分类', '', 0, 1),
-(83, '删除', 80, 0, 'Category/remove', 0, '删除栏目分类', '', 0, 1),
-(84, '移动', 80, 0, 'Category/operate/type/move', 0, '移动栏目分类', '', 0, 1),
-(85, '合并', 80, 0, 'Category/operate/type/merge', 0, '合并栏目分类', '', 0, 1),
-(86, '备份数据库', 68, 0, 'Database/index?type=export', 0, '', '数据备份', 0, 1),
-(87, '备份', 86, 0, 'Database/export', 0, '备份数据库', '', 0, 1),
-(88, '优化表', 86, 0, 'Database/optimize', 0, '优化数据表', '', 0, 1),
-(89, '修复表', 86, 0, 'Database/repair', 0, '修复数据表', '', 0, 1),
-(90, '还原数据库', 68, 0, 'Database/index?type=import', 0, '', '数据备份', 0, 1),
-(91, '恢复', 90, 0, 'Database/import', 0, '数据库恢复', '', 0, 1),
-(92, '删除', 90, 0, 'Database/del', 0, '删除备份文件', '', 0, 1),
-(93, '其他', 0, 5, 'other', 1, '', '', 0, 1),
-(96, '新增', 75, 0, 'Menu/add', 0, '', '系统设置', 0, 1),
-(98, '编辑', 75, 0, 'Menu/edit', 0, '', '', 0, 1),
-(106, '行为日志', 16, 0, 'Action/actionlog', 0, '', '行为管理', 0, 1),
-(108, '修改密码', 16, 0, 'User/updatePassword', 1, '', '', 0, 1),
-(109, '修改昵称', 16, 0, 'User/updateNickname', 1, '', '', 0, 1),
-(110, '查看行为日志', 106, 0, 'action/edit', 1, '', '', 0, 1),
-(112, '新增数据', 58, 0, 'think/add', 1, '', '', 0, 1),
-(113, '编辑数据', 58, 0, 'think/edit', 1, '', '', 0, 1),
-(114, '导入', 75, 0, 'Menu/import', 0, '', '', 0, 1),
-(115, '生成', 58, 0, 'Model/generate', 0, '', '', 0, 1),
-(116, '新增钩子', 57, 0, 'Addons/addHook', 0, '', '', 0, 1),
-(117, '编辑钩子', 57, 0, 'Addons/edithook', 0, '', '', 0, 1),
-(118, '文档排序', 3, 0, 'Article/sort', 1, '', '', 0, 1),
-(119, '排序', 70, 0, 'Config/sort', 1, '', '', 0, 1),
-(120, '排序', 75, 0, 'Menu/sort', 1, '', '', 0, 1),
-(121, '排序', 76, 0, 'Channel/sort', 1, '', '', 0, 1),
-(122, '数据列表', 58, 0, 'think/lists', 1, '', '', 0, 1),
-(135, '已发货订单', 131, 2, 'Ordertransport/index', 0, '', '订单管理', 0, 1),
-(134, '优惠券', 131, 4, 'Fcoupon/index', 0, '', '优惠券管理', 0, 1),
-(131, '订单', 0, 3, 'Order/index', 0, '', '', 0, 1),
-(132, '已提交订单', 131, 1, 'Order/index', 0, '', '订单管理', 0, 1),
-(133, '已签收订单', 131, 3, 'Ordercomplete/index', 0, '', '订单管理', 0, 1),
-(137, '正退货订单', 131, 6, 'Back/index', 0, '', '退货管理', 0, 1),
-(141, '同意换货商品', 131, 10, 'Changeagree/index', 0, '', '换货管理', 0, 1),
-(138, '同意退货订单', 131, 7, 'Backagree/index', 0, '', '退货管理', 0, 1),
-(139, '已退货订单', 131, 8, 'Backover/index', 0, '', '退货管理', 0, 1),
-(140, '正换货商品', 131, 9, 'Change/index', 0, '', '换货管理', 0, 1),
-(142, '已换货商品', 131, 12, 'Changeover/index', 0, '', '换货管理', 0, 1),
-(143, '今日销量统计', 146, 13, 'Statistics/index', 0, '', '数据统计', 0, 1),
-(144, '本周销量统计', 146, 14, 'Statistics/week', 0, '', '数据统计', 0, 1),
-(145, '本月销量统计', 146, 15, 'Statistics/month', 0, '', '数据统计', 0, 1),
-(146, '数据', 0, 4, 'Statistics/index', 0, '', '数据统计', 0, 1),
-(147, '每日数据', 146, 16, 'Report/index', 0, '', '报表统计', 0, 1),
-(148, '每周数据', 146, 17, 'Report/week', 0, '', '报表统计', 0, 1),
-(149, '每月统计', 146, 18, 'Report/month', 0, '', '报表统计', 0, 1);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_model`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_model` (
+-- -----------------------------
+-- Table structure for `onethink_model`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_model`;
+CREATE TABLE `onethink_model` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '模型ID',
   `name` char(30) NOT NULL DEFAULT '' COMMENT '模型标识',
   `title` char(30) NOT NULL DEFAULT '' COMMENT '模型名称',
   `extend` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '继承的模型',
   `relation` varchar(30) NOT NULL DEFAULT '' COMMENT '继承与被继承模型的关联字段',
   `need_pk` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '新建表时是否需要主键字段',
-  `field_sort` text NOT NULL COMMENT '表单字段排序',
+  `field_sort` text NULL  COMMENT '表单字段排序',
   `field_group` varchar(255) NOT NULL DEFAULT '1:基础' COMMENT '字段分组',
-  `attribute_list` text NOT NULL COMMENT '属性列表（表的字段）',
+  `attribute_list` text NULL  COMMENT '属性列表（表的字段）',
+  `attribute_alias` varchar(255) NOT NULL DEFAULT '' COMMENT '属性别名定义',
   `template_list` varchar(100) NOT NULL DEFAULT '' COMMENT '列表模板',
   `template_add` varchar(100) NOT NULL DEFAULT '' COMMENT '新增模板',
   `template_edit` varchar(100) NOT NULL DEFAULT '' COMMENT '编辑模板',
-  `list_grid` text NOT NULL COMMENT '列表定义',
+  `list_grid` text NULL  COMMENT '列表定义',
   `list_row` smallint(2) unsigned NOT NULL DEFAULT '10' COMMENT '列表数据长度',
   `search_key` varchar(50) NOT NULL DEFAULT '' COMMENT '默认搜索字段',
   `search_list` varchar(255) NOT NULL DEFAULT '' COMMENT '高级搜索的字段',
@@ -1337,62 +1780,22 @@ CREATE TABLE IF NOT EXISTS `onethink_model` (
   `status` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '状态',
   `engine_type` varchar(25) NOT NULL DEFAULT 'MyISAM' COMMENT '数据库引擎',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='文档模型表' AUTO_INCREMENT=8 ;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='文档模型表';
 
---
--- 转存表中的数据 `onethink_model`
---
-
-INSERT INTO `onethink_model` (`id`, `name`, `title`, `extend`, `relation`, `need_pk`, `field_sort`, `field_group`, `attribute_list`, `template_list`, `template_add`, `template_edit`, `list_grid`, `list_row`, `search_key`, `search_list`, `create_time`, `update_time`, `status`, `engine_type`) VALUES
-(1, 'document', '基础文档', 0, '', 1, '{"1":["2","3","5","9","10","11","12","13","14","16","17","19","20"]}', '1:基础', '', '', '', '', 'id:编号\r\ntitle:标题:article/edit?cate_id=[category_id]&id=[id]\r\ntype:类型\r\nupdate_time:最后更新\r\nstatus:状态\r\nview:浏览\r\nid:操作:[EDIT]&cate_id=[category_id]|编辑,article/setstatus?status=-1&ids=[id]|删除', 0, '', '', 1383891233, 1413845425, 1, 'MyISAM'),
-(2, 'article', '文章', 1, '', 1, '{"1":["3","24","2","5"],"2":["9","13","19","10","12","16","17","26","20","14","11","25"]}', '1:基础,2:扩展', '', '', '', '', '', 0, '', '', 1383891243, 1387260622, 1, 'MyISAM'),
-(3, 'download', '下载', 1, '', 1, '{"1":["3","28","30","32","2","5","31"],"2":["13","10","27","9","12","16","17","19","11","20","14","29"]}', '1:基础,2:扩展', '', '', '', '', '', 0, '', '', 1383891252, 1387260449, 1, 'MyISAM'),
-(5, 'product', '商品', 1, '', 1, '{"1":["3","12","36","46","44","43","37","35","39"],"2":["2","41","40","9","10","42","13","14","5","16","20","38","11","17","19"]}', '1:基础,2:扩展', '', '', '', '', 'id:编号\r\ntitle:标题:', 10, '', '', 1411375498, 1414177267, 1, 'MyISAM'),
-(7, 'coupon', '优惠券', 1, '', 1, '{"1":["3","45","12","5","13"],"2":["2","11","10","19","20","17","9","14","16"]}', '1:基础,2:扩展', '', '', '', '', 'id：主键', 10, '', '', 1414002884, 1414003271, 1, 'MyISAM');
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_order`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_order` (
-  `ID` int(10) NOT NULL AUTO_INCREMENT,
-  `orderid` varchar(225) DEFAULT NULL,
-  `pricetotal` decimal(50,2) NOT NULL DEFAULT '0.00',
-  `ptime` int(225) DEFAULT NULL,
-  `status` varchar(225) NOT NULL DEFAULT '0' COMMENT '0-系统生成完成1-用户已提交订单2-3系统处理进入物流配送',
-  `assistant` varchar(225) DEFAULT '无' COMMENT '操作人',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  `uid` int(225) DEFAULT NULL,
-  `shipprice` varchar(225) DEFAULT NULL,
-  `display` int(12) DEFAULT '1',
-  `isover` varchar(225) DEFAULT NULL,
-  `ispay` int(11) DEFAULT NULL COMMENT '1在线支付未完成2在线支付完成3-货到付款',
-  `total` decimal(50,2) DEFAULT NULL,
-  `tool` varchar(225) DEFAULT NULL COMMENT '是否默认地址',
-  `addressid` int(225) DEFAULT NULL,
-  `toolid` varchar(225) DEFAULT NULL,
-  `isdefault` int(11) NOT NULL,
-  `info` varchar(225) DEFAULT NULL,
-  `backinfo` varchar(225) DEFAULT NULL,
-  `score` int(225) DEFAULT NULL,
-  `codeid` int(11) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=873 ;
-
---
--- 转存表中的数据 `onethink_order`
---
+-- -----------------------------
+-- Records of `onethink_model`
+-- -----------------------------
+INSERT INTO `onethink_model` VALUES ('1', 'document', '基础文档', '0', '', '1', '{\"1\":[\"1\",\"2\",\"3\",\"4\",\"5\",\"6\",\"7\",\"8\",\"9\",\"10\",\"11\",\"12\",\"13\",\"14\",\"15\",\"16\",\"17\",\"18\",\"19\",\"20\",\"21\",\"22\"]}', '1:基础', '', '','', '', '', 'id:编号\r\ntitle:标题:[EDIT]\r\ntype:类型\r\nupdate_time:最后更新\r\nstatus:状态\r\nview:浏览\r\nid:操作:[EDIT]|编辑,[DELETE]|删除', '0', '', '', '1383891233', '1384507827', '1', 'MyISAM');
+INSERT INTO `onethink_model` VALUES ('2', 'article', '文章', '1', '', '1', '{\"1\":[\"3\",\"24\",\"2\",\"5\"],\"2\":[\"9\",\"13\",\"19\",\"10\",\"12\",\"16\",\"17\",\"26\",\"20\",\"14\",\"11\",\"25\"]}', '1:基础,2:扩展', '','', '', '', '', '', '0', '', '', '1383891243', '1387260622', '1', 'MyISAM');
+INSERT INTO `onethink_model` VALUES ('3', 'download', '下载', '1', '', '1', '{\"1\":[\"3\",\"28\",\"30\",\"32\",\"2\",\"5\",\"31\"],\"2\":[\"13\",\"10\",\"27\",\"9\",\"12\",\"16\",\"17\",\"19\",\"11\",\"20\",\"14\",\"29\"]}', '1:基础,2:扩展', '', '','', '', '', '', '0', '', '', '1383891252', '1387260449', '1', 'MyISAM');
+INSERT INTO `onethink_model` VALUES ('5', 'product', '商品', '1', '', '1', '{\"1\":[\"3\",\"12\",\"10\",\"36\",\"46\",\"35\",\"44\"],\"2\":[\"47\",\"50\",\"5\",\"49\",\"14\",\"9\",\"20\",\"11\",\"2\",\"13\",\"37\",\"17\",\"39\",\"16\",\"19\",\"43\",\"42\",\"38\"]}', '1:基础,2:扩展', '', '','', '', '', '', '0', '', '', '1383891252', '1387260449', '1', 'MyISAM');
 
 
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_picture`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_picture` (
+-- -----------------------------
+-- Table structure for `onethink_picture`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_picture`;
+CREATE TABLE `onethink_picture` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id自增',
   `path` varchar(255) NOT NULL DEFAULT '' COMMENT '路径',
   `url` varchar(255) NOT NULL DEFAULT '' COMMENT '图片链接',
@@ -1401,290 +1804,134 @@ CREATE TABLE IF NOT EXISTS `onethink_picture` (
   `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
   `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
-
---
--- 转存表中的数据 `onethink_picture`
---
-
-INSERT INTO `onethink_picture` (`id`, `path`, `url`, `md5`, `sha1`, `status`, `create_time`) VALUES
-(1, '/Uploads/Picture/2014-09-02/5405e0f3b1705.png', '', '36d077267c76901835c07eb98f43647f', '0f7ce26261cb7a81dcfb14e057982ec60fa3a6e0', 1, 1409671411),
-(2, '/Uploads/Picture/2014-09-18/5419eb4fec0c7.jpg', '', '5435a1dae36fafc2e544f2f78854fb29', 'd93a6e9869e7bf2fc17a533d3060ade8c88c40a9', 1, 1410984783),
-(3, '/Uploads/Picture/2014-09-22/541f3d86103d3.jpg', '', '8e77701a8b49232f17d7f13d91d40693', '4dd3a9e9938d8890db37452b3abe6ff91ead531a', 1, 1411333508),
-(4, '/Uploads/Picture/2014-09-22/541ff48c48dcf.jpg', '', 'e23489fd7e4dcc3dffaecbdef316bc97', '212c69983a3aaae6e379c68521523f847f5065fc', 1, 1411380364),
-(5, '/Uploads/Picture/2014-09-27/5426973d68594.jpg', '', 'b1cc728f0903646228442f12afec0559', '2dbeabe21876fe2e489eeaf8e71f9de9c6465886', 1, 1411815228),
-(6, '/Uploads/Picture/2014-09-28/54282d125f21a.jpg', '', 'da9f27eee154037434fbad74dc73430a', 'd3299248c9946cb94e7f5eeaaa7818fe750ad9de', 1, 1411919121),
-(7, '/Uploads/Picture/2014-09-28/54282f255e437.jpg', '', '2e1205543c59f21e6317c2adf56a64ae', '1ad27e3a47c074ab9b7ed3b2d0aff5f8f848a17f', 1, 1411919653),
-(8, '/Uploads/Picture/2014-09-29/54284e0bb791c.jpg', '', '314edb167e8e67abe5fadb9ecb56a5bb', 'b7a1cf4f226334a39db5fa7351e3c696d3d562b3', 1, 1411927563),
-(9, '/Uploads/Picture/2014-09-29/5428505721fe3.jpg', '', '3a9cfc025a0b8ae90939d080b6b0b3da', 'f0e1654339c40d42da7037cae6b26cef1336570b', 1, 1411928151),
-(10, '/Uploads/Picture/2014-09-29/542851809c5fe.jpg', '', 'b7e3396d129e2501f393c5fbb59080d5', '1961d4b5d20e1ac3d50000570535ca41b5fa8c44', 1, 1411928448),
-(11, '/Uploads/Picture/2014-10-22/5447bf1b8a10a.jpg', '', '4182ad0929a3a535f11273c31a7fd16b', 'b36f727aada45dd67f8206b978c46afc4b1254e6', 1, 1413988123),
-(12, '/Uploads/Picture/2014-10-23/54481f89ef4dc.gif', '', '40e797c3661da89e463bf739b819a4fd', 'bba0f04434413fb63c3e6d82fe74d0ece7b647bf', 1, 1414012809),
-(13, '/Uploads/Picture/2014-10-25/544a986712125.jpg', '', '5332d06200bc87cbeddefea48859eb87', 'e2207e6f2b7f0d7c6f9392ab70eb99b6a14f473b', 1, 1414174821),
-(14, '/Uploads/Picture/2014-10-25/544a994e1e338.jpg', '', 'ad1a25faa262cf395b42b4aa4aead8cf', 'e08dc9cbab906cbeea1e036deaf3b791d6db4f9e', 1, 1414175054);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_records`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_records` (
-  `ID` int(10) NOT NULL AUTO_INCREMENT,
-  `ip` varchar(225) DEFAULT NULL,
-  `url` varchar(225) DEFAULT NULL,
-  `country` varchar(225) DEFAULT NULL COMMENT '订单号',
-  `time` int(10) DEFAULT NULL,
-  `uid` int(10) DEFAULT NULL,
-  `info` varchar(225) NOT NULL,
-  `province` varchar(225) NOT NULL,
-  `city` varchar(225) DEFAULT NULL,
-  `referer` varchar(225) DEFAULT NULL COMMENT '访问来源',
-  `tag` int(11) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
-
---
--- 转存表中的数据 `onethink_records`
---
-
-INSERT INTO `onethink_records` (`ID`, `ip`, `url`, `country`, `time`, `uid`, `info`, `province`, `city`, `referer`, `tag`) VALUES
-(4, '5', 'localhost/111/index.php?s=/Home/pay/', '5', 1414248450, 1, '', '5', '5', NULL, NULL),
-(5, '5', 'localhost/111/index.php?s=/Home/pay/', '5', 1414248526, 1, '', '5', '5', NULL, NULL),
-(6, '5', 'localhost/111/index.php?s=/Home/pay/', '5', 1414248528, 1, '', '5', '5', NULL, NULL),
-(7, '5', 'localhost/111/index.php?s=/Home/pay/', '5', 1414248536, 1, '', '5', '5', NULL, NULL),
-(8, '5', 'localhost/111/index.php?s=/Home/pay/', '5', 1414248537, 1, '', '5', '5', NULL, NULL),
-(9, '5', 'localhost/111/index.php?s=/Home/pay/', '5', 1414248579, 1, '', '5', '5', NULL, NULL),
-(10, '5', 'localhost/111/index.php?s=/Home/pay/', '5', 1414248581, 1, '', '5', '5', NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_shaddress`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_shaddress` (
-  `ID` int(10) NOT NULL AUTO_INCREMENT,
-  `orderid` int(5) NOT NULL,
-  `uid` int(5) NOT NULL,
-  `detail` varchar(50) DEFAULT NULL,
-  `ptime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
---
--- 转存表中的数据 `onethink_shaddress`
---
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
--- --------------------------------------------------------
+-- -----------------------------
+-- Records of `onethink_picture`
+-- -----------------------------
+INSERT INTO `onethink_picture` VALUES(1, '/Uploads/Picture/2014-09-02/5405e0f3b1705.png', '', '36d077267c76901835c07eb98f43647f', '0f7ce26261cb7a81dcfb14e057982ec60fa3a6e0', 1, 1409671411);
+INSERT INTO `onethink_picture` VALUES(2, '/Uploads/Picture/2014-09-18/5419eb4fec0c7.jpg', '', '5435a1dae36fafc2e544f2f78854fb29', 'd93a6e9869e7bf2fc17a533d3060ade8c88c40a9', 1, 1410984783);
+INSERT INTO `onethink_picture` VALUES(3, '/Uploads/Picture/2014-09-22/541f3d86103d3.jpg', '', '8e77701a8b49232f17d7f13d91d40693', '4dd3a9e9938d8890db37452b3abe6ff91ead531a', 1, 1411333508);
+INSERT INTO `onethink_picture` VALUES(4, '/Uploads/Picture/2014-09-22/541ff48c48dcf.jpg', '', 'e23489fd7e4dcc3dffaecbdef316bc97', '212c69983a3aaae6e379c68521523f847f5065fc', 1, 1411380364);
+INSERT INTO `onethink_picture` VALUES(5, '/Uploads/Picture/2014-09-27/5426973d68594.jpg', '', 'b1cc728f0903646228442f12afec0559', '2dbeabe21876fe2e489eeaf8e71f9de9c6465886', 1, 1411815228);
+INSERT INTO `onethink_picture` VALUES(6, '/Uploads/Picture/2014-09-28/54282d125f21a.jpg', '', 'da9f27eee154037434fbad74dc73430a', 'd3299248c9946cb94e7f5eeaaa7818fe750ad9de', 1, 1411919121);
+INSERT INTO `onethink_picture` VALUES(7, '/Uploads/Picture/2014-09-28/54282f255e437.jpg', '', '2e1205543c59f21e6317c2adf56a64ae', '1ad27e3a47c074ab9b7ed3b2d0aff5f8f848a17f', 1, 1411919653);
+INSERT INTO `onethink_picture` VALUES(8, '/Uploads/Picture/2014-09-29/54284e0bb791c.jpg', '', '314edb167e8e67abe5fadb9ecb56a5bb', 'b7a1cf4f226334a39db5fa7351e3c696d3d562b3', 1, 1411927563);
+INSERT INTO `onethink_picture` VALUES(9, '/Uploads/Picture/2014-09-29/5428505721fe3.jpg', '', '3a9cfc025a0b8ae90939d080b6b0b3da', 'f0e1654339c40d42da7037cae6b26cef1336570b', 1, 1411928151);
+INSERT INTO `onethink_picture` VALUES(10, '/Uploads/Picture/2014-09-29/542851809c5fe.jpg', '', 'b7e3396d129e2501f393c5fbb59080d5', '1961d4b5d20e1ac3d50000570535ca41b5fa8c44', 1, 1411928448);
+INSERT INTO `onethink_picture` VALUES(11, '/Uploads/Picture/2014-10-22/5447bf1b8a10a.jpg', '', '4182ad0929a3a535f11273c31a7fd16b', 'b36f727aada45dd67f8206b978c46afc4b1254e6', 1, 1413988123);
+INSERT INTO `onethink_picture` VALUES(12, '/Uploads/Picture/2014-10-23/54481f89ef4dc.gif', '', '40e797c3661da89e463bf739b819a4fd', 'bba0f04434413fb63c3e6d82fe74d0ece7b647bf', 1, 1414012809);
+INSERT INTO `onethink_picture` VALUES(13, '/Uploads/Picture/2014-10-25/544a986712125.jpg', '', '5332d06200bc87cbeddefea48859eb87', 'e2207e6f2b7f0d7c6f9392ab70eb99b6a14f473b', 1, 1414174821);
+INSERT INTO `onethink_picture` VALUES(14, '/Uploads/Picture/2014-10-25/544a994e1e338.jpg', '', 'ad1a25faa262cf395b42b4aa4aead8cf', 'e08dc9cbab906cbeea1e036deaf3b791d6db4f9e', 1, 1414175054);
+INSERT INTO `onethink_picture` VALUES(15, '/Uploads/Picture/2014-10-26/544cff452d8fa.jpg', '', 'c1b04f3754108967f1edd5c94657095e', 'd1726508f25b1ef354d48586797a82da18503726', 1, 1414332229);
+INSERT INTO `onethink_picture` VALUES(16, '/Uploads/Picture/2014-10-26/544cffc5540ee.jpg', '', 'aac9bafdb67dc58312b65e001ea84540', '068acddf258436463eee6915e919a13f5e3877fe', 1, 1414332357);
+INSERT INTO `onethink_picture` VALUES(17, '/Uploads/Picture/2014-10-26/544d19999e40b.png', '', '20887db6ea7f9b810bd6d3ec5e91695b', 'f37a6e21817dd2a4163b3a5bdd05380c8a88efe1', 1, 1414338969);
+INSERT INTO `onethink_picture` VALUES(18, '/Uploads/Picture/2014-10-26/544d19be81949.jpg', '', 'da5fdeaed09a782168e78b6907b45a44', 'd8bb619b09799c52eb8b08ca292fd53ef405aea3', 1, 1414339006);
+INSERT INTO `onethink_picture` VALUES(19, '/Uploads/Picture/2014-10-27/544d1abbbd6b0.jpg', '', 'db8ea2928ce128693663d2252698bd05', '4dd01d2d86525d61ec12e44779959eb4cc074d9d', 1, 1414339259);
+INSERT INTO `onethink_picture` VALUES(20, '/Uploads/Picture/2014-10-27/544d2707616a5.png', '', '31f9e56579f958ff1a9eac6e040c4c20', '608746815de21abbfbee5f646bcb9b747a996c1f', 1, 1414342406);
+INSERT INTO `onethink_picture` VALUES(21, '/Uploads/Picture/2014-10-27/544d2792b3e05.png', '', '8a6d4676b58e25f538dc037337b28a6c', 'ef346ce444e1f5a117e388aa5fc018df4d623673', 1, 1414342546);
+INSERT INTO `onethink_picture` VALUES(22, '/Uploads/Picture/2014-10-27/544d27e160e6b.png', '', '0b2fdd0c3a198bc9b4034567e0bb112c', '05b9f8b88fff5b614b3d55fd8e617722d1bc7d93', 1, 1414342625);
+INSERT INTO `onethink_picture` VALUES(23, '/Uploads/Picture/2014-10-27/544d283099170.png', '', 'b7a5ed3253065b3e2540e779487d5767', 'a06b5bfe54272aedd2d645c560a1d836cd853bcc', 1, 1414342704);
+INSERT INTO `onethink_picture` VALUES(24, '/Uploads/Picture/2014-10-27/544d2b43ddf15.png', '', 'ff85333e81966a8cb8f012e59eeb749f', 'b430506b7467ff4842d396d5602a2ac511aea4b6', 1, 1414343491);
+INSERT INTO `onethink_picture` VALUES(25, '/Uploads/Picture/2014-10-29/5450091034207.png', '', 'f7aec314e1916bf12a46caf55ea947ac', '0b5fe01203ea843d9ce57ec076deba6686b972fc', 1, 1414531343);
+INSERT INTO `onethink_picture` VALUES(27, '/Uploads/Picture/2014-11-11/546215b4b6e52.jpg', '', '6d5df175cf29abedfc8f0e53dce5e67f', '062053c9b9b7f50d318256e3097703c673677c3b', 1, 1415714228);
+INSERT INTO `onethink_picture` VALUES(28, '/Uploads/Picture/2014-11-14/546589a1c7307.jpg', '', 'ed01c74e75defefd23adadae4196d072', 'e1cc9e73a601a38f24df7764f7bd3c0b5564b4c3', 1, 1415940508);
+INSERT INTO `onethink_picture` VALUES(29, '/Uploads/Picture/2014-11-14/546589bc2eedd.jpg', '', '5fa189f582f2b4765d088b027ca91fff', '71a9c92226ea62c783db412152e749339f708efc', 1, 1415940534);
+INSERT INTO `onethink_picture` VALUES(30, '/Uploads/Picture/2014-11-19/546c698c56d1b.jpg', '', '6b089282ea53101d7f783027daa77eff', 'ed0bda3434ac7951cfa576cf7ae98f3c877a64fd', 1, 1416391052);
+INSERT INTO `onethink_picture` VALUES(31, '/Uploads/Picture/2014-11-19/546c6af47eaac.gif', '', '79c79ce53b7ebc92059438f36aeec565', 'acd669ce9b6d309cad08b71972e8c093ee40238b', 1, 1416391412);
+INSERT INTO `onethink_picture` VALUES(32, '/Uploads/Picture/2014-12-11/548954c9e88fd.png', '', 'eae5fa6c1d7e5fc04d03f7d2210c1caf', '8eec63249735814e90f04448c7eb8236b377afb2', 1, 1418286281);
+INSERT INTO `onethink_picture` VALUES(33, '/Uploads/Picture/2015-01-13/54b4be107a909.jpg', '', '4f1dc467c583d89e6e5a6342d0d2c575', '4079777aeae1d874c5c6af299752f0ecd2cd3e2e', 1, 1421131279);
+INSERT INTO `onethink_picture` VALUES(34, '/Uploads/Picture/2015-01-13/54b4c2a55097d.jpg', '', '13467d9159d9a4f3e7e1428150c8e038', '5a366a06a358029355fc264453bc424c177062f9', 1, 1421132453);
+INSERT INTO `onethink_picture` VALUES(35, '/Uploads/Picture/2015-01-13/54b4c82d6ce82.jpg', '', '5e507c7b9f98789e3da9f1c30591dead', '2d5ee85fa5999bf188b2f9bc6835b9dc9b2582f8', 1, 1421133869);
+INSERT INTO `onethink_picture` VALUES(36, '/Uploads/Picture/2015-01-13/54b4d99370fa7.jpg', '', '4aed3d40f223ee7282b6a25362706552', '6b6fa14ac7b822bde4ddb8918a6cb3f6d39bb947', 1, 1421138323);
+INSERT INTO `onethink_picture` VALUES(37, '/Uploads/Picture/2015-01-13/54b4e5fd4a1d4.jpg', '', '79b8e026da3e9305cf053f4c67847383', 'b1902c912f84a3fa50736e8e772ee2fdfbd9e778', 1, 1421141500);
+INSERT INTO `onethink_picture` VALUES(38, '/Uploads/Picture/2015-01-13/54b4f38766a1c.jpg', '', '8344b79471a49874961f7bacfc0ebff0', '763ea118453c7142d3ca7728d164de06299f9c7a', 1, 1421144966);
+INSERT INTO `onethink_picture` VALUES(39, '/Uploads/Picture/2015-01-13/54b4ff7458068.jpg', '', 'c7b49ecc3beb01cc257d529636731adc', '4d108c216f2d12f08d4141acd776756c90af5d5b', 1, 1421148020);
+INSERT INTO `onethink_picture` VALUES(40, '/Uploads/Picture/2015-01-13/54b50f1cece1c.jpg', '', 'f9038e593b7d211e942676668bf7ee0a', '22e3b7b1759fba15108c689edfae276e5db048b0', 1, 1421152028);
+INSERT INTO `onethink_picture` VALUES(41, '/Uploads/Picture/2015-01-13/54b51e59e212b.jpg', '', '61d2c2e7b20e6e11d37c757466d78336', 'c8f5b405d82103f13c2af44113fffd9b06cc70f5', 1, 1421155929);
+INSERT INTO `onethink_picture` VALUES(42, '/Uploads/Picture/2015-01-13/54b51e820573d.jpg', '', '93be5c427935a0deef1f39db5e38e280', '95f9aa79c54165400c19bf20bfdbf0935f9d1a8a', 1, 1421155969);
+INSERT INTO `onethink_picture` VALUES(43, '/Uploads/Picture/2015-01-13/54b51ed0c4fb0.jpg', '', '9ebc6c765eb96d8c5d265247ba800195', 'fe0d1977e5f0aa17038349026dc7c8426c30b996', 1, 1421156048);
+INSERT INTO `onethink_picture` VALUES(44, '/Uploads/Picture/2015-01-13/54b51fdb585e3.jpg', '', 'db8585cf7faf56c12cc8ba42724bb0c7', '85747087ad68234679ed4f54474a029442a060ee', 1, 1421156315);
+INSERT INTO `onethink_picture` VALUES(45, '/Uploads/Picture/2015-01-13/54b521162bc8e.jpg', '', 'd8991eb8728e24d10afbb7d53bd271b8', 'c936375d3aeb018bb41a22b5e249f24d954a5e9a', 1, 1421156630);
+INSERT INTO `onethink_picture` VALUES(46, '/Uploads/Picture/2015-01-13/54b5212a8e4b0.jpg', '', '8d81382d4cb87728c079b31896a12530', 'd86824d872d76d2caadd7d5f3bbc2e54ebf50567', 1, 1421156650);
+INSERT INTO `onethink_picture` VALUES(47, '/Uploads/Picture/2015-01-13/54b5215927817.jpg', '', 'c37deb2b29cdc4bc9f88446fe4d4671b', '6910092082bc43e0c49087153fe8501bab58056b', 1, 1421156697);
+INSERT INTO `onethink_picture` VALUES(48, '/Uploads/Picture/2015-01-13/54b525eb02811.jpg', '', '98f358bc82f961315b55e5e6751b00f0', '34f4dfb7d1db78a316a90ce4ca7c9f2c22700c65', 1, 1421157866);
+INSERT INTO `onethink_picture` VALUES(49, '/Uploads/Picture/2015-01-13/54b5268ab8cdb.jpg', '', '40ff32e20a184d64696b68ba4ab766eb', '63ac4ec5c6bcf04f9d173e1a15fccb25adf91711', 1, 1421158026);
+INSERT INTO `onethink_picture` VALUES(50, '/Uploads/Picture/2015-01-13/54b526dd8bfa8.jpg', '', '2d99963c567de0d314fc0933c9026945', '81c4a321554aa5e624e04ea5023f8da696f1948c', 1, 1421158108);
+INSERT INTO `onethink_picture` VALUES(51, '/Uploads/Picture/2015-01-13/54b53234efd57.jpg', '', '72e49d3daad7e64460bfd70b4965f2ed', '9ddde71e90f6a24d7172cd08c01bf3d7459f283d', 1, 1421161012);
+INSERT INTO `onethink_picture` VALUES(52, '/Uploads/Picture/2015-01-13/54b532434e821.jpg', '', 'ddf360f93cce844277f9ea9b6d3f199e', '48203957d6eeb1ae703863225a198de7f7917c49', 1, 1421161027);
+INSERT INTO `onethink_picture` VALUES(53, '/Uploads/Picture/2015-01-14/54b6011980614.png', '', '9547507bf8e1337740e23198fc1a002b', '6bb198392531782907600820afbf901da705f51c', 1, 1421213977);
+INSERT INTO `onethink_picture` VALUES(54, '/Uploads/Picture/2015-01-16/54b8a92a3928d.jpg', '', '2b9555848288b11c6abddc2ef30d7c02', 'a9be35e83640630e1415538160d0f023cecd40d9', 1, 1421388073);
+INSERT INTO `onethink_picture` VALUES(55, '/Uploads/Picture/2015-01-16/54b8a9a583f2d.jpg', '', '19d7720f21033cd5ba60ae168c63e40d', 'c2438201a4fe1845d48e9bb6fdd3445744a56303', 1, 1421388197);
+INSERT INTO `onethink_picture` VALUES(56, '/Uploads/Picture/2015-01-16/54b8a9c6c9231.jpg', '', 'ced3bb1c980e258fbe7802af44c72e6d', '5dc332586535cf6cdd4c7365071eb8162c1deed8', 1, 1421388230);
+INSERT INTO `onethink_picture` VALUES(57, '/Uploads/Picture/2015-01-16/54b8a9ea0eb89.jpg', '', '4bc9ae5483e80cae3b442accca669801', 'af59fdbb47f0a14f50d3271ae4a93c3c0e6cf6dc', 1, 1421388265);
+INSERT INTO `onethink_picture` VALUES(58, '/Uploads/Picture/2015-01-16/54b8aa06e86dd.jpg', '', 'd07c82a1f31a1827a85df3c2647c502f', '4f9ae10835fd41e71b543ca7ccd257dedfd225ba', 1, 1421388294);
+INSERT INTO `onethink_picture` VALUES(59, '/Uploads/Picture/2015-01-16/54b8aa41968db.jpg', '', 'ed39cc1c818866725ce2af8c86330bb0', 'd78b45b8f6e3ec8498e2e47729fe1d584081cfba', 1, 1421388353);
+INSERT INTO `onethink_picture` VALUES(60, '/Uploads/Picture/2015-01-16/54b8b814bbc1d.jpg', '', 'd0c48300df72a1aebc8c7107c110c2b5', '2bcee7e5a0ca199fd51dcd7cd314937ca500fc68', 1, 1421391892);
+INSERT INTO `onethink_picture` VALUES(61, '/Uploads/Picture/2015-01-16/54b8b86875f38.jpg', '', '62394fc57e7f2ddd9116b7115bb57711', '5999c4d7ad35d8c911a83174938945f2264a270c', 1, 1421391976);
+INSERT INTO `onethink_picture` VALUES(62, '/Uploads/Picture/2015-01-16/54b8faf9057ec.jpg', '', '78cc6b8e3a5b5b3ca88592c46201a5e6', '2d01650ce9e6ceef5ca15275c28a2facf0bca071', 1, 1421409016);
+INSERT INTO `onethink_picture` VALUES(63, '/Uploads/Picture/2015-01-17/54ba6dd86b7f6.png', '', '32d62534d0bdca11e52f497d4521de4f', '20952d59f0872d287c326c593b7c7106c5a8313a', 1, 1421503959);
+INSERT INTO `onethink_picture` VALUES(64, '/Uploads/Picture/2015-01-17/54ba6f0fd2e6e.jpg', '', '37a3108bfd3a190aa5ffb86fcc2669a4', 'c7df8683963c486e84e1fb13487092d1274dfe81', 1, 1421504271);
+INSERT INTO `onethink_picture` VALUES(65, '/Uploads/Picture/2015-01-17/54ba6fef11267.jpg', '', 'bb34caff6f4980ddb5ce14099405c8a8', '4118731b563cc928d66198d3b2b052a1b16a3c2b', 1, 1421504494);
+INSERT INTO `onethink_picture` VALUES(66, '/Uploads/Picture/2015-01-17/54ba71227fe48.png', '', 'cf29142c91442b346081e8ba552e7c8f', 'b5e21188f144541321904995805ac62353637c78', 1, 1421504802);
+INSERT INTO `onethink_picture` VALUES(67, '/Uploads/Picture/2015-01-17/54ba72711673e.png', '', 'd695af9dcb860211b01c4074b33e553f', '25dad847b4a7ba4606e1974642727eb03f287485', 1, 1421505136);
+INSERT INTO `onethink_picture` VALUES(68, '/Uploads/Picture/2015-01-17/54ba734b52ed7.jpg', '', '10f51f401227db216b2edc6aff2c7526', 'cbcfc84ce9abc823f8cf136b90d895eb91403197', 1, 1421505355);
+INSERT INTO `onethink_picture` VALUES(69, '/Uploads/Picture/2015-02-02/54cf72354728f.png', '', 'c7e4d1a1e20e8b8aaf06a3b9c36c6ee4', '2a98aaa5f2addb4dc5b3a0f91c081b3dfb749434', 1, 1422881332);
+INSERT INTO `onethink_picture` VALUES(70, '/Uploads/Picture/2015-02-02/54cf72bedda19.png', '', '8b0fbcbf45b1d1d644497d1cd297a966', '5ab4f924e942405d80bb3b78495f14142ed5160d', 1, 1422881470);
+INSERT INTO `onethink_picture` VALUES(71, '/Uploads/Picture/2015-02-02/54cf732806f5c.jpg', '', '9fcdf136e8c8ecb5474feb55be350b19', '045973b1a1adb13024a527d2ce20f66452afd5e1', 1, 1422881575);
+INSERT INTO `onethink_picture` VALUES(72, '/Uploads/Picture/2015-02-02/54cf732eb78b2.jpg', '', 'a776e4dde58b4c05a0dc58328936f59c', '78236fb8d76a9bdb5d52aa1d62f08c2f6f8eb883', 1, 1422881582);
+INSERT INTO `onethink_picture` VALUES(73, '/Uploads/Picture/2015-02-02/54cf75ac91fbf.jpg', '', '981d7e1b22ffefddf4d1f869f46722d6', '1f28d80d3cd1c14e148b4f50cebef35e28c95c44', 1, 1422882220);
+INSERT INTO `onethink_picture` VALUES(74, '/Uploads/Picture/2015-02-02/54cf77fe05588.jpg', '', '9baf244e0b0463f1fad243bc31517f35', 'ba3e0a5bdf0aa0b1691b3307aa5a13cfb5863a61', 1, 1422882813);
+INSERT INTO `onethink_picture` VALUES(75, '/Uploads/Picture/2015-02-02/54cf78aed5675.jpg', '', '6b60fcfb3127c84f13781d8dd7a05cca', '8f2e3660a7264405096c798ed259865d3435c817', 1, 1422882990);
+INSERT INTO `onethink_picture` VALUES(76, '/Uploads/Picture/2015-02-02/54cf78f6e4958.jpg', '', '28670c955115c19deac649e3834525b1', 'd1afd3ee798183fce3184777da988b64498a1503', 1, 1422883062);
+INSERT INTO `onethink_picture` VALUES(77, '/Uploads/Picture/2015-02-02/54cf79b6a29d4.jpg', '', 'c89e3d67600e5d293e603bef2830637a', '9a02e8e4e70b528e44bcf9b80fcfb068da4c51ea', 1, 1422883253);
+INSERT INTO `onethink_picture` VALUES(78, '/Uploads/Picture/2015-02-02/54cf7a9688bc7.jpg', '', '09134a7d63c4a5d6c12569d6cbd8e50d', 'bb20d71938795bb2a60707646f4344214e0bc974', 1, 1422883478);
+INSERT INTO `onethink_picture` VALUES(79, '/Uploads/Picture/2015-02-02/54cf7a9a798b2.jpg', '', '3ca8af1b66fb6b6af8ad5271a509ee95', '6e847640f9a5354ed836278b267cc7f177ff541a', 1, 1422883482);
 
---
--- 表的结构 `onethink_shopcart`
---
 
-CREATE TABLE IF NOT EXISTS `onethink_shopcart` (
-  `ID` int(10) NOT NULL AUTO_INCREMENT,
-  `goodid` int(5) NOT NULL,
-  `uid` int(5) NOT NULL,
-  `num` int(50) DEFAULT NULL,
-  `ptime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
---
--- 转存表中的数据 `onethink_shopcart`
---
-
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_shoplist`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_shoplist` (
-  `ID` int(10) NOT NULL AUTO_INCREMENT,
-  `goodid` int(225) DEFAULT NULL,
-  `num` int(50) DEFAULT NULL,
-  `orderid` varchar(225) CHARACTER SET utf8 DEFAULT NULL COMMENT '订单号',
-  `uid` int(225) DEFAULT NULL,
-  `status` int(10) DEFAULT NULL COMMENT '默认null-未提交订单1-表示已提交订单或已支付2-已完成3-退货4-换货',
-  `time` int(10) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=828 ;
-
---
--- 转存表中的数据 `onethink_shoplist`
---
-
-INSERT INTO `onethink_shoplist` (`ID`, `goodid`, `num`, `orderid`, `uid`, `status`, `time`) VALUES
-(816, 5, 1, '848', NULL, NULL, NULL),
-(817, 8, 1, '852', NULL, NULL, NULL),
-(818, 8, 1, '854', NULL, NULL, NULL),
-(819, 8, 1, '855', NULL, NULL, NULL),
-(820, 8, 4, '858', NULL, NULL, NULL),
-(821, 8, 1, '860', NULL, NULL, NULL),
-(822, 8, 1, '862', NULL, 1, NULL),
-(823, 8, 1, '864', NULL, 1, NULL),
-(824, 8, 1, '866', NULL, 1, NULL),
-(825, 8, 4, '868', NULL, 1, NULL),
-(826, 9, 2, '868', NULL, 1, NULL),
-(827, 8, 1, '870', NULL, 1, NULL);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_sync_login`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_sync_login` (
-  `uid` int(11) NOT NULL,
-  `openid` varchar(255) NOT NULL,
-  `type` varchar(255) NOT NULL,
-  `access_token` varchar(255) NOT NULL,
-  `refresh_token` varchar(255) NOT NULL,
-  `status` tinyint(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- 转存表中的数据 `onethink_sync_login`
---
-
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_transport`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_transport` (
-  `ID` int(10) NOT NULL AUTO_INCREMENT,
-  `orderid` int(5) NOT NULL,
-  `cellphone` varchar(225) CHARACTER SET utf8 NOT NULL,
-  `address` varchar(225) CHARACTER SET utf8 NOT NULL,
-  `realname` varchar(225) CHARACTER SET utf8 NOT NULL,
-  `time` int(10) DEFAULT NULL,
-  `status` int(10) DEFAULT NULL,
-  `uid` int(10) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=53 ;
-
---
--- 转存表中的数据 `onethink_transport`
---
-
-INSERT INTO `onethink_transport` (`ID`, `orderid`, `cellphone`, `address`, `realname`, `time`, `status`, `uid`) VALUES
-(31, 731, '4564', '12345645', '456', 1414078290, 1, 1),
-(32, 731, '4564', '12399999999999', '456', NULL, NULL, 1),
-(33, 731, '4564', '12399999999999', '456', NULL, NULL, 1),
-(34, 731, '4564', '12399999999999', '456', NULL, NULL, 1),
-(35, 731, '4564', '12399999999999', '456', 1414079477, NULL, NULL),
-(36, 731, '4564', '12399999999999', '456', 1414079805, NULL, NULL),
-(37, 731, '4564', '12399999999999', '456', 1414079926, NULL, NULL),
-(38, 731, '4564', '12399999999999', '456', 1414079936, NULL, NULL),
-(39, 0, '', '999999', '', 1414080046, 1, NULL),
-(40, 0, '654654', '999999', '564654654', 1414080095, 1, NULL),
-(41, 0, '654654', '999999', '564654654', 1414080127, 1, NULL),
-(42, 0, '654654', '999999', '564654654', 1414080136, 1, NULL),
-(43, 0, '654654', '999999', '564654654', 1414080189, 1, NULL),
-(44, 733, '654654', '999999', '564654654', 1414080277, 1, NULL),
-(45, 735, '546464', '4564', '564', 1414080382, 1, NULL),
-(46, 735, '546464', '4564', '564', 1414080384, 1, NULL),
-(47, 735, '546464', '4564', '564', 1414080387, NULL, NULL),
-(48, 735, '546464', '4564', '564', 1414080614, NULL, NULL),
-(49, 735, '546464', '4564', '564', 1414080657, 1, NULL),
-(50, 737, '', '9+99898', '99999999', 1414080707, 1, NULL),
-(51, 737, '', '5555555555555', '99999999', 1414080736, NULL, NULL),
-(52, 740, '56546', '5656', '5456', 1414087498, 1, NULL);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_turnover`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_turnover` (
-  `ID` int(10) NOT NULL AUTO_INCREMENT,
-  `uid` int(225) DEFAULT NULL,
-  `sales` decimal(50,2) DEFAULT NULL,
-  `back` decimal(50,2) DEFAULT NULL,
-  `change` decimal(50,2) DEFAULT NULL,
-  `profits` decimal(50,2) DEFAULT NULL,
-  `time` int(10) DEFAULT NULL,
-  `update_time` int(10) DEFAULT NULL,
-  `status` int(225) DEFAULT NULL COMMENT '年月日的标示',
-  `info` varchar(225) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=34 ;
-
---
--- 转存表中的数据 `onethink_turnover`
---
-
-INSERT INTO `onethink_turnover` (`ID`, `uid`, `sales`, `back`, `change`, `profits`, `time`, `update_time`, `status`, `info`) VALUES
-(24, 1, '430.36', '30.00', '17.88', '382.48', 1414104925, 1414254513, 2, '43'),
-(27, 1, '133.34', '20.00', '17.88', '95.46', 1414104975, 1414166156, 1, '20141024'),
-(33, 1, NULL, NULL, NULL, '0.00', 1414254313, 1414255880, 1, '20141026'),
-(31, 1, '11.00', '30.00', '17.88', '-36.88', 1414137480, 1414137480, 3, '201410'),
-(32, 1, '210.00', NULL, NULL, '210.00', 1414177041, 1414251851, 1, '20141025');
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_ucenter_admin`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_ucenter_admin` (
+-- -----------------------------
+-- Table structure for `onethink_ucenter_admin`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_ucenter_admin`;
+CREATE TABLE `onethink_ucenter_admin` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '管理员ID',
   `member_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '管理员用户ID',
   `status` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '管理员状态',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='管理员表' AUTO_INCREMENT=1 ;
-
---
--- 转存表中的数据 `onethink_ucenter_admin`
---
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='管理员表';
 
 
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_ucenter_app`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_ucenter_app` (
+-- -----------------------------
+-- Table structure for `onethink_ucenter_app`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_ucenter_app`;
+CREATE TABLE `onethink_ucenter_app` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '应用ID',
   `title` varchar(30) NOT NULL COMMENT '应用名称',
   `url` varchar(100) NOT NULL COMMENT '应用URL',
-  `ip` char(15) NOT NULL COMMENT '应用IP',
-  `auth_key` varchar(100) NOT NULL COMMENT '加密KEY',
+  `ip` char(15) NOT NULL DEFAULT '' COMMENT '应用IP',
+  `auth_key` varchar(100) NOT NULL DEFAULT '' COMMENT '加密KEY',
   `sys_login` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '同步登陆',
-  `allow_ip` varchar(255) NOT NULL COMMENT '允许访问的IP',
+  `allow_ip` varchar(255) NOT NULL DEFAULT '' COMMENT '允许访问的IP',
   `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '应用状态',
   PRIMARY KEY (`id`),
   KEY `status` (`status`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='应用表' AUTO_INCREMENT=1 ;
-
---
--- 转存表中的数据 `onethink_ucenter_app`
---
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='应用表';
 
 
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_ucenter_member`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_ucenter_member` (
+-- -----------------------------
+-- Table structure for `onethink_ucenter_member`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_ucenter_member`;
+CREATE TABLE `onethink_ucenter_member` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户ID',
   `username` char(16) NOT NULL COMMENT '用户名',
   `password` char(32) NOT NULL COMMENT '密码',
   `email` char(32) NOT NULL COMMENT '用户邮箱',
-  `mobile` char(15) NOT NULL COMMENT '用户手机',
+  `mobile` char(15) NOT NULL DEFAULT '' COMMENT '用户手机',
   `reg_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '注册时间',
   `reg_ip` bigint(20) NOT NULL DEFAULT '0' COMMENT '注册IP',
   `last_login_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最后登录时间',
@@ -1695,40 +1942,25 @@ CREATE TABLE IF NOT EXISTS `onethink_ucenter_member` (
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`),
   KEY `status` (`status`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='用户表' AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='用户表';
 
---
--- 转存表中的数据 `onethink_ucenter_member`
---
-
-INSERT INTO `onethink_ucenter_member` (`id`, `username`, `password`, `email`, `mobile`, `reg_time`, `reg_ip`, `last_login_time`, `last_login_ip`, `update_time`, `status`) VALUES
-(1, '123', '46db58210048e61766852b1842cb4f0d', '14@qq.com', '1010422715', 1409671058, 2130706433, 1414264315, 2130706433, 1409671058, 1);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_ucenter_setting`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_ucenter_setting` (
+-- -----------------------------
+-- Table structure for `onethink_ucenter_setting`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_ucenter_setting`;
+CREATE TABLE `onethink_ucenter_setting` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '设置ID',
   `type` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '配置类型（1-用户配置）',
   `value` text NOT NULL COMMENT '配置数据',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='设置表' AUTO_INCREMENT=1 ;
-
---
--- 转存表中的数据 `onethink_ucenter_setting`
---
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='设置表';
 
 
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_url`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_url` (
+-- -----------------------------
+-- Table structure for `onethink_url`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_url`;
+CREATE TABLE `onethink_url` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '链接唯一标识',
   `url` char(255) NOT NULL DEFAULT '' COMMENT '链接地址',
   `short` char(100) NOT NULL DEFAULT '' COMMENT '短网址',
@@ -1736,52 +1968,36 @@ CREATE TABLE IF NOT EXISTS `onethink_url` (
   `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_url` (`url`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='链接表' AUTO_INCREMENT=1 ;
-
---
--- 转存表中的数据 `onethink_url`
---
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='链接表';
 
 
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_usercoupon`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_usercoupon` (
-  `ID` int(10) NOT NULL AUTO_INCREMENT,
-  `uid` varchar(225) CHARACTER SET utf8 NOT NULL,
-  `couponid` varchar(225) CHARACTER SET utf8 NOT NULL,
-  `time` int(100) DEFAULT NULL,
-  `status` int(10) DEFAULT NULL COMMENT '1-未使用 2-已使用',
-  `cover_id` int(225) DEFAULT NULL COMMENT '图片',
-  `info` varchar(225) CHARACTER SET utf8 DEFAULT NULL,
+-- -----------------------------
+-- Table structure for `onethink_shoplist`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_shoplist`;
+CREATE TABLE `onethink_shoplist` (
+   `ID` int(10) NOT NULL AUTO_INCREMENT,
+  `goodid` int(225) DEFAULT NULL,
+  `num` int(50) DEFAULT NULL,
+  `orderid` varchar(225) CHARACTER SET utf8 DEFAULT NULL COMMENT '订单号',
+  `uid` int(225) DEFAULT NULL,
+  `status` int(10) DEFAULT NULL COMMENT '默认null-未提交订单1-表示已提交订单或已支付2-已完成3-退货4-换货',
+  `time` int(10) DEFAULT NULL,
+  `back` varchar(225) CHARACTER SET utf8 DEFAULT NULL,
+  `change` varchar(225) CHARACTER SET utf8 DEFAULT NULL,
+  `backmoney` varchar(225) CHARACTER SET utf8 DEFAULT NULL,
+  `total` decimal(10,0) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
---
--- 转存表中的数据 `onethink_usercoupon`
---
 
-INSERT INTO `onethink_usercoupon` (`ID`, `uid`, `couponid`, `time`, `status`, `cover_id`, `info`) VALUES
-(7, '1', '5', 1414176060, 1, NULL, '未使用'),
-(8, '1', '2', 1414176205, 1, NULL, '未使用');
-
--- --------------------------------------------------------
-
---
--- 表的结构 `onethink_userdata`
---
-
-CREATE TABLE IF NOT EXISTS `onethink_userdata` (
+-- -----------------------------
+-- Table structure for `onethink_userdata`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_userdata`;
+CREATE TABLE `onethink_userdata` (
   `uid` int(10) unsigned NOT NULL COMMENT '用户id',
   `type` tinyint(3) unsigned NOT NULL COMMENT '类型标识',
   `target_id` int(10) unsigned NOT NULL COMMENT '目标id',
   UNIQUE KEY `uid` (`uid`,`type`,`target_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- 转存表中的数据 `onethink_userdata`
---
-

@@ -22,8 +22,11 @@ class PublicController extends \Think\Controller {
      */
     public function login($username = null, $password = null, $verify = null){
         if(IS_POST){
-            /* 检测验证码 TODO: */
-            
+         
+             /* 检测验证码 TODO: */
+            if(!check_verify($verify)){
+                $this->error('验证码输入错误！');
+            }
 
             /* 调用UC登录接口登录 */
             $User = new UserApi;
@@ -33,7 +36,7 @@ class PublicController extends \Think\Controller {
                 $Member = D('Member');
                 if($Member->login($uid)){ //登录用户
                     //TODO:跳转到登录前页面
-                    $this->success('登录成功！', U('Index/index'));
+                    $this->success('登录成功！', U('Admin/Index/index'));
                 } else {
                     $this->error($Member->getError());
                 }
@@ -57,7 +60,7 @@ class PublicController extends \Think\Controller {
                     S('DB_CONFIG_DATA',$config);
                 }
                 C($config); //添加配置
-                
+               
                 $this->display();
             }
         }

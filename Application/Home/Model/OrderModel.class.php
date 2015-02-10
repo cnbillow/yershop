@@ -9,7 +9,7 @@
 
 namespace Home\Model;
 use Think\Model;
-use Think\Page;
+use Think\Controller;
 
 /**
  * 文档基础模型
@@ -65,7 +65,7 @@ public  function finishedOrder() {
    $Member=D("member");
 	$uid=$Member->uid();
        $order=D("order");
-	    $haslist=$order->where("display='1' and status='3'and uid='$uid'")->order("id desc")->select();
+	    $haslist=$order->where("display='1' and status='3' and uid='$uid'")->order("id desc")->select();
 $detail=M("shoplist");
 	   foreach($haslist as $n=> $val){
       $haslist[$n]['id']=$detail->where('orderid=\''.$val['id'].'\'')->select();
@@ -78,7 +78,7 @@ $detail=M("shoplist");
 public  function latestOrder() {$Member=D("member");
 	$uid=$Member->uid();
        $order=M("order");
-	   $latest=$order->where("display='1' and uid='$uid' and total!=''")->limit('10')->order('id desc')->select();
+	   $latest=$order->where("display='1' and uid='$uid' and total!=''")->limit('5')->order('id desc')->select();
        $detail=M("shoplist");
 	   foreach($latest as $n=> $val){
        $latest[$n]['id']=$detail->where('orderid=\''.$val['id'].'\'')->select();

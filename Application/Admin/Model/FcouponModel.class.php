@@ -18,29 +18,14 @@ class FcouponModel extends Model{
 
     protected $_validate = array(
        
-        array('name', '', '标识已经存在', self::VALUE_VALIDATE, 'unique', self::MODEL_BOTH),
+      
         array('title', 'require', '名称不能为空', self::MUST_VALIDATE , 'regex', self::MODEL_BOTH),
-    	array('meta_title', '1,50', '网页标题不能超过50个字符', self::VALUE_VALIDATE , 'length', self::MODEL_BOTH),
-    	array('keywords', '1,255', '网页关键字不能超过255个字符', self::VALUE_VALIDATE , 'length', self::MODEL_BOTH),
-    	array('meta_title', '1,255', '网页描述不能超过255个字符', self::VALUE_VALIDATE , 'length', self::MODEL_BOTH),
+    
+    	
+    	
     );
 
-    protected $_auto = array(
-        array('model', 'arr2str', self::MODEL_BOTH, 'function'),
-        array('model', null, self::MODEL_BOTH, 'ignore'),
-        array('model_sub', 'arr2str', self::MODEL_BOTH, 'function'),
-        array('model_sub', null, self::MODEL_BOTH, 'ignore'),
-        array('type', 'arr2str', self::MODEL_BOTH, 'function'),
-        array('type', null, self::MODEL_BOTH, 'ignore'),
-        array('reply_model', 'arr2str', self::MODEL_BOTH, 'function'),
-        array('reply_model', null, self::MODEL_BOTH, 'ignore'),
-        array('extend', 'json_encode', self::MODEL_BOTH, 'function'),
-        array('extend', null, self::MODEL_BOTH, 'ignore'),
-        array('create_time', NOW_TIME, self::MODEL_INSERT),
-        array('update_time', NOW_TIME, self::MODEL_BOTH),
-        array('status', '1', self::MODEL_BOTH),
-    );
-
+ 
 
     /**
      * 获取优惠券详细信息
@@ -67,56 +52,7 @@ class FcouponModel extends Model{
      * @return array          优惠券树
      * @author 麦当苗儿 <zuojiazi@vip.qq.com>
      */
-    public function getTree($id = 0, $field = true){
-        /* 获取当前优惠券信息 */
-        if($id){
-            $info = $this->info($id);
-            $id   = $info['id'];
-        }
 
-        /* 获取所有优惠券 */
-        $map  = array('status' => array('gt', -1));
-        $list = $this->field($field)->where($map)->order('sort')->select();
-        $list = list_to_tree($list, $pk = 'id', $pid = 'pid', $child = '_', $root = $id);
-
-        /* 获取返回数据 */
-        if(isset($info)){ //指定优惠券则返回当前优惠券极其子优惠券
-            $info['_'] = $list;
-        } else { //否则返回所有优惠券
-            $info = $list;
-        }
-
-        return $info;
-    }
-
-    /**
-     * 获取指定优惠券子优惠券ID
-     * @param  string $cate 优惠券ID
-     * @return string       id列表
-     * @author 麦当苗儿 <zuojiazi@vip.qq.com>
-     */
-    public function getChildrenId($cate) {
-        $field    = 'id,name,pid,title,link_id';
-        $category = $this->getTree($cate, $field);
-        $ids[]    = $cate;
-        foreach ($category['_'] as $key => $value) {
-            $ids[] = $value['id'];
-        }
-        return implode(',', $ids);
-    }
-
-    /**
-     * 获取指定优惠券的同级优惠券
-     * @param  integer $id    优惠券ID
-     * @param  boolean $field 查询字段
-     * @return array
-     * @author 麦当苗儿 <zuojiazi@vip.qq.com>
-     */
-    public function getSameLevel($id, $field = true){
-        $info = $this->info($id, 'pid');
-        $map = array('pid' => $info['pid'], 'status' => 1);
-        return $this->field($field)->where($map)->order('sort')->select();
-    }
 
     /**
      * 更新优惠券信息
@@ -137,48 +73,13 @@ class FcouponModel extends Model{
         }
 
         //更新优惠券缓存
-        S('sys_category_list', null);
+        S('sys_fcoupon_list', null);
 
         //记录行为
-        action_log('update_category', 'category', $data['id'] ? $data['id'] : $res, UID);
+        action_log('update_fcoupon', 'fcoupon', $data['id'] ? $data['id'] : $res, UID);
 
         return $res;
     }
 
-    /**
-     * 查询后解析扩展信息
-     * @param  array $data 优惠券数据
-     * @author 麦当苗儿 <zuojiazi@vip.qq.com>
-     */
-    protected function _after_find(&$data, $options){
-        /* 分割模型 */
-        if(!empty($data['model'])){
-            $data['model'] = explode(',', $data['model']);
-        }
-
-        if(!empty($data['model_sub'])){
-            $data['model_sub'] = explode(',', $data['model_sub']);
-        }
-
-        /* 分割文档类型 */
-        if(!empty($data['type'])){
-            $data['type'] = explode(',', $data['type']);
-        }
-
-        /* 分割模型 */
-        if(!empty($data['reply_model'])){
-            $data['reply_model'] = explode(',', $data['reply_model']);
-        }
-
-        /* 分割文档类型 */
-        if(!empty($data['reply_type'])){
-            $data['reply_type'] = explode(',', $data['reply_type']);
-        }
-
-        /* 还原扩展数据 */
-        if(!empty($data['extend'])){
-            $data['extend'] = json_decode($data['extend'], true);
-        }
-    }
-
+    
 }

@@ -32,9 +32,6 @@ class ArticleController extends AdminController {
      * @author 朱亚杰  <xcoolcc@gmail.com>
      */
     protected function checkDynamic(){
-        if(IS_ROOT){
-            return true;//管理员允许访问任何页面
-        }
         $cates = AuthGroupModel::getAuthCategories(UID);
         switch(strtolower(ACTION_NAME)){
             case 'index':   //文档列表
@@ -54,7 +51,7 @@ class ArticleController extends AdminController {
                 break;
         }
         if(!$cate_id){
-            return null;//不明,需checkRule
+            return null;//不明
         }elseif( !is_array($cate_id) && in_array($cate_id,$cates) ) {
             return true;//有权限
         }elseif( is_array($cate_id) && $cate_id==array_intersect($cate_id,$cates) ){
@@ -62,18 +59,17 @@ class ArticleController extends AdminController {
         }else{
             return false;//无权限
         }
-        return null;//不明,需checkRule
     }
 
     /**
      * 显示左边菜单，进行权限控制
      * @author huajie <banhuajie@163.com>
      */
-    protected function getMenu(){
+    protected function getMenu($ismenu = null){
         //获取动态分类
         $cate_auth  =   AuthGroupModel::getAuthCategories(UID); //获取当前用户所有的内容权限节点
         $cate_auth  =   $cate_auth == null ? array() : $cate_auth;
-        $cate       =   M('Category')->where(array('status'=>1))->field('id,title,pid,allow_publish')->order('pid,sort')->select();
+        $cate       =   M('Category')->where(array('status'=>1,'ismenu'=>$ismenu))->field('id,title,pid,allow_publish')->order('pid,sort')->select();
 
         //没有权限的分类则不显示
         if(!IS_ROOT){
@@ -139,10 +135,11 @@ class ArticleController extends AdminController {
         $this->assign('rightNav',   $nav);
 
         //获取回收站权限
-        $show_recycle = $this->checkRule('Admin/article/recycle');
-        $this->assign('show_recycle', IS_ROOT || $show_recycle);
+        $this->assign('show_recycle', IS_ROOT || $this->checkRule('Admin/article/recycle'));
         //获取草稿箱权限
         $this->assign('show_draftbox', C('OPEN_DRAFTBOX'));
+        //获取审核列表权限
+        $this->assign('show_examine', IS_ROOT || $this->checkRule('Admin/article/examine'));
     }
 
     /**
@@ -150,10 +147,11 @@ class ArticleController extends AdminController {
      * @param integer $cate_id 分类id
      * @param integer $model_id 模型id
      * @param integer $position 推荐标志
+     * @param integer $group_id 分组id
      */
-    public function index($cate_id = null, $model_id = null, $position = null){
+    public function index($cate_id = null, $model_id = null, $position = null,$group_id=null){
         //获取左边菜单
-        $this->getMenu();
+        $this->getMenu(0);
 
         if($cate_id===null){
             $cate_id = $this->cate_id;
@@ -162,9 +160,14 @@ class ArticleController extends AdminController {
             $pid = I('pid',0);
             // 获取列表绑定的模型
             if ($pid == 0) {
-                $models         =   get_category($cate_id, 'model');
+                $models     =   get_category($cate_id, 'model');
+				// 获取分组定义
+				$groups		=	get_category($cate_id, 'groups');
+				if($groups){
+					$groups	=	parse_field_attr($groups);
+				}
             }else{ // 子文档列表
-                $models         =   get_category($cate_id, 'model_sub');
+                $models     =   get_category($cate_id, 'model_sub');
             }
             if(is_null($model_id) && !is_numeric($models)){
                 // 绑定多个模型 取基础模型的列表定义
@@ -187,14 +190,14 @@ class ArticleController extends AdminController {
         }
 
         //解析列表规则
-        $fields = array();
-        $grids  = preg_split('/[;\r\n]+/s', trim($model['list_grid']));
+        $fields =	array();
+        $grids  =	preg_split('/[;\r\n]+/s', trim($model['list_grid']));
         foreach ($grids as &$value) {
             // 字段:标题:链接
             $val      = explode(':', $value);
             // 支持多个字段显示
             $field   = explode(',', $val[0]);
-            $value  = array('field' => $field, 'title' => $val[1]);
+            $value    = array('field' => $field, 'title' => $val[1]);
             if(isset($val[2])){
                 // 链接信息
                 $value['href']  =   $val[2];
@@ -218,12 +221,15 @@ class ArticleController extends AdminController {
         // 过滤重复字段信息
         $fields =   array_unique($fields);
         // 列表查询
-        $list   =   $this->getDocumentList($cate_id,$model_id,$position,$fields);
+       // $list   =   $this->getDocumentList($cate_id,$model_id,$position,$fields,$group_id);
+       $list   =   $this->getDocumentList($cate_id,2,$position,$fields);// $model_id用2替代
         // 列表显示处理
         $list   =   $this->parseDocumentList($list,$model_id);
         
         $this->assign('model_id',$model_id);
+		$this->assign('group_id',$group_id);
         $this->assign('position',$position);
+        $this->assign('groups', $groups);
         $this->assign('list',   $list);
         $this->assign('list_grids', $grids);
         $this->assign('model_list', $model);
@@ -238,8 +244,9 @@ class ArticleController extends AdminController {
      * @param integer $model_id 模型id
      * @param integer $position 推荐标志
      * @param mixed $field 字段列表
+     * @param integer $group_id 分组id
      */
-    protected function getDocumentList($cate_id=0,$model_id=null,$position=null,$field=true){
+    protected function getDocumentList($cate_id=0,$model_id=null,$position=null,$field=true,$group_id=null){
         /* 查询条件初始化 */
         $map = array();
         if(isset($_GET['title'])){
@@ -272,11 +279,12 @@ class ArticleController extends AdminController {
         if($map['pid']){ // 子文档列表忽略分类
             unset($map['category_id']);
         }
+        $Document->alias('DOCUMENT');
         if(!is_null($model_id)){
             $map['model_id']    =   $model_id;
             if(is_array($field) && array_diff($Document->getDbFields(),$field)){
                 $modelName  =   M('Model')->getFieldById($model_id,'name');
-                $Document->alias('DOCUMENT')->join('__DOCUMENT_'.strtoupper($modelName).'__ '.$modelName.' ON DOCUMENT.id='.$modelName.'.id');
+                $Document->join('__DOCUMENT_'.strtoupper($modelName).'__ '.$modelName.' ON DOCUMENT.id='.$modelName.'.id');
                 $key = array_search('id',$field);
                 if(false  !== $key){
                     unset($field[$key]);
@@ -287,7 +295,10 @@ class ArticleController extends AdminController {
         if(!is_null($position)){
             $map[] = "position & {$position} = {$position}";
         }
-        $list = $this->lists($Document,$map,'level DESC,id DESC',$field);
+		if(!is_null($group_id)){
+			$map['group_id']	=	$group_id;
+		}
+        $list = $this->lists($Document,$map,'level DESC,DOCUMENT.id DESC',$field);
 
         if($map['pid']){
             // 获取上级文档
@@ -323,6 +334,7 @@ class ArticleController extends AdminController {
 
         $cate_id    =   I('get.cate_id',0);
         $model_id   =   I('get.model_id',0);
+		$group_id	=	I('get.group_id','');
 
         empty($cate_id) && $this->error('参数不能为空！');
         empty($model_id) && $this->error('该分类未绑定模型！');
@@ -338,6 +350,8 @@ class ArticleController extends AdminController {
         $info['pid']            =   $_GET['pid']?$_GET['pid']:0;
         $info['model_id']       =   $model_id;
         $info['category_id']    =   $cate_id;
+		$info['group_id']		=	$group_id;
+
         if($info['pid']){
             // 获取上级文档
             $article            =   M('Document')->field('id,title,type')->find($info['pid']);
@@ -388,7 +402,7 @@ class ArticleController extends AdminController {
 
         //获取表单字段排序
         $fields = get_model_attribute($model['id']);
-        $this->assign('fields',$fields);
+        $this->assign('fields',     $fields);
 
 
         //获取当前分类的文档类型
@@ -572,22 +586,7 @@ class ArticleController extends AdminController {
      * @author huajie <banhuajie@163.com>
      */
     public function clear(){
-        $res = D('Document');
-		 $id = I('get.id');
-  //判断id是数组还是一个数值
-  if(is_array($id)){
-    $where = 'id in('.implode(',',$id).')';
-  }else{
-    $where = 'id='.$id;
-  }
-  //dump($where);
-  $list=$res->where($where)->delete();
-  if($list!==false) {
-    $this->success("成功删除{$list}条！");
-  }else{
-    $this->error('删除失败！');
-  }
-		
+        $res = D('Document')->remove();
         if($res !== false){
             $this->success('清空回收站成功！');
         }else{
@@ -684,7 +683,7 @@ class ArticleController extends AdminController {
 
                 $result   =  $Model->add($data);
                 if($result){
-                    $logic      =   D(get_document_model($data['model_id'],'name'),'Logic');
+                    $logic      =   logic($data['model_id']);
                     $data       =   $logic->detail($value); //获取指定ID的扩展数据
                     $data['id'] =   $result;
                     $res        =   $logic->add($data);
@@ -704,12 +703,17 @@ class ArticleController extends AdminController {
      * @author huajie <banhuajie@163.com>
      */
     protected function checkPaste($list, $cate_id, $pid){
-        $return = array('status'=>1);
-        $Document = D('Document');
+        $return     =   array('status'=>1);
+        $Document   =   D('Document');
 
         // 检查支持的文档模型
-        $modelList =   M('Category')->getFieldById($cate_id,'model');   // 当前分类支持的文档模型
-        foreach ($list as $key=>$value){
+        if($pid){
+            $modelList =   M('Category')->getFieldById($cate_id,'model_sub');   // 当前分类支持的文档模型
+        }else{
+            $modelList =   M('Category')->getFieldById($cate_id,'model');   // 当前分类支持的文档模型
+        }
+        
+        foreach ($list as $key => $value){
             //不能将自己粘贴为自己的子内容
             if($value == $pid){
                 $return['status'] = 0;

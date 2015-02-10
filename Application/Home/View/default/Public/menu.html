@@ -4,7 +4,7 @@
  <div class="menu-wrapper" >
     <div class="nav-all">
        <div class="all_class" id="all-class">
-        <h2> <a>商品分类<span class="all_class_arrow"></span></a> </h2>
+        <h2> <a><i id="ilarge" class="glyphicon glyphicon-th-large"></i><span>商品分类</span><i id="iarrow" class="glyphicon glyphicon-chevron-down"></i></a> </h2>
       </div>
       <div class="all-goods" style="display: none;" id="all-goods">
 <volist name="categoryq" id="cate">
@@ -15,21 +15,19 @@
             <!--手提袋-->
             <div class="cf">
               <div class="fl wd252 pr20">
-                <h2><a href="{:U('home/article/index/category/'.$cate['name'])}">{$cate.title}</a> </h2>
-                <p class="lh30">纸质手提袋定制，设计印刷全部搞定。</p>
-                <ul class="cf">
-                <volist name="cate['child']" id="cate_sub">
-                <li><a href="{:U('home/article/index/category/'.$cate_sub['name'])}">{$cate_sub.title}<i class="icon-chevron-right"></i> </a>
-                    
               
-                </li>
+                <volist name="cate['child']" id="cate_sub">
+                 <ul class="cf"> <li><span><a href="{:U('home/article/index/category/'.$cate_sub['name'])}">{$cate_sub.title}</a></span>
+                   <if condition="$cate_sub['child']">
+ <volist name="cate_sub['child']" id="cate_sub_two">
+<a href="{:U('/category='.$cate_sub_two['name'])}">{$cate_sub_two.title} </a>
+           
+                            </volist>                </if> 
+              
+                </li> </ul>
                 </volist>
-                </ul>
+               
 </div>
-              <dl class="fl wd185 pl20 blee">
-                <dt class="lh36">促销活动</dt>
-                <dd id="stdads"><a href="http://www.xwcms.net" target="_blank" title="手提袋"><img src="__STATIC__/bootstrap/img/0934218124.jpg"></a></dd>
-              </dl>
             </div> </div>
             </if>
        

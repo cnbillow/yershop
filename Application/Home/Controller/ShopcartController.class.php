@@ -239,8 +239,7 @@ else{	 $data['exsit'] = $exsit;
       $count=count($_SESSION['cart']); /*查询购物车中商品的种类 */
 	 if(session('user_auth'))
 		 { 
-		 $cartter=$this->usercart();
-    $this->assign('usercart',$cartter);
+	
 	  $cart=D("shopcart");
      $result= $cart->getcart();
      $this->assign('sqlcart',$result); 
@@ -381,14 +380,16 @@ $shoplist=$goodlist->where("orderid='$orderid'")->select();
 	  $msg=get_address($uid);
 	 $total=$this->getPricetotal($orderid);
 	 if($total<C('LOWWEST')){
-		 $trans=C('SHIPPRICE');
+		 $trans=C('SHIPMONEY');
 	 
 	 }
 	 else{$trans=0;
 	 }
+	 
     $all=$total+$trans;
     $allnum=$this->getpriceNum($orderid);
     $this->assign('all', $all);
+	
     $this->assign('allnum', $allnum);
     $this->assign('trans', $trans);
 	 $this->assign('total', $total);
@@ -414,15 +415,15 @@ public function makeorder() {
     $hotsearch=R("Index/getHotsearch");
     $this->assign('hotsearch',$hotsearch);
 $id = $_POST["orderid"];
-  $del= M("order")->where("total=''")->delete();
 
+ 
 $order=D("order");
 //计算提交的订单的商品总额
 $total=$this->getPricetotal($id);
 
 
 //计算提交的订单的商品运费
-if($total<C('LOWWEST')){$trans=C('SHIPPRICE');
+if($total<C('LOWWEST')){$trans=C('SHIPMONEY');
 	 
 	 }
  else{$trans=0;
@@ -433,23 +434,34 @@ $score=$_POST["score"];
 //读取配置，1000积分兑换1元
 $ratio= $score/C('RATIO');
 $data['score']=$score;
+	$user=session('user_auth');
+$uid=$user["uid"];
+M("member")->where("uid='$uid'")->setField('score',0);
 }
 else{
 	$ratio=0;
 
 }
+ $del= M("order")->where("total='0'")->delete();
 //计算提交的优惠券
 if($_POST["couponcode"])
 	{
 $code=$_POST["couponcode"];
-$codeid=M("fcoupon")->where("code='$code'")->getfield('id');
-$deccode=get_coupon_price($codeid);
+$codeid=M("fcoupon")->where("code='$code' and status='1'")->getField('id');//获取优惠券主键id
+$deccode=get_coupon_price($codeid);//获取优惠券等值金额
+$usercouponid=M("usercoupon")->where("couponid='$codeid' and status='1'")->getField('id');//获取用户可用优惠券主键id
+if($usercouponid){
 $data['codeid']=$codeid;
+M("usercoupon")->where("couponid='$codeid'")->setField('status',2);//设置优惠券已用
+}
+else{
+	$deccode=0;
+}
 }
 else{
 $deccode=0;
 }
-  $senderid=$_POST ["sender"];
+$senderid=$_POST ["sender"];
 $data['addressid']=$senderid;
 $data['total']=$total;
 $data['ptime']=NOW_TIME;
@@ -465,9 +477,6 @@ if($_POST["PayType"]=="1"){
 
 $data['backinfo']="已提交等待发货";
 //增加取消订单
-$cid=$order->where("id='$id'")->getField('orderid');
- $cancle="<A href='http://".$_SERVER['HTTP_HOST']."/index.php?s=/Home/Order/cancel/id/".$cid."'>取消订单</a>";
-$data['act_cancel']=$cancle;
 
 //根据订单id保存对应的费用数据
 $order->where("id='$id'")->save($data);
@@ -486,13 +495,24 @@ M("shopcart")->where("goodid='$delbyid'and uid='$uid'")->delete();
  }
 $ordercode=$order->where("id='$id'")->getField('orderid');
     $this->assign('codeid',$ordercode);
+ $mail=get_email($ordercode);//获取会员邮箱
+	 $title="交易提醒";
+	 $content="您在<a href=\"".C('DAMAIN')."\" target='_blank'>".C('SITENAME').'</a>提交了订单，订单号'.$param['order_id'];
+       if( C('MAIL_PASSWORD'))
+               
+					{SendMail($mail,$title,$content);}
+           
+			
+
+
+
 $this->display('success');
 
 }
 else{ 
 	//设置订单状态为用户为未能完成，不删除数据
 $data['backinfo']="等待支付";
-	$data['ispay']="1";
+	$data['ispay']="1";$data['status']="13";
 	//根据订单id保存对应的费用数据
      $order->where("id='$id'")->save($data);
 
@@ -542,9 +562,9 @@ function ordersn(){
 	   $data['status'] = 1;
        $data['time']=NOW_TIME;
 	   $data['orderid'] = $id;
+	   $data['uid'] = $uid;
        $Transport->add($data); 
 	   $data['value'] = "default";
-       
 	   $data['addressid']=$Transport->where("uid='$uid' and status='1'")->getField("id");
 	  $data['msg'] = 'yes'; }
 	else{
@@ -625,7 +645,9 @@ public function delItemByuid(){
         $price=$cart->getPriceByuid(); /* 购物车中商品的总金额*/
 		 $data['status'] = 1;
 		 $data['goodid'] =$id;
-		  $data['num'] =  $sum;
+		  $data['price'] =$price;
+		 $data['count'] = $count; $data['num'] =  $sum;
+		  $data['sum'] =  $sum;
          $data['msg'] = '处理成功';
 		 $this->ajaxReturn($data);}
 		

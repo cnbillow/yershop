@@ -3,7 +3,7 @@
 <block name="body">
     <meta charset="UTF-8">
       
-    <div class="container" style="margin:80px auto 0 auto;border-bottom: 2px solid #999;">
+    <div class="container" style="margin:50px auto 10px 200px;border-bottom: 2px solid #999;">
         <a style="float:left;margin-right:10px;" href="#"><img src="{$user.head}" width="50" height="50" /></a>
         <div style="float:left;margin-right:10px;overflow: hidden;zoom: 1;">
             <div>
@@ -13,7 +13,7 @@
         </div>
     </div>
     
-    <div class="container"style="margin:30px auto 0 auto;">
+    <div class="container"style="margin:30px auto 0 145px;">
         <div class="row">
             <div class="col-sm-6">
                 <form class="login-form" action="{:U('home/addons/execute',array('_addons'=>'SyncLogin','_controller'=>'Register','_action'=>'doregister'))}" method="post">
@@ -21,7 +21,7 @@
                       <input type="hidden" name="other_openid" value="{$token.openid}" >
                       <input type="hidden" name="other_access_token" value="{$token.access_token}" >
                       <input type="hidden" name="other_refresh_token" value="{$token.refresh_token}" >
-                      <div class="legend">注册新账号</div>
+                      <div class="legend">初次登陆需注册新账号</div>
                       <div class="form-group">
                         <label class="control-label" for="inputUsername">用户名</label>
                         <div class="controls">

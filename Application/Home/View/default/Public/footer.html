@@ -1,24 +1,23 @@
 
-    <!-- 底部
-    ================================================== -->
-   <script type="text/javascript" src="__STATIC__/js/menudown.js"></script> 
+    <!-- 底部-->
+   <script type="text/javascript"  charset="utf-8" src="__STATIC__/js/menudown.js"></script> 
 	<script>
 	//购物车显示与隐藏
-	var a= document.getElementById('shopping_cart');
-  var b = document.getElementById('goods');
+	var Shopcart= document.getElementById('shopping_cart');
+  var Goodsmenu= document.getElementById('goods');
             var timerr = null;//定义定时器变量
             //鼠标移入div1或div2都把定时器关闭了，不让他消失
-            a.onmouseover = b.onmouseover = function ()
+            Shopcart.onmouseover =Goodsmenu.onmouseover = function ()
             {
-                b.style.display = 'block';
+                Goodsmenu.style.display = 'block';
                 clearTimeout(timerr);
             }
             //鼠标移出div1或div2都重新开定时器，让他延时消失
-            a.onmouseout = b.onmouseout = function ()
+            Shopcart.onmouseout =Goodsmenu.onmouseout = function ()
             {
                 //开定时器
                 timerr= setTimeout(function () { 
-                    b.style.display = 'none'; }, 500);
+                    Goodsmenu.style.display = 'none'; }, 500);
             }
 			
 			

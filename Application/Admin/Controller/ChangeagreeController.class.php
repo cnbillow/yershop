@@ -21,9 +21,9 @@ class ChangeagreeController extends AdminController {
      */
     public function index(){
         /* 查询条件初始化 */
-	
-        $map  = array('status' =>2);
-        $list = $this->lists('change', $map,'id');
+		$a=M("change")->where("total='null'")->delete();	 
+       $map  = array('status' =>2);
+       $list = $this->lists('change', $map,'id desc');
 
         $this->assign('list', $list);
         // 记录当前列表页的cookie
@@ -38,14 +38,13 @@ class ChangeagreeController extends AdminController {
      * @author 烟消云散 <1010422715@qq.com>
      */
     public function add(){
-      if(IS_POST){
+        if(IS_POST){
             $Config = D('change');
             $data = $Config->create();
-            /* 新增时间并更新时间*/
-             $Config->time = NOW_TIME;
-
-           $Config->update_time = NOW_TIME;
-            if($data){
+			  /* 新增时间并更新时间*/
+  	$shopid=$_POST["shopid"];
+      $shoplist=D('shoplist')->where("id='$shopid'")->setField('status','-5');
+	  if($data){
                 if($Config->add()){
                     S('DB_CONFIG_DATA',null);
                     $this->success('新增成功', U('index'));
@@ -58,7 +57,7 @@ class ChangeagreeController extends AdminController {
         } else {
             $this->meta_title = '新增配置';
             $this->assign('info',null);
-            $this->display('edit');
+            $this->display();
         }
     }
 
@@ -69,25 +68,61 @@ class ChangeagreeController extends AdminController {
     public function edit($id = 0){
         if(IS_POST){
             $Form = D('change');
+       
+            if($_POST["id"]){
+	         $id=$_POST["id"];
+             $Form->create();
+           $result=$Form->where("id='$id'")->save();
+                if($result){
+                    //记录行为
+                    action_log('update_change', 'change', $data['id'], UID);
+                    $this->success('更新成功', Cookie('__forward__'));
+                } else {
+                    $this->error('更新失败'.$id);
+                }
+            } else {
+                $this->error($Config->getError());
+            }
+        } else {
+            $info = array();
+            /* 获取数据 */
+            $info = M('change')->find($id);
+
+            $list=M('change')->where("shopid='$id'")->select();
+
+            if(false === $info){
+                $this->error('获取订单信息错误');
+            }
+            $this->assign('list', $list);
+
+			 $this->assign('info', $info);
+            $this->meta_title = '编辑订单';
+            $this->display();
+        }
+    }
+
+   /**
+     * 拒绝订单
+     * @author 烟消云散 <1010422715@qq.com>
+     */
+public function refuse($id = 0){
+       if(IS_POST){
+            $Form = D('change');
         
             if($_POST["id"]){ 
 				$id=$_POST["id"];
-            
-			    /*更新时间*/
-            $Form->update_time = NOW_TIME;
-			/* 编辑后保存编辑人*/
-			$Form->assistant = $_POST["assistant"];
-	
-			 /* 编辑后新增系统反馈信息*/
-			$Form->backinfo = $_POST["backinfo"];
-          	$Form->info = $_POST["info"];
+				$shopid=$_POST["shopid"];
+		 $Form->create();
+           
            $result=$Form->where("id='$id'")->save();
-                if($result){
+ /* 编辑后更新商品反馈信息*/
+$back_shoplist=M('shoplist')->where("id='$shopid'")->setField('status','-7');//买家填写退货快递，状态6
+                if($back_shoplist){
                     //记录行为
                     action_log('update_order', 'order', $data['id'], UID);
                     $this->success('更新成功', Cookie('__forward__'));
                 } else {
-                    $this->error('更新失败55'.$id);
+                    $this->error('更新失败'.$id);
                 }
             } else {
                 $this->error($Config->getError());
@@ -105,57 +140,11 @@ $list=M('shoplist')->where("orderid='$id'")->select();
 $this->assign('list', $list);
             $this->assign('detail', $detail);
 			 $this->assign('info', $info);
-            $this->meta_title = '编辑订单';
-            $this->display();
-        }
-    }
- /**
-     * 同意订单
-     * @author 烟消云散 <1010422715@qq.com>
-     */
-    public function complete($id = 0){
-       if(IS_POST){
-            $Form = D('change');
-        
-            if($_POST["id"]){ 
-			$id=$_POST["id"];
-              
-			    /*更新时间*/
-            $Form->update_time = NOW_TIME;
-			/* 编辑后保存编辑人*/
-			$Form->assistant = $_POST["assistant"];
-			 /* 编辑后新增系统反馈信息*/
-			$Form->backinfo = $_POST["backinfo"];
-          	$Form->info = $_POST["info"];
-				$Form->status = "3";
-			  $result=$Form->where("id='$id'")->save();
-                if($result){
-                    //记录行为
-                    action_log('update_order', 'order', $data['id'], UID);
-                    $this->success('更新成功', Cookie('__forward__'));
-                } else {
-                    $this->error('更新失败'.$id);
-                }
-            } else {
-                $this->error($Config->getError());
-            }
-        } else {
-            $info = array();
-            /* 获取数据 */
-            $info = M('change')->find($id);
-
-            if(false === $info){
-                $this->error('获取订单信息错误');
-            }
-
-			 $this->assign('info', $info);
 			 
-            $this->meta_title = '编辑订单';
+            $this->meta_title = '拒绝退货订单';
            $this->display();
         }
     }
-
-  
    /**
      * 删除订单
      * @author yangweijie <yangweijiester@gmail.com>
@@ -184,6 +173,7 @@ $this->assign('list', $list);
             }
         } 
     }
+
 
 
 }

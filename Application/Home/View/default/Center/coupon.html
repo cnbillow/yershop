@@ -19,21 +19,23 @@
      <ul class="userhas" id="cuser">
 	 <volist name="couponlist" id="vo">
                 <li><a href="javascript:vod(0);"><img src="{$vo.couponid|get_icon|get_cover='path'}"  width="170" height="170"/></a></p>
-				<p><a href="javascript:vod(0);"><span class="red">{$vo.couponid|get_coupon_name}</span></a>[{$vo.info}]</p> 
+				<p><a href="javascript:vod(0);"><span class="red">{$vo.couponid|get_coupon_name}</span></a>[ <php>$pay=$vo['status'];
+			  if($pay==1){ echo "未使用";}
+              else{ echo"已使用";};  </php> ]</p> 
 				<p>优惠券代码：{$vo.couponid|get_coupon_code}</a></p> 
                  <p>价值：<span class="red">{$vo.couponid|get_coupon_price}元</span>
-                 </p> 
+                 </p> </li>
             </volist>
 	</ul>
 	</empty>
 	<span class="red" style="display: block;padding:15px;font-size:17px;">优惠券</span>
-	 <ul class="userhas">
+	  <ul class="userhas" id="cuser">
 	  <volist name="fcouponlist" id="vo">
                 <li><p><img src="{$vo.icon|get_cover='path'}"  width="170px" height="170px"/>
 				</p> 
                    <p><a href="javascript:vod(0)">{$vo.title}</a></p>
 
-                 <a   rel="{$vo.id}" onclick="getcoupon(event)" href="javascript:vod(0)" class="btn text">领取</a>
+                <p> <a   rel="{$vo.id}" onclick="getcoupon(event)" href="javascript:vod(0)" class="btn text">领取</a></p></li>
                    
             </volist>
 	</ul>
@@ -55,15 +57,14 @@ str = obj.innerHTML.replace(/<\/?[^>]*>/g,''); //去除HTML tag
 	
 	if(obj.rel=="del")
 { var gid=obj.name;
-var array=$("#div2 li");//登录用户显示的li的个数
-var arr=$("#goods li");//未登录用户显示的li的个数
+var uexist="{:get_username()}";
 	//全选的实现 定义删的发送路径
-	if(array.length!==4){
-		var del='{:U("Shopcart/delItem")}';
+	if(uexist){
+		var del='{:U("Shopcart/delItemByuid")}';
 	
 	}
 else{
-var del='{:U("Shopcart/delItemByuid")}';
+var del='{:U("Shopcart/delItem")}';
 	
 	}
 $.ajax({

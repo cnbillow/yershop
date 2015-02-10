@@ -60,6 +60,18 @@ function get_list_field($data, $grid){
     }
     return $value;
 }
+function flist(){
+          $map["pid"]=0;
+    $map["model_sub"]=5;    
+	$map["model"]=5;   $map["display"]=1;
+ 
+	$list=M('category')->where($map)->select();
+   return $list;
+} 
+
+
+
+
 
 /**
  * 后台公共文件

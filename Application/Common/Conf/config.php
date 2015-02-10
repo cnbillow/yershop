@@ -15,11 +15,14 @@ return array(
     /* 模块相关配置 */
     'AUTOLOAD_NAMESPACE' => array('Addons' => ONETHINK_ADDON_PATH), //扩展模块列表
     'DEFAULT_MODULE'     => 'Home',
-    'MODULE_DENY_LIST'   => array('Common','User','Admin','Install'),
+    'MODULE_DENY_LIST'   => array('Common', 'User'),
     //'MODULE_ALLOW_LIST'  => array('Home','Admin'),
 
     /* 系统数据加密设置 */
-    'DATA_AUTH_KEY' => '?<U[ePB.Gp*+/Vi!;,4kfL"^gXuYN8-EnJHz:$h~', //默认数据加密KEY
+    'DATA_AUTH_KEY' => 'k*;oQ`N~Lem#l.g3:!nK}c_-DM0&(?j4vh12>%Hw', //默认数据加密KEY
+
+    /* 调试配置 */
+    'SHOW_PAGE_TRACE' => true,
 
     /* 用户相关设置 */
     'USER_MAX_CACHE'     => 1000, //最大缓存用户数
@@ -37,13 +40,12 @@ return array(
     /* 数据库配置 */
     'DB_TYPE'   => 'mysql', // 数据库类型
     'DB_HOST'   => '127.0.0.1', // 服务器地址
-    'DB_NAME'   => 'one', // 数据库名
+    'DB_NAME'   => 'two', // 数据库名
     'DB_USER'   => 'root', // 用户名
     'DB_PWD'    => '',  // 密码
     'DB_PORT'   => '3306', // 端口
-    'DB_PREFIX' => 'onethink_', // 数据库表前缀
+    'DB_PREFIX' => 'yershop_', // 数据库表前缀
 
     /* 文档模型配置 (文档模型核心配置，请勿更改) */
     'DOCUMENT_MODEL_TYPE' => array(2 => '主题', 1 => '目录', 3 => '段落'),
-
 );

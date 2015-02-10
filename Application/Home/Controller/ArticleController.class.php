@@ -15,8 +15,12 @@ class ArticleController extends HomeController {
     /* 频道封面页 */
 	public function index(){
     $cateid= $id ? $id : I('get.category', 0);//获取分类的英文名称
+
 	$category = D('Category')->info($cateid);
-    $id=$category['id']; 
+    $id=$category['id'];
+	//$n=D('Category')->getTree($id);dump($n);
+$cat=D('Category')->getChildrenId($id);
+dump($cat);
 	//获取分类的id
 	$name=$category['name'];
      $child=M('Category')->where("pid='$id'")->select();
@@ -191,4 +195,48 @@ $this->assign('viewlist', $view);
 			$this->error('分类不存在或被禁用！');
 		}
 	}
+/* 幻灯片操作 */
+public function activity($id){
+ /* 左侧菜单 */
+	 $menu=R('index/menulist');
+	 $this->assign('categoryq', $menu);
+	   	    /**
+ * 购物车调用
+ */
+   $cart=R("shopcart/usercart");
+   $this->assign('usercart',$cart);
+   if(!session('user_auth')){$usercart=$_SESSION['cart'];
+        $this->assign('usercart',$usercart);
+   
+   }
+    /*栏目页统计代码实现，tag=2*/
+     if(1==C('IP_TONGJI')){
+	   $record=IpLookup("",2,$name); 
+	 }
+	  /* 热词调用*/
+    $hotsearch=R("Index/getHotsearch");
+    $this->assign('hotsearch',$hotsearch);  
+
+    $slideid= $id ? $id : I('get.id', 0);//获取分类的英文名称
+	 
+	  /* 获取活动标题*/
+	$title=M('slide')->where("id='$slideid'")->getField("title");
+    $this->assign('title',$title);// 赋值数据集
+    /* 获取商品*/
+	 $User =M("slideid"); 
+
+      $count= M('slideid')->where("slidepid='$slideid'")->count();
+      $Page= new \Think\Page($count,12);
+	   $Page->setConfig('prev','上一页');
+      $Page->setConfig('next','下一页');
+      $Page->setConfig('first','第一页');
+      $Page->setConfig('last','尾页');
+      $Page->setConfig('theme','%FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END% %HEADER%');
+      $show= $Page->show();    
+      $list=$User->where("slidepid='$slideid' ")->limit($Page->firstRow.','.$Page->listRows)->select();
+     $this->assign('list',$list);// 赋值数据集
+$this->assign('page',$show);// 赋值分页输出 $this->display();
+$this->display();
+}
+
 }

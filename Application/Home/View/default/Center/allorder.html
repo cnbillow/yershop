@@ -13,39 +13,71 @@
 				<div class="cb"></div>
 			</div>
 	<else /><form action='{:U("Shopcart/delorder")}' method="post" name="delform" >
-       <div class="order_del">
-			  <span>  <input class="checkbox check-all" type="checkbox"> 全选 <a   href='javascript:vod(0)' onclick="delorder()">删除选中的订单</a> </span></div>
-          <volist name="allorder" id="po"> <table  id="table" class="gridtable" width="100%">
+      
+         <table   class="col_name"  width="100%">
         <thead>
             <tr><th class="row-selected">
-					<input class="ids row-selected" type="checkbox" name="id[]" value="{$po.orderid}">
+					
 					</th> 
-                <th >订单号：{$po.orderid}</th>
+                <th width="35%">宝贝</th>
+				<th width="20%" >单价</th>
+				<th width="20%" align="center">数量</th>
+                <th width="25%">商品操作</th>
 				
-                <th > {$po.ptime|date='Y-m-d',###}</th>
-				<th >  <a href="{:U('order/cancel?id='.$po['orderid'])}" > <span class="red">{$po.act_getwuliu}</span></a></th>
-               <th ><a href="{:U('order/detail?id='.$po['orderid'])}" >订单详情</a>
-			   <php>$pay=$po['status'];
-			  if($pay==2){ echo "<A class='red' href='http://".$_SERVER['HTTP_HOST']."/index.php?s=/Home/order/wuliu/orderid/".$po['orderid']."'>查看物流</a>";};  </php> 
-			  </th>
-                <th class="info"><strong>{$po.backinfo}<strong></th>
-            </tr>
+               
+				
+              </tr></table> <div class="order_del">
+			  <span>  <input class="checkbox check-all" type="checkbox"> 全选 <a   href='javascript:vod(0)' onclick="delorder()">删除选中的订单</a> </span></div> <volist name="allorder" id="po"> <table   width="100%">
+        <thead>
+            <tr  class="order-time">
+				<td class="select-id">	<input class="ids row-selected" type="checkbox" name="id[]" value="{$po.orderid}">订单号：{$po.orderid}</td><td width="25%"> 时间{$po.ptime|date='Y-m-d H:i:s',###}</td>
+				<td width="15%"> <a href="{:U('order/detail?id='.$po['orderid'])}" >订单详情</a></td>
+				<td class="info" width="15%"><strong><php>
+
+			  $status=$po['status'];if($status==13){ echo "待支付";};
+			  if($status==1){ echo "待发货";}; 
+			   if($status==2){ echo "已发货";};
+			   if($status==3){ echo "已完成";};
+			    if($status==4){ echo "申请取消订单";};
+				if($status==5){ echo "取消订单被拒绝";};
+			   if($status==6){ echo "订单已取消";};
+			  </php><strong></td><td width="15%">  </td></tr>
         </thead>
       
         <tbody> <volist name="po['id']" id="vo"> 
-          <tr><td width="40"></td>
-                <td><span class="img_1 img1"><A href="{:U('Article/detail?id='.$vo['goodid'])}" > <img src="{$vo.goodid|get_cover_id|get_cover='path'}"  width="70" height="70"/><span class="img_1_h">{$vo.goodid|get_good_name}</span></span> </A></td>
+          <tr width="100%">
+                <td width="35%"><a href="{:U('Article/detail?id='.$vo['goodid'])}" class="pic" > <img src="{$vo.goodid|get_cover_id|get_cover='path'}"  width="70" height="70"/>
+				</a>
+				<span class="desc"><a href="{:U('Article/detail?id='.$vo['goodid'])}" > {$vo.goodid|get_good_name}</a></span> </td>
                
-                <td align="center">{$vo.goodid|get_good_price}</td>
-                <td >{$vo.num}件</td>
-                <td>{$vo.back}&nbsp;{$vo.change}&nbsp;{$vo.backmoney}
-			</td>
+                <td class="table-price">{$vo.goodid|get_good_price}</td>
+                <td  class="table-num">{$vo.num}</td>
+                <td  align="center">
+			  <php>
+			   if($vo['status']==3){echo "<a class='red' href='index.php?s=/Home/order/back/id/".$vo['id']."'>退货</a>&nbsp;/"."<a class='red' href='index.php?s=/Home/order/change/id/".$vo['id']."'>换货</a>";};
+	 if($vo['status']==4){echo "<a class='red' href='index.php?s=/Home/order/backdetail/id/".$vo['id']."'>退货审核中</a>&nbsp;";};
+	if($vo['status']==5){echo "<a class='red' href='index.php?s=/Home/order/backdetail/id/".$vo['id']."'>同意退货</a>&nbsp;";}; 
+if($vo['status']==6){echo "<a class='red' href='index.php?s=/Home/order/backdetail/id/".$vo['id']."'>退货中</a>&nbsp;";}; 
+  if($vo['status']==7){echo "<a class='red' href='index.php?s=/Home/order/backdetail/id/".$vo['id']."'>退货被拒绝</a>&nbsp;";}; 
+ if($vo['status']==8){echo "<a class='red' href='index.php?s=/Home/order/backdetail/id/".$vo['id']."'>退货完成</a>&nbsp;";}; 
 
-              
+ if($vo['status']==-4){echo "<a class='red' href='index.php?s=/Home/order/changedetail/id/".$vo['id']."'>换货审核中</a>&nbsp;";};
+if($vo['status']==-5){echo "<a class='red' href='index.php?s=/Home/order/changedetail/id/".$vo['id']."'>同意换货</a>&nbsp;";}; 
+if($vo['status']==-6){echo "<a class='red' href='index.php?s=/Home/order/changedetail/id/".$vo['id']."'>换货中</a>&nbsp;";}; 
+  if($vo['status']==-7){echo "<a class='red' href='index.php?s=/Home/order/changedetail/id/".$vo['id']."'>换货被拒绝</a>&nbsp;";}; 
+ if($vo['status']==-8){echo "<a class='red' href='index.php?s=/Home/order/changedetail/id/".$vo['id']."'>换货完成</a>&nbsp;";};
+
+			  </php>
+			  
+			   </td>
             </tr> </volist>
 		
-			  <tr><td colspan="5" align="right">金额：{$po.pricetotal}元(运费{$po.shipprice}元) &nbsp; &nbsp; <php>$pay=$po['ispay'];
-			  if($pay==1){ echo "<A class='red' href='http://".$_SERVER['HTTP_HOST']."/index.php?s=/Home/order/cancel/id/".$po['orderid']."'>取消订单</a>&nbsp; &nbsp;&nbsp; &nbsp;"."<A class='red' href='http://".$_SERVER['HTTP_HOST']."/index.php?s=/Home/Pay/index/orderid/".$po['orderid']."'>前去支付</a>";};  </php> 
+			  <tr><td colspan="5" align="right">金额：{$po.pricetotal}(运费{$po.shipprice}元) &nbsp; &nbsp; <php>
+			  $pay=$po['ispay'];
+			  if($pay==1&&$po['status']==1){ echo "<A class='red' href='index.php?s=/Home/order/cancel/id/".$po['orderid']."'>取消订单</a>&nbsp; &nbsp;&nbsp; &nbsp;"."<A class='red' href='index.php?s=/Home/Pay/index/orderid/".$po['orderid']."'>前去支付</a>";}; 
+			  if($pay==0&&$po['status']==1 ){ echo "<A class='red' href='index.php?s=/Home/order/cancel/id/".$po['orderid']."'>取消订单</a>&nbsp; &nbsp;&nbsp; &nbsp;";}
+			  ; if($po['status']==2){ echo "<A class='red' href='index.php?s=/Home/order/detail/id/".$po['orderid']."'>查看物流</a>&nbsp; &nbsp;&nbsp; &nbsp;";}
+			  </php> 
 			  
 			  
 			   </td>
@@ -59,11 +91,10 @@
        
 	</empty>
 	
-	<div style="display: block;" class="tab_view">
-		
-
-
-</div>
+ <!-- 分页 -->
+        <div class="page">
+{$page}
+        </div>
 <script type="text/javascript"> 
 //这时obj就是触发事件的对象，购物车动态删除
 	function delcommon(event) { //获取事件源
@@ -77,15 +108,14 @@ str = obj.innerHTML.replace(/<\/?[^>]*>/g,''); //去除HTML tag
 	
 	if(obj.rel=="del")
 { var gid=obj.name;
-var array=$("#div2 li");//登录用户显示的li的个数
-var arr=$("#goods li");//未登录用户显示的li的个数
+var uexist="{:get_username()}";
 	//全选的实现 定义删的发送路径
-	if(array.length!==4){
-		var del='{:U("Shopcart/delItem")}';
+	if(uexist){
+		var del='{:U("Shopcart/delItemByuid")}';
 	
 	}
 else{
-var del='{:U("Shopcart/delItemByuid")}';
+var del='{:U("Shopcart/delItem")}';
 	
 	}
 $.ajax({

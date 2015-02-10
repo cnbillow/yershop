@@ -4,8 +4,11 @@
    
 </block>
 
-<block name="body"></h3>
-<div id="success" ><a><img src="__STATIC__/images/success.png"  style="vertical-align:bottom;"><i style="color:red;clear:both;font-size:18px;">提交成功</i></a><a target="_blank" class="btn_success" rel="nofollow" href="{:U('index/index')}">继续购物</a><a target="_blank" class="btn_success" rel="nofollow" href="{:U('order/detail?id='.$codeid)}">查看订单</a></div>
+<block name="body">
+<div id="success" >
+
+<p><i class="glyphicon glyphicon-ok" ></i><strong style="color:#35AA47;clear:both;font-size:18px;">提交成功！</strong></p>
+<p><a class="btn_success" rel="nofollow" href="{:U('index/index')}">继续购物</a><a  class="btn_success" rel="nofollow" href="{:U('order/detail?id='.$codeid)}">查看订单</a></p></div>
 
 <!--脚本开始--> 
        <hr/>

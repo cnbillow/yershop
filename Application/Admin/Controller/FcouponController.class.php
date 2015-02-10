@@ -35,27 +35,27 @@ class FcouponController extends AdminController {
 
   /* 编辑分类 */
     public function edit($id = null, $pid = 0){
-        $Category = D('Fcoupon');
+        $fcoupon = D('Fcoupon');
 
         if(IS_POST){ //提交表单
-            if(false !== $Category->update()){
+            if(false !== $fcoupon->update()){
                 $this->success('编辑成功！', U('index'));
             } else {
-                $error = $Category->getError();
+                $error = $fcoupon->getError();
                 $this->error(empty($error) ? '未知错误！' : $error);
             }
         } else {
             $cate = '';
             if($pid){
                 /* 获取上级分类信息 */
-                $cate = $Category->info($pid, 'id,name,title,status');
+                $cate = $fcoupon->info($pid, 'id,name,title,status');
                 if(!($cate && 1 == $cate['status'])){
                     $this->error('指定的上级分类不存在或被禁用！');
                 }
             }
 
             /* 获取分类信息 */
-            $info = $id ? $Category->info($id) : '';
+            $info = $id ? $fcoupon->info($id) : '';
 
             $this->assign('info',       $info);
             $this->assign('category',   $cate);
@@ -65,21 +65,21 @@ class FcouponController extends AdminController {
     }
 
     /* 新增分类 */
-    public function add($pid = 0){
-        $Category = D('fcoupon');
+    public function add(){
+        $fcoupon = D('fcoupon');
 
         if(IS_POST){ //提交表单
-            if(false !== $Category->update()){
+            if(false !== $fcoupon->update()){
                 $this->success('新增成功！', U('index'));
             } else {
-                $error = $Category->getError();
+                $error = $fcoupon->getError();
                 $this->error(empty($error) ? '未知错误！' : $error);
             }
         } else {
             $cate = array();
             if($pid){
                 /* 获取上级优惠券信息 */
-                $cate = $Category->info($pid, 'id,name,title,status');
+                $cate = $fcoupon->info($pid, 'id,title,status');
                 if(!($cate && 1 == $cate['status'])){
                     $this->error('指定的上级分类不存在或被禁用！');
                 }
@@ -143,7 +143,7 @@ class FcouponController extends AdminController {
         	//不允许移动至其子孙分类
         	$list = tree_to_list(list_to_tree($list));
 
-        	$pid = M('Category')->getFieldById($from, 'pid');
+        	$pid = M('fcoupon')->getFieldById($from, 'pid');
         	$pid && array_unshift($list, array('id'=>0,'title'=>'根分类'));
         }
 
@@ -179,6 +179,29 @@ function makecode(){
 	  }
 
 }
-
+ public function del(){
+       if(IS_POST){
+             $ids = I('post.id');
+            $order = M("bfcoupon");
+			
+            if(is_array($ids)){
+                             foreach($ids as $id){
+		
+                             $order->where("id='$id'")->delete();
+						
+                }
+            }
+           $this->success("删除成功！");
+        }else{
+            $id = I('get.id');
+            $db = M("fcoupon");
+            $status = $db->where("id='$id'")->delete();
+            if ($status){
+                $this->success("删除成功！");
+            }else{
+                $this->error("删除失败！");
+            }
+        } 
+    }
 
 }

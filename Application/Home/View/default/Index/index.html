@@ -1,9 +1,11 @@
 <extend name="Base/common"/><block name="body">
-<div class="nav-wrap">
-  <div class="nava">
+<!--container begin-->
+<div class="flexcontainer">
+<!--menu begin--><div class="nav-wrap">
+ <!--fenlei begin--> <div class="nava">
     <div class="goods">
       <div>
-        <h2> <a>商品分类</a> </h2>
+        <h2> <a><i id="ilarge" class="glyphicon glyphicon-th-large"></i><span>商品分类</span><i id="iarrow" class="glyphicon glyphicon-chevron-down"></i></a> </h2>
       </div>
        <div class="all-goods"  id="all-goods">
 <volist name="categoryq" id="cate">
@@ -11,24 +13,24 @@
           <div class="product"><h4><a href="{:U('home/article/index/category/'.$cate['name'])}">{$cate.title}</a> </h4><s></s> </div>
             <if condition="$cate['child'] neq false">
               <div class="product-wrap pos"> 
-            <!--手提袋-->
+            <!--子分类-->
             <div class="cf">
               <div class="fl wd252 pr20">
-                <h2><a href="{:U('home/article/index/category/'.$cate['name'])}">{$cate.title}</a> </h2>
-                <p class="lh30">{$cate.description|default="分类描述ㄨㄨㄨ"}</p>
-                <ul class="cf">
-                <volist name="cate['child']" id="cate_sub">
-                <li><a href="{:U('home/article/index/category/'.$cate_sub['name'])}">{$cate_sub.title}<i class="icon-chevron-right"></i> </a>
-                    
               
-                </li>
+                <volist name="cate['child']" id="cate_sub">
+                 <ul class="cf"> <li><span><a href="{:U('home/article/index/category/'.$cate_sub['name'])}">{$cate_sub.title}</a></span>
+                   <if condition="$cate_sub['child']">
+ <volist name="cate_sub['child']" id="cate_sub_two">
+<a href="{:U('/category='.$cate_sub_two['name'])}">{$cate_sub_two.title} </a>
+           
+                            </volist>
+                       
+                    </if> 
+              
+                </li> </ul>
                 </volist>
-                </ul>
+               
 </div>
-              <dl class="fl wd185 pl20 blee">
-                <dt class="lh36">促销活动</dt>
-                <dd id="stdads"><a href="http://www.xwcms.net" target="_blank" title="手提袋"><img src="__STATIC__/bootstrap/img/0934218124.jpg"></a></dd>
-              </dl>
             </div> </div>
             </if>
        
@@ -36,7 +38,8 @@
 </volist>
         
       </div></div>
-    
+
+    <!--fenlei over-->
     <ul class="menu-list cf">
       <think:nav name="nav">
                     	<eq name="nav.pid" value="0">
@@ -47,36 +50,56 @@
                     </think:nav>
     </ul>
     
-  </div>
-</div>
- <div id="myCarousel" class="carousel slide">
-  <ol class="carousel-indicators">
-    <li data-target="#myCarousel" data-slide-to="0" class="active">1</li>
-    <li data-target="#myCarousel" data-slide-to="1">2</li>
-    <li data-target="#myCarousel" data-slide-to="2">3</li>
-  </ol>
-  <!-- Carousel items -->
-  <div class="carousel-inner">
-   
-
-    <volist name="carousel"  offset="1" length="2" id="pos" > <div class="item">
-<a href="{:U('Article/detail?id='.$pos['id'])}" target="_blank"><img src="{$pos.id|get_good_adid|get_cover='path'}"/></a>
-
-  <div class="carousel-caption">
-                      <h4>{$pos.id|get_good_name}</h4>
-                      <p>{$pos.adtitle}</p>
-                    </div>
-</div>
-</volist>
-
-  </div>
-  <!-- Carousel nav -->
-  <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-  <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
-</div>
+  </div>   <script>
+    $(".menu-list li").eq(0).css('background','#d25400');  
+     </script> <!--首页高亮-->  
+</div><!--menu over-->
+    
+<!--pic begin--><!--幻灯片首个li设置class为CurrentPic-->
 <script>$().ready(function () {
-	  var eq=$(".carousel-inner>div").eq(0).attr("class","active item");
-	  })</script><!--bootstrap幻灯片首个item设置class为active item-->
+	  $(".LunBoslide>li").eq(0).attr("class","CurrentPic");
+	  })</script>
+<div class="LunBo">
+<ul class="LunBoslide"><volist name="slide" id="vo"> <li><a href="{:U('Article/activity?id='.$vo['id'])}" > <img src="{$vo.icon|get_cover='path'}"/></a> </li></volist>
+</ul>
+<div class="LunBoNum">
+<span class="CurrentNum">1</span>
+<span>2</span>
+<span>3</span>
+<span>4</span>
+<span>5</span>
+</div>
+</div>
+
+<script type="text/javascript" language="javascript">
+var PicTotal = 5;
+var CurrentIndex;
+var ToDisplayPicNumber = 0;
+$("div.LunBo div.LunBoNum span").click(DisplayPic);
+function DisplayPic() {
+// 测试是父亲的第几个儿子
+CurrentIndex = $(this).index();
+// 删除所有同级兄弟的类属性
+$(this).parent().children().removeClass("CurrentNum")
+// 为当前元素添加类
+$(this).addClass("CurrentNum");
+// 隐藏全部图片
+var Pic = $(this).parent().parent().children("ul");
+$(Pic).children().hide();
+// 显示指定图片
+$(Pic).children("li").eq(CurrentIndex).show();
+}
+function PicNumClick() {
+$("div.LunBo div.LunBoNum span").eq(ToDisplayPicNumber).trigger("click");
+ToDisplayPicNumber = (ToDisplayPicNumber + 1) % PicTotal;
+setTimeout("PicNumClick()",3000);
+}
+setTimeout("PicNumClick()",3000);
+</script>
+
+ <!--pic over-->
+
+
 <div  class="rside">
 <span><img data-img="2" src="http://img12.360buyimg.com/da/jfs/t307/47/730614248/16617/d99caa4b/542157edN66043046.jpg" width="310" height="70" alt=""></span>
 <div class="note"><ul><li class="selected">公告</li><li>活动</li></ul></div>
@@ -88,82 +111,72 @@
 <div class="message"  style="display: none"></div>
 </div>
 </div>
-<div class="d-propose"><div class="t1"><ul><li class="selected">最新上架</li><li>限时抢购</li><li>热卖商品</li></ul></div>
-<div id="p-list-wrap">
-<div class="list"><ul><volist name="bytime" id="vo">
-<li><div>
- <a href="{:U('Article/detail?id='.$vo['id'])}">
-                        <img src="{$vo.id|get_cover_id|get_cover='path'}"/></a></div>
-                        <p class="name">
- <a href="{:U('Article/detail?id='.$vo['id'])}">
-                       {$vo.id|get_good_name}</a></p>
-                       
-</li>
-</volist>
-      
-                        
-                        </ul></div>
-<div class="list"  style="display: none"><ul><volist name="timelist" id="vo">
-<li><div>
- <a href="{:U('Article/detail?id='.$vo['id'])}">
-                        <img src="{$vo.id|get_cover_id|get_cover='path'}"/></a></div>
-                        <p class="name">
- <a href="{:U('Article/detail?id='.$vo['id'])}">
-                       {$vo.id|get_good_name}</a></p>
-                        
-</li>
-</volist>  </ul></div>
-<div class="list"  style="display: none"><ul><volist name="totalsales" id="vo">
-<li><div>
- <a href="{:U('Article/detail?id='.$vo['id'])}">
-                        <img src="{$vo.id|get_cover_id|get_cover='path'}"/></a></div>
-                        <p class="name">
- <a href="{:U('Article/detail?id='.$vo['id'])}">
-                       {$vo.id|get_good_name}</a></p>
-                       
-</li>
-</volist>  </ul></div>
-</div></div><div class="blank"></div>
-<div class="category-recommend-1"><div class="c-logo"><a href="http://www.benlai.com/notice-231.html
-" target="_blank"><img alt="" src=""> </a></div>
-<!--栏目调用开始-->
-<!--栏目推荐位调用开始-->
 
-<div class="r-t2">新鲜水果</div>
-<div class="blank"></div>
+</div><!--flexcontainer over-->
+
+
+<!--循环开始-->
+
+<volist name="articlelist" limit="10" id="vo">
+<div class="r-t2 floor_title "><img src="{$vo.ypid|get_category_icon|get_cover='path'}"  width="200" height="50"/>{$vo.ypid|get_category_title}</div>
 <div class="r-p-wrap">
 <div class="bpic"><article:position name="pos" pos="2" limit="1" cate="57" >
-<a href="{:U('Article/detail?id='.$pos['id'])}" target="_blank"><img src="{$pos.id|get_good_adid|get_cover='path'}"/>
+<a href="{:U('Article/detail?id='.$pos['id'])}" target="_blank"><img src="/Uploads/Picture/2014-10-26/544cffc5540ee.jpg"/>
 </article:position></a></div>
 
 <!--栏目推荐位调用结束-->
 <!--栏目文章调用开始-->
-<ul class="r-list">
-  <article:list name="article" limit="10" category="52" child="true">
+<ul class="r-list"><php>
+ if(!empty($vo['goodid'])){ $ids= explode(',',$vo['goodid']);}else{
+ 
+ $ids="";}</php>
+    <notempty name="ids">
+             <volist name="ids" id="v">
+                   
+           
 <li>
-                    <div class="pic" name="55">
-                        <a class="sy" benlai-source="1" benlai-location="13-1" href="{:U('Article/detail?id='.$article['id'])}" target="_blank" title="{$article.title}">
-                            <img width="140" height="140" alt="{$article.title}" onerror="this.onerror=null;this.src='{$article.cover_id|get_cover='path'}'" src="{$article.cover_id|get_cover='path'}" style="display: inline; opacity: 1; margin-top: 0px;"></a>
+                    <div class="pic" >
+                        <a class="yershop_img" href="{:U('Article/detail?id='.$v)}" target="_blank" title="{$article.title}">
+                            <img src="{$v|get_cover_id|get_cover='path'}" ></a>
                         <div class="buy" >
-                            <a href="javascript:;" onclick="AddProductToCart({$article.id})">
-                                <img width="140" height="30" src="__STATIC__/images/btn_buy.gif" style="width:140px;height:30px;">
+                            <a href="javascript:;" onclick="AddProductToCart({$v})">
+                                <img   src="__STATIC__/images/btn_buy.gif" style="width:160px;height:30px;">
                             </a>
                         </div>
                     </div>
-                    <div class="name"><a href="{:U('Article/detail?id='.$article['id'])}" benlai-source="1" benlai-location="13-1" target="_blank" title="{$article.title}">{$article.id|get_good_shorttitle}</a></div>
+                    <div class="name"><a href="{:U('Article/detail?id='.$v)}"  target="_blank" title="{$v|get_good_shorttitle}">{$v|get_good_shorttitle}</a></div>
                     <div class="price">
-                        <font>￥</font><span>{$article.id|get_good_price}</span>
-                        <span style="color: #999999; font-size: 12px; font-weight: 400; margin-left: 3px; text-decoration: line-through">{$article.id|get_good_yprice}</span>
+                        <font>￥</font><span>{$v|get_good_price}</span>
+                        <span>{$v|get_good_yprice}</span>
                     </div>
-  </li> </article:list> 
+  </li>   </volist>
+        </notempty> 
+        
+        <empty name="ids">
+			
+				 <li> aoh，暂无数据 </li> ！
+				
+		</empty>
                 </ul>
 				<!--栏目文章调用开始-->
-</div>
-<!--栏目调用结束-->
-</div>
+</div></volist> 
+<!--循环结束-->
  
 <script type="text/javascript">
-
+ //首页添加到购物车图片显示与隐藏
+$(document).ready(function () {
+	  $("div.pic").mouseenter(function(e){ $(this).find("a").animate({
+    top:'-30px',height:'140px'
+  }); $(this).find("div").animate({
+    top:'-30px',
+  });
+   });
+    $("div.pic").mouseleave(function(e){$(this).find("a").animate({
+   top:'0px',height:'140px'
+  });$(this).find("div").animate({top:'0px',});
+  });
+      })
+//首页添加到购物车
 function AddProductToCart(i)
 { var a='{$url}';
 	var goodid=i;
@@ -202,6 +215,7 @@ alert(XMLHttpRequest+thrownError); }
 }
 
 	function delcommon(event) { //获取事件源
+		var uexist="{:get_username()}";
 event = event ? event : window.event; 
 var obj = event.srcElement ? event.srcElement : event.target; 
 //这时obj就是触发事件的对象，可以使用它的各个属性 
@@ -212,10 +226,9 @@ str = obj.innerHTML.replace(/<\/?[^>]*>/g,''); //去除HTML tag
 	
 	if(obj.rel=="del")
 { var gid=obj.name;
-var array=$("#div2 li");//登录用户显示的li的个数
-var arr=$("#goods li");//未登录用户显示的li的个数
-	//全选的实现 定义删的发送路径
-	if(array.length!==4){
+
+	//定义删的发送路径
+	if(uexist==''){
 		var del='{:U("Shopcart/delItem")}';
 	
 	}
@@ -248,39 +261,8 @@ alert(XMLHttpRequest+thrownError); }
 }
 	
 	} 
-  var oDiv1 = document.getElementById('div1');
-            var oDiv2 = document.getElementById('div2');
-            var timer = null;//定义定时器变量
-            //鼠标移入div1或div2都把定时器关闭了，不让他消失
-            oDiv1.onmouseover = oDiv2.onmouseover = function ()
-            {
-                oDiv2.style.display = 'block';
-                clearTimeout(timer);
-            }
-            //鼠标移出div1或div2都重新开定时器，让他延时消失
-            oDiv1.onmouseout = oDiv2.onmouseout = function ()
-            {
-                //开定时器
-                timer = setTimeout(function () { 
-                    oDiv2.style.display = 'none'; }, 200);
-            }
-			
-			var a= document.getElementById('shopping_cart');
-  var b = document.getElementById('goods');
-            var timer5 = null;//定义定时器变量
-            //鼠标移入div1或div2都把定时器关闭了，不让他消失
-            a.onmouseover = b.onmouseover = function ()
-            {
-                b.style.display = 'block';
-                clearTimeout(timer5);
-            }
-            //鼠标移出div1或div2都重新开定时器，让他延时消失
-            a.onmouseout = b.onmouseout = function ()
-            {
-                //开定时器
-                timer5= setTimeout(function () { 
-                    b.style.display = 'none'; }, 500);
-            }
+
+		
 			</script>
 
 

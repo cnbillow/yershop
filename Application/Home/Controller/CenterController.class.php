@@ -7,6 +7,7 @@
 // |  Author: 烟消云散 <1010422715@qq.com> 
 // +----------------------------------------------------------------------
 namespace Home\Controller;
+use Think\Controller;
 /*****个人中心
 ***************/
 class CenterController extends HomeController {
@@ -145,11 +146,27 @@ public  function allorder(){
   /* 热词调用*/
     $hotsearch=R("Index/getHotsearch");
     $this->assign('hotsearch',$hotsearch);
+	  /* 分类调用*/
 	  $menu=R('index/menulist');
 	   $this->assign('categoryq', $menu);
-      $all=D("order");
-      $allorder=$all->allOrder(); 
-	  $this->assign('allorder', $allorder);
+	     /* 数据分页*/
+	   $Member=D("member");
+	   $uid=$Member->uid();
+       $order=M("order");
+	   $detail=M("shoplist");
+	   $count=$order->where(" uid='$uid'  and total!=''")->count();
+	 $Page= new \Think\Page($count,5);
+	   $Page->setConfig('prev','上一页');
+      $Page->setConfig('next','下一页');
+      $Page->setConfig('first','第一页');
+      $Page->setConfig('last','尾页');
+      $Page->setConfig('theme','%FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END% %HEADER%');
+      $show= $Page->show();    
+      $list=$order->where("uid='$uid'  and total!=''")->order('id desc')->limit($Page->firstRow.','.$Page->listRows)->select();
+	    foreach($list as $n=> $val){
+       $list[$n]['id']=$detail->where('orderid=\''.$val['id'].'\'')->select();}
+     $this->assign('allorder',$list);// 赋值数据集 
+	  $this->assign('page',$show);//   
 	  $this->display();
     }
 /*****未完成订单
@@ -271,7 +288,7 @@ public  function coupon() {
 		$member=D("member");
 		$uid=$member->uid();
 	/* 优惠券调用*/
-	$coupon=M("usercoupon")->where("uid='$uid' and status='1'")->select();;
+	$coupon=M("usercoupon")->where("uid='$uid' ")->select();
     $this->assign('couponlist', $coupon);
 		$fcoupon=M("fcoupon")->where("display='1' and status='1' ")->select();;
     $this->assign('fcouponlist', $fcoupon);

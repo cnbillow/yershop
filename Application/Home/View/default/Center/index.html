@@ -48,7 +48,7 @@
 	<empty name='lateorder'>
 	<div class="personal_info_none_goods">
 				<p>你的订单还是空的哦<br>赶快行动吧！</p>
-				<a rel="nofollow" href="/latest/" class="ping_btn">马上购物</a>
+				<a rel="nofollow" href="{:U("shopcart/index")}" class="ping_btn">马上购物</a>
 				<div class="cb"></div>
 			</div>
 	<else />
@@ -59,13 +59,16 @@
 			  <span>  <input class="checkbox check-all" type="checkbox"> 全选 <a   href='javascript:vod(0)' onclick="delorder()">删除选中的订单</a> </span></div>
           <volist name="lateorder" id="po"> <table  id="table" class="gridtable" width="100%">
         <thead>
-            <tr><th class="row-selected">
+            <tr><th class="row-p">
 					<input class="ids row-selected" type="checkbox" name="id[]" value="{$po.orderid}">
 					</th> 
                 <th >订单号：{$po.orderid}</th>
 				<th ><a href="{:U('order/detail?id='.$po['orderid'])}" >订单详情</a></th>
-                <th > {$po.ptime}</th>
-               
+                 <th > {$po.ptime|date='Y-m-d',###}</th>
+                 <th >
+			   <php>$pay=$po['status'];
+			  if($pay==2){ echo "<A class='red' href='http://".$_SERVER['HTTP_HOST']."/index.php?s=/Home/order/wuliu/orderid/".$po['orderid']."'>查看物流</a>";};  </php> 
+			  </th>
                 <th class="info">{$po.backinfo}</th>
             </tr>
         </thead>
@@ -94,65 +97,7 @@
        </form>
        
 	</empty>
-	<h3 class="tab">
-		<a rel="nofollow" href="javascript:vod(0);" >我的购物车</a>
-		<a rel="nofollow" href="javascript:vod(0);">我的收藏</a>
-	</h3>
-	<div style="display: block;" class="tab_view">
-		<div id="my_shopping_car" style="display: block;">
-			<empty name='cartlist'>
-	<div class="personal_info_none_goods">
-				<p>你的购物车还是空的哦<br>赶快行动吧！</p>
-				<a rel="nofollow" href="{:U("shopcart/index")}" class="ping_btn">马上购物</a>
-				<div class="cb"></div>
-			</div>
-	<else />
- <form  name="form" id="form">
-	<table  id="table" class="gridtable" width="100%">
-        <thead>
-            <tr>
-                <th >商品名</th>
-                <th >价格</th>
-                <th >数量</th>
-                <th >操作</th>
-            </tr>
-        </thead>
-       
-        <tbody>
-    
-          <volist name="cartlist" id="vo">  
-          <tr>
-                <td><span class="img_1 img1"><A href="{:U('Article/detail?id='.$vo['goodid'])}" > <img src="{$vo.goodid|get_cover_id|get_cover='path'}"  width="70" height="70"/><span class="img_1_h">{$vo.goodid|get_good_name}</span></span> </A></td>
-               
-                <td align="center">{$vo.price}</td>
-                <td ><a rel="jia"  class="jia" onclick="myfunction(event)">+</a><input type="text"  class="num"  id="{$vo.goodid}" value="{$vo.num}"/><a rel="jian" onclick="myfunction(event)" class="jian" id="oneA">-</a></td>
-                
-                <td><a  name="{$vo.goodid}" rel="del" onclick="myfunction(event)">删除</a>&nbsp;<a href="#">移到收藏</a></td>
-            </tr>
-         </volist>
-        
-        </tbody>
-      
-    </table> </form>
-		</empty>	
-	</div>
 
-		<div id="my_shopping_car" style="display: none;">
-		<empty name='favorlist'>
-		<div class="personal_info_none_goods">
-			<p>你的收藏列表还是空的哦<br>赶快行动吧！</p>
-			<a rel="nofollow" href="http://www.docer.com" class="ping_btn">马上收藏</a>
-			<div class="cb"></div>
-		
-		</div>
-		<else />
-		<ul> <volist name="favorlist" id="vo"> 
-		<li><span><A href="{:U('Article/detail?id='.$vo['goodid'])}" > <img src="{$vo.goodid|get_cover_id|get_cover='path'}"  width="70" height="70"/>{$vo.goodid|get_good_name}</span><span>{$vo.goodid|get_good_name}</span><span>{$vo.goodid|get_good_price}</span></li>
-</volist></ul>
-		</empty>
-	</div>
-
-</div>
 <script type="text/javascript">
 //这时obj就是触发事件的对象，购物车动态删除
 	function delcommon(event) { //获取事件源
@@ -166,15 +111,14 @@ str = obj.innerHTML.replace(/<\/?[^>]*>/g,''); //去除HTML tag
 	
 	if(obj.rel=="del")
 { var gid=obj.name;
-var array=$("#div2 li");//登录用户显示的li的个数
-var arr=$("#goods li");//未登录用户显示的li的个数
+var uexist="{:get_username()}";
 	//全选的实现 定义删的发送路径
-	if(array.length!==4){
-		var del='{:U("Shopcart/delItem")}';
+	if(uexist){
+		var del='{:U("Shopcart/delItemByuid")}';
 	
 	}
 else{
-var del='{:U("Shopcart/delItemByuid")}';
+var del='{:U("Shopcart/delItem")}';
 	
 	}
 $.ajax({
@@ -235,7 +179,6 @@ var b='{:U("center/enter")}';
 }
 function delorder(){
 		document.delform.submit();
-		
 		 }
 	require(['memberCenter'], function() {
 		var el = document.getElementById('MemberCenterCtrl');

@@ -85,12 +85,20 @@
                 
             </tr>
           </volist>                 </tbody></table>  <BR/>  
-		  <div style="color:red"><volist name="detail" id="vo">
+		  <div style="color:red">
+           <volist name="alist" id="ad">
+            <p style="text-align:right;color:red;width:100%">收件人：{$ad.realname}</p> 
+		   <p style="text-align:right;color:red;width:100%">电话：{$ad.cellphonee}</p> 
+		  
+		  <p style="text-align:right;color:red;width:100%">地址： {$ad.address} </p>
+          </volist>
+          <volist name="detail" id="vo">
+          
 		  <p style="text-align:right;color:red;width:100%">小计：{$vo.total}元 </p> 
 		   <p style="text-align:right;color:red;width:100%">运费：{$vo.shipprice}元</p> 
 		  
 		  <p style="text-align:right;color:red;width:100%">总金额： {$vo.pricetotal}元 </p>
-		   <p style="text-align:right;color:red;width:100%">时间：{$vo.ptime}</p>  </volist> </div>
+		   <p style="text-align:right;color:red;width:100%">时间：{$vo.ptime||date='Y-m-d H:i:s',###}</p>  </volist> </div>
 		  </div>
 	</div>
 </block>

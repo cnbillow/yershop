@@ -29,15 +29,14 @@ str = obj.innerHTML.replace(/<\/?[^>]*>/g,''); //去除HTML tag
 	
 	if(obj.rel=="del")
 { var gid=obj.name;
-var array=$("#div2 li");//登录用户显示的li的个数
-var arr=$("#goods li");//未登录用户显示的li的个数
+var uexist="{:get_username()}";
 	//全选的实现 定义删的发送路径
-	if(array.length!==4){
-		var del='{:U("Shopcart/delItem")}';
+	if(uexist){
+		var del='{:U("Shopcart/delItemByuid")}';
 	
 	}
 else{
-var del='{:U("Shopcart/delItemByuid")}';
+var del='{:U("Shopcart/delItem")}';
 	
 	}
 $.ajax({

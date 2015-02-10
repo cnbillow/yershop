@@ -1,82 +1,46 @@
 <extend name="Base/pageall"/>
 <block name="body">
-<div class="main"><div class="main_nav"><a rel="nofollow" href="/">首页</a>&gt;<p class="red fwb">个人中心</p></div><div class="main_center"><div class="center_left"><dl><dt><a rel="nofollow">订单中心</a></dt><dd><a rel="nofollow" href='{:U("center/index")}'>主页</dd>
+<div class="main"><div class="main_nav"><a rel="nofollow" href="/">首页</a>&gt;<p class="red fwb">个人中心</p>&gt;<p class="red fwb">{$msg} {$info.id}</div><div class="main_center"><div class="center_left"><dl><dt><a rel="nofollow">订单中心</a></dt><dd><a rel="nofollow" href='{:U("center/index")}'>主页</dd>
 <dd><a rel="nofollow" href='{:U("center/coupon")}'>优惠券</dd><dd><a rel="nofollow" href='{:U("center/allorder")}'>我的全部订单</a></dd>
 </dl><dl class="last"><dt><a rel="nofollow">个人中心</a></dt><dd><a href='{:U("center/information")}'>账户信息</a></dd><dd><a rel="nofollow" href='{:U("shopcart/index")}'>我的购物车</a></dd><dd><a rel="nofollow" href='{:U("center/collect")}'>我的收藏</a></dd></dl></div><div class="center_right" style="display: none;"><div class="center_right_loading"></div></div><div id="memberCenter" style="display: block;"><!-- 个人中心 初始状态 start -->
 <div class="center_right" id="MemberCenterCtrl" style="display: block;">
-<span  style="display: block;padding:15px;font-size:17px;text-align:center;color:red;margin:20px 0;">{$msg} &nbsp;&nbsp;{$id}</span>
+<span  style="display: block;padding:15px;font-size:17px;text-align:center;color:red;margin:20px 0;"><i class="
+glyphicon glyphicon-pencil"></i>{$msg} &nbsp;&nbsp;</span>
 
-	<form action='{:U()}' method="post" name="actform" style="float:left;;width:29%" >
-	<input type="hidden" name="id" value="{$id}">
+	<form action='{:U()}' method="post" name="actform" style="width:89%" >
+
        <div id="write">
+
 	   
 <ul> <li><div class="form-item">
-			<label class="item-label">提示:<span class="red">{$info}</span> </label>
+			<label class="item-label">商品名称:<span >{$info.goodid|get_good_name}</span> </label>
 		
 		</div></li>
 		<li><div class="form-item">
-			<label class="item-label">退货数量<span class="check-tips"></span> </label>
+			<label class="item-label"><span class="check-tips"></span> </label>
 			<div class="controls">
-			<input type="text" class="text input-large" name="num" >				
+			退货金额:<input type="text" class="text num input-large" name="num" value="{$info.num}">	<span>(最多可退{$info.num}件)	</span>		
 			</div>
 		</div></li>
 			<li><div class="form-item">
-			<label class="item-label">说明<span class="check-tips"></span> </label>
+			<label class="item-label">原因:<span class="check-tips"></span> </label>
 			<div class="controls">
-			<input type="text" class="text input-large" name="title" >				
+			<textarea rows=5" cols="20" name="reason"></textarea>				
 			</div>
 		</div></li>
-			<li>
-			<div class="form-item">
-			<label class="item-label">描述<span class="check-tips"></span> </label>
-			<div class="controls">
-			<textarea rows="9" cols="20" name="reason"></textarea>				
-			</div>
-		</div></li>
+		
 			 
-			 <li><span style="margin: 0 21px"></span><input type="submit" class="btn_submit_pay" value="提交" /></li>
+			 <li><span style="margin: 0 21px"></span>
+			 	<input type="hidden" name="id" value="{$info.id}">
+	<input type="hidden" name="goodid" value="{$info.goodid}">
+	<input type="hidden" name="shopid" value="{$info.id}">
+			 <input type="submit" class="btn_submit_pay" value="提交" /></li>
 			
 
 </ul> </div>
          
        </form>
-<div style="display: block;float:right;width:70%">     
-<empty name='detaillist'>
-	<div class="personal_info_none_goods">
-				<p>没有该商品编号，<a href='{:U("index/index")}' class="red">查询错误</a></p>
-			
-				<div class="cb"></div>
-			</div>
-	<else />
-       
-    
-        
-        <volist name="detaillist" id="vo"> 
-		<table style="display: block;padding:5px;" id="table" class="detailtable" width="100%">
-      
-         <tbody >
-		   <tr width="100%">
-                <th width="65%">名称</th>
-                <th width="28%">数量</th> 
-				<th>单价</th>
-            </tr>
-        
-      
-        
-          <tr>
-                <td><span class="img_1 img1"><A href="{:U('Article/detail?id='.$vo['goodid'])}" > <img src="{$vo.goodid|get_cover_id|get_cover='path'}"  width="70" height="70"/><span class="img_1_h">{$vo.goodid|get_good_name}</span></span> </A></td>
-               
-                <td align="center">{$vo.goodid|get_good_price}</td>
-                <td >{$vo.num}</td>
-                
-             
-            </tr> 	
-		  <tr><td colspan="5" align="right">时间：{$vo.time|date='Y-m-d',###}&nbsp;金额：<span class="red">{$vo.total}</span>元</td></tr>
-  
-      
-       </tbody>
-    </table> </volist>
-	</empty>
+
 	
 	
 		

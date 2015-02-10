@@ -108,22 +108,32 @@ class ModelController extends AdminController {
      * 删除一条数据
      * @author huajie <banhuajie@163.com>
      */
+  
     public function del(){
-        $ids = I('get.ids');
-        empty($ids) && $this->error('参数不能为空！');
-        $ids = explode(',', $ids);
-        foreach ($ids as $value){
-            $res = D('Model')->del($value);
-            if(!$res){
-                break;
+       if(IS_POST){
+             $ids = I('post.id');
+            $order = M("Model");
+			
+            if(is_array($ids)){
+                             foreach($ids as $id){
+		
+                             $order->where("id='$id'")->delete();
+						
+                }
             }
-        }
-        if(!$res){
-            $this->error(D('Model')->getError());
+           $this->success("删除模型成功！");
         }else{
-            $this->success('删除模型成功！');
-        }
+            $id = I('get.id');
+            $db = M("Model");
+            $status = $db->where("id='$id'")->delete();
+            if ($status){
+                $this->success("删除模型成功！");
+            }else{
+                $this->error("删除模型失败！");
+            }
+        } 
     }
+
 
     /**
      * 更新一条数据

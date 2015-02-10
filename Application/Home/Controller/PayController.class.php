@@ -58,8 +58,15 @@ class PayController extends Controller {
  
       $data = array('status'=>'1','ispay'=>'2');//设置订单为已经支付,状态为已提交
 	M('order')->where(array('orderid' => $param['order_id']))->setField($data);
-
-        } 
+  // 配置邮件提醒   
+	 $mail=get_email($param['order_id']);//获取会员邮箱
+	 $title="交易提醒";
+	 $content="您在<a href=\"".C('DAMAIN')."\" target='_blank'>".C('SITENAME').'</a>支付了订单，订单号'.$param['order_id'];
+     if( C('MAIL_PASSWORD'))
+               
+					{
+						SendMail($mail,$title,$content);
+						} 
 		
 		else {
             E("Access Denied");
